@@ -68,7 +68,7 @@ export default function Sidebar() {
         })}
       </div>
 
-      <div className="mt-auto pt-6 border-t border-gray-100 pb-4 lg:hidden">
+      <div className="mt-auto pt-6 border-t border-gray-100 pb-4">
         <div className="px-4 mb-4">
           <p className="text-sm font-semibold text-gray-800">Admin TU</p>
           <p className="text-xs text-gray-500">SMK Ekonomika</p>

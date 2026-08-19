@@ -1,5 +1,6 @@
 import { getUserProfile } from './actions';
-import { User, Shield, Info, Edit, Key } from 'lucide-react';
+import Link from 'next/link';
+import { User, Shield, Info, Edit, Key, ArrowLeft } from 'lucide-react';
 
 export const metadata = {
   title: 'Pengaturan | TU Dashboard',
@@ -10,7 +11,14 @@ export default async function SettingsPage() {
 
   return (
     <div className="space-y-6 max-w-4xl">
-      <div>
+      <div className="mb-2">
+        <Link 
+          href="/dashboard" 
+          className="inline-flex items-center gap-2 text-[#5c2b90] hover:text-purple-800 font-medium transition-colors mb-4"
+        >
+          <ArrowLeft className="w-4 h-4" />
+          Kembali ke Dashboard
+        </Link>
         <h1 className="text-2xl font-bold text-gray-900">Pengaturan</h1>
         <p className="text-sm text-gray-500 mt-1">
           Kelola pengaturan akun dan preferensi sistem Anda.
