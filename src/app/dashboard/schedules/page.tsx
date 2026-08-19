@@ -1,10 +1,10 @@
-import { getSchedules, getExams, getClasses } from './actions';
+import { getSchedules, getExams, getClasses, getSubjects } from './actions';
 import ScheduleTable from '@/components/dashboard/schedules/ScheduleTable';
 import { AlertCircle } from 'lucide-react';
 
 export default async function SchedulesPage() {
-  const [schedulesRes, examsRes, classesRes] = await Promise.all([
-    getSchedules(),
+  const [schedulesRes, subjectsRes, examsRes, classesRes] = await Promise.all([
+    getSchedules(), getSubjects(),
     getExams(),
     getClasses()
   ]);
@@ -24,7 +24,8 @@ export default async function SchedulesPage() {
 
   return (
     <ScheduleTable 
-      schedules={schedulesRes.data || []} 
+      schedules={schedulesRes.data || []}
+      subjects={subjectsRes.data || []} 
       exams={examsRes.data || []}
       classes={classesRes.data || []}
     />

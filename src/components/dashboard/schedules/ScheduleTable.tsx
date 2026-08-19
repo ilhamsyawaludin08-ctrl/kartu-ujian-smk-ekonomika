@@ -7,11 +7,11 @@ import { deleteSchedule } from '@/app/dashboard/schedules/actions';
 
 interface ScheduleTableProps {
   schedules: any[];
-  exams: any[];
+  exams: any[]; subjects: any[];
   classes: any[];
 }
 
-export default function ScheduleTable({ schedules: initialSchedules, exams, classes }: ScheduleTableProps) {
+export default function ScheduleTable({ schedules: initialSchedules, exams, classes, subjects }: ScheduleTableProps) {
   const [search, setSearch] = useState('');
   const [examFilter, setExamFilter] = useState('All');
   const [classFilter, setClassFilter] = useState('All');
@@ -147,7 +147,7 @@ export default function ScheduleTable({ schedules: initialSchedules, exams, clas
                 <th className="px-6 py-4 font-semibold text-sm text-gray-600">Mata Pelajaran</th>
                 <th className="px-6 py-4 font-semibold text-sm text-gray-600">Kelas Target</th>
                 <th className="px-6 py-4 font-semibold text-sm text-gray-600">Waktu Pelaksanaan</th>
-                <th className="px-6 py-4 font-semibold text-sm text-gray-600">Ruang</th>
+                
                 <th className="px-6 py-4 font-semibold text-sm text-gray-600 text-center">Status</th>
                 <th className="px-6 py-4 font-semibold text-sm text-gray-600 text-right">Aksi</th>
               </tr>
@@ -176,14 +176,7 @@ export default function ScheduleTable({ schedules: initialSchedules, exams, clas
                           </span>
                         </div>
                       </td>
-                      <td className="px-6 py-4 text-sm text-gray-700">
-                        {s.room ? (
-                          <span className="flex items-center gap-1.5">
-                            <MapPin className="w-3.5 h-3.5 text-gray-400" />
-                            {s.room}
-                          </span>
-                        ) : '-'}
-                      </td>
+
                       <td className="px-6 py-4">
                         <div className="flex justify-center">
                           {s.is_active ? (
@@ -222,7 +215,7 @@ export default function ScheduleTable({ schedules: initialSchedules, exams, clas
                 })
               ) : (
                 <tr>
-                  <td colSpan={6} className="px-6 py-12 text-center text-gray-500">
+                  <td colSpan={5} className="px-6 py-12 text-center text-gray-500">
                     Tidak ada jadwal ujian yang ditemukan.
                   </td>
                 </tr>
@@ -237,6 +230,7 @@ export default function ScheduleTable({ schedules: initialSchedules, exams, clas
         onClose={() => setIsFormOpen(false)} 
         scheduleData={editingSchedule} 
         exams={exams}
+        subjects={subjects}
         classes={classes}
       />
       

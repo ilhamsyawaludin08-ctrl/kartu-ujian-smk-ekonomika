@@ -30,6 +30,16 @@ export async function getExams() {
   return { success: true, data };
 }
 
+export async function getSubjects() {
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from('subjects')
+    .select('*')
+    .order('name', { ascending: true });
+  if (error) return { success: false, error: error.message };
+  return { success: true, data };
+}
+
 export async function getClasses() {
   const supabase = await createClient();
   const { data, error } = await supabase
