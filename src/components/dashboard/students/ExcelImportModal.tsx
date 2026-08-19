@@ -20,9 +20,14 @@ export default function ExcelImportModal({ isOpen, onClose }: ExcelImportModalPr
   
   // Field target di DB
   const dbFields = [
+    { value: 'nis', label: 'NIS' },
     { value: 'nisn', label: 'NISN' },
-    { value: 'name', label: 'Nama Siswa' },
-    { value: 'class_id', label: 'Kelas' },
+    { value: 'name', label: 'Nama Lengkap' },
+    { value: 'class_id', label: 'Kelas / Jurusan' },
+    { value: 'place_of_birth', label: 'Tempat Lahir' },
+    { value: 'date_of_birth', label: 'Tanggal Lahir' },
+    { value: 'exam_room', label: 'Ruang Ujian' },
+    { value: 'exam_password', label: 'Password Ujian' },
     { value: 'ignore', label: 'Tidak Di-import (Abaikan)' },
     { value: 'unknown', label: 'Belum Ada di DB (Review Nanti)' }
   ];
@@ -50,9 +55,14 @@ export default function ExcelImportModal({ isOpen, onClose }: ExcelImportModalPr
         const autoMappings: Record<string, string> = {};
         fileHeaders.forEach(h => {
           const lower = h.toLowerCase();
-          if (lower.includes('nisn')) autoMappings[h] = 'nisn';
+          if (lower === 'nis') autoMappings[h] = 'nis';
+          else if (lower.includes('nisn')) autoMappings[h] = 'nisn';
           else if (lower.includes('nama') || lower.includes('name')) autoMappings[h] = 'name';
           else if (lower.includes('kelas') || lower.includes('class')) autoMappings[h] = 'class_id';
+          else if (lower.includes('tempat') || lower.includes('lahir') && !lower.includes('tanggal')) autoMappings[h] = 'place_of_birth';
+          else if (lower.includes('tanggal') || lower.includes('tgl') || lower.includes('dob')) autoMappings[h] = 'date_of_birth';
+          else if (lower.includes('ruang') || lower.includes('room')) autoMappings[h] = 'exam_room';
+          else if (lower.includes('password') || lower.includes('pass') || lower.includes('sandi')) autoMappings[h] = 'exam_password';
           else autoMappings[h] = 'unknown'; // default untuk field tak dikenal
         });
         

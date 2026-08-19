@@ -252,8 +252,13 @@ export async function bulkImportStudents(data: any[]) {
   }
 
   const insertData = data.filter(r => r.nisn && r.name).map(r => ({
+    nis: r.nis ? r.nis.toString().trim() : null,
     nisn: r.nisn.toString().trim(),
     name: r.name.toString().trim(),
+    place_of_birth: r.place_of_birth ? r.place_of_birth.toString().trim() : null,
+    date_of_birth: r.date_of_birth ? new Date(r.date_of_birth).toISOString() : null,
+    exam_room: r.exam_room ? r.exam_room.toString().trim() : null,
+    exam_password: r.exam_password ? r.exam_password.toString().trim() : null,
     class_id: r.class_name ? classMap.get(r.class_name.toString().trim().toUpperCase()) : null,
     approval_status: 'Pending'
   }));
