@@ -17,6 +17,11 @@ export default function DashboardLayout({
             {children}
           </div>
         </main>
+        
+        {/* Footer for Dashboard */}
+        <footer className="w-full py-4 text-center mt-auto print:hidden">
+          <p className="text-gray-500 text-sm font-medium">© 2026 SMK Ekonomika. All rights reserved.</p>
+        </footer>
       </div>
     </div>
   );

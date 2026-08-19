@@ -89,9 +89,7 @@ export default function StudentPortal() {
   const renderFooter = () => (
     <footer className="bg-transparent print:hidden mt-auto">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex flex-col items-center justify-center">
-        <div className="text-[#5c2b90] text-sm md:text-base font-bold tracking-widest uppercase opacity-80">
-          "SAYA MAMPU MEMIMPIN"
-        </div>
+        <p className="text-gray-500 text-sm font-medium">© 2026 SMK Ekonomika. All rights reserved.</p>
       </div>
     </footer>
   );

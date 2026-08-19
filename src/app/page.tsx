@@ -65,10 +65,8 @@ export default function LandingPage() {
         </div>
       </div>
       
-      {/* Footer */}
       <footer className="mt-12 text-center">
-        <p className="font-bold text-primary tracking-widest mb-2 opacity-80">SAYA MAMPU MEMIMPIN</p>
-        <p className="text-gray-500 text-sm">&copy; {new Date().getFullYear()} SMK Ekonomika. All rights reserved.</p>
+        <p className="text-gray-500 text-sm font-medium">© 2026 SMK Ekonomika. All rights reserved.</p>
       </footer>
     </div>
   );
