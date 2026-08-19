@@ -29,11 +29,34 @@ export async function createStudent(formData: FormData) {
   const nisn = formData.get('nisn') as string;
   const name = formData.get('name') as string;
   const class_id = formData.get('class_id') as string;
+  const place_of_birth = formData.get('place_of_birth') as string;
+  const date_of_birth = formData.get('date_of_birth') as string || null;
+  const exam_number = formData.get('exam_number') as string;
+  const exam_room = formData.get('exam_room') as string;
+  const exam_password = formData.get('exam_password') as string;
+
+  let photo_url = null;
+  const photo = formData.get('photo') as File | null;
+  if (photo && photo.size > 0) {
+    const fileExt = photo.name.split('.').pop();
+    const fileName = `${nisn}-${Date.now()}.${fileExt}`;
+    const { data: uploadData, error: uploadError } = await supabase.storage.from('student-photos').upload(fileName, photo);
+    if (!uploadError && uploadData) {
+      const { data: publicUrlData } = supabase.storage.from('student-photos').getPublicUrl(uploadData.path);
+      photo_url = publicUrlData.publicUrl;
+    }
+  }
 
   const { error } = await supabase.from('students').insert({
     nisn,
     name,
     class_id: parseInt(class_id),
+    place_of_birth,
+    date_of_birth,
+    exam_number,
+    exam_room,
+    exam_password,
+    photo_url,
     approval_status: 'Pending'
   });
 
@@ -49,12 +72,35 @@ export async function updateStudent(id: number, formData: FormData) {
   const nisn = formData.get('nisn') as string;
   const name = formData.get('name') as string;
   const class_id = formData.get('class_id') as string;
+  const place_of_birth = formData.get('place_of_birth') as string;
+  const date_of_birth = formData.get('date_of_birth') as string || null;
+  const exam_number = formData.get('exam_number') as string;
+  const exam_room = formData.get('exam_room') as string;
+  const exam_password = formData.get('exam_password') as string;
 
-  const { error } = await supabase.from('students').update({
+  let updateData: any = {
     nisn,
     name,
     class_id: parseInt(class_id),
-  }).eq('id', id);
+    place_of_birth,
+    date_of_birth,
+    exam_number,
+    exam_room,
+    exam_password
+  };
+
+  const photo = formData.get('photo') as File | null;
+  if (photo && photo.size > 0) {
+    const fileExt = photo.name.split('.').pop();
+    const fileName = `${nisn}-${Date.now()}.${fileExt}`;
+    const { data: uploadData, error: uploadError } = await supabase.storage.from('student-photos').upload(fileName, photo);
+    if (!uploadError && uploadData) {
+      const { data: publicUrlData } = supabase.storage.from('student-photos').getPublicUrl(uploadData.path);
+      updateData.photo_url = publicUrlData.publicUrl;
+    }
+  }
+
+  const { error } = await supabase.from('students').update(updateData).eq('id', id);
 
   if (error) return { success: false, error: error.message };
   
