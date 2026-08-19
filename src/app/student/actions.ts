@@ -103,7 +103,6 @@ export async function fetchStudentCardData(nisn: string): Promise<CardActionResp
     const data: StudentExamCardData = {
       student: {
         id: student.id,
-        nis: student.nis || null,
         nisn: student.nisn,
         full_name: student.name,
         photo_url: student.photo_url,

@@ -1,7 +1,6 @@
 export interface StudentExamCardData {
   student: {
     id: string;
-    nis: string | null;
     nisn: string;
     full_name: string;
     photo_url: string | null;

@@ -252,7 +252,6 @@ export async function bulkImportStudents(data: any[]) {
   }
 
   const insertData = data.filter(r => r.nisn && r.name).map(r => ({
-    nis: r.nis ? r.nis.toString().trim() : null,
     nisn: r.nisn.toString().trim(),
     name: r.name.toString().trim(),
     place_of_birth: r.place_of_birth ? r.place_of_birth.toString().trim() : null,

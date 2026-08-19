@@ -20,7 +20,6 @@ export default function ExcelImportModal({ isOpen, onClose }: ExcelImportModalPr
   
   // Field target di DB
   const dbFields = [
-    { value: 'nis', label: 'NIS' },
     { value: 'nisn', label: 'NISN' },
     { value: 'name', label: 'Nama Lengkap' },
     { value: 'class_id', label: 'Kelas / Jurusan' },
@@ -55,8 +54,7 @@ export default function ExcelImportModal({ isOpen, onClose }: ExcelImportModalPr
         const autoMappings: Record<string, string> = {};
         fileHeaders.forEach(h => {
           const lower = h.toLowerCase();
-          if (lower === 'nis') autoMappings[h] = 'nis';
-          else if (lower.includes('nisn')) autoMappings[h] = 'nisn';
+          if (lower.includes('nisn')) autoMappings[h] = 'nisn';
           else if (lower.includes('nama') || lower.includes('name')) autoMappings[h] = 'name';
           else if (lower.includes('kelas') || lower.includes('class')) autoMappings[h] = 'class_id';
           else if (lower.includes('tempat') || lower.includes('lahir') && !lower.includes('tanggal')) autoMappings[h] = 'place_of_birth';
