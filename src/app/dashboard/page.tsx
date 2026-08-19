@@ -1,4 +1,4 @@
-﻿import { createClient } from '@/lib/supabase/server';
+import { createClient } from '@/lib/supabase/server';
 import { redirect } from 'next/navigation';
 import { AlertCircle } from 'lucide-react';
 import Link from 'next/link';
@@ -112,7 +112,7 @@ export default async function DashboardPage() {
               <span className="text-gray-900 font-bold">{approvedPercent}%</span>
             </div>
             <div className="w-full bg-gray-100 rounded-full h-3">
-              <div className="bg-[#16a34a] h-3 rounded-full" style={{ width: ${approvedPercent}% }}></div>
+              <div className="bg-[#16a34a] h-3 rounded-full" style={{ width: `${approvedPercent}%` }}></div>
             </div>
           </div>
           
@@ -122,7 +122,7 @@ export default async function DashboardPage() {
               <span className="text-gray-900 font-bold">{pendingPercent}%</span>
             </div>
             <div className="w-full bg-gray-100 rounded-full h-3">
-              <div className="bg-[#dc2626] h-3 rounded-full" style={{ width: ${pendingPercent}% }}></div>
+              <div className="bg-[#dc2626] h-3 rounded-full" style={{ width: `${pendingPercent}%` }}></div>
             </div>
           </div>
         </div>
