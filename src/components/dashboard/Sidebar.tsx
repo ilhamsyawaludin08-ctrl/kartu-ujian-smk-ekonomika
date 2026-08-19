@@ -104,8 +104,8 @@ export default function Sidebar() {
       `}>
         {/* Sidebar Header */}
         <div className="py-8 flex flex-col items-center justify-center px-4 border-b border-gray-100 bg-white">
-          <div className="relative w-48 h-48 flex-shrink-0 mb-3">
-            <Image src="/logo.png" alt="Logo SMK Ekonomika" fill className="object-contain" sizes="192px" priority />
+          <div className="relative w-32 h-32 flex-shrink-0 mb-4">
+            <Image src="/logo.png" alt="Logo SMK Ekonomika" fill className="object-contain" sizes="128px" priority />
           </div>
           <div className="flex flex-col justify-center text-center">
             <span className="text-xs font-bold text-[#5c2b90] uppercase tracking-widest">SISTEM KARTU UJIAN DIGITAL</span>
