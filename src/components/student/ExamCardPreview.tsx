@@ -92,33 +92,29 @@ export default function ExamCardPreview({ data }: Props) {
         >
           
           {/* Header */}
-          <div className={`flex items-center gap-4 md:gap-6 border-b-[3px] border-purple-800 ${headerPaddingClass}`}>
+          <div className={`flex items-center justify-between gap-4 md:gap-6 border-b border-gray-800 ${headerPaddingClass}`}>
             <div className="w-20 h-20 md:w-24 md:h-24 relative flex-shrink-0">
               <img src="/logo.png" alt="Logo SMK Ekonomika" className="w-full h-full object-contain" />
             </div>
             
             <div className="flex-1 text-center pr-20 md:pr-24 print:pr-24"> 
-              <h1 className="text-xl md:text-2xl font-extrabold text-purple-900 tracking-wider uppercase">
+              <h1 className="text-xl md:text-2xl font-extrabold text-gray-900 tracking-wider">
                 {data.schoolProfile.school_name}
               </h1>
-              <p className="text-[10px] md:text-xs text-gray-600 font-medium mb-2 max-w-lg mx-auto">
-                {data.schoolProfile.address}
+              <h2 className="text-lg md:text-xl font-bold text-gray-900 mt-1">
+                {data.examSettings.card_title || "KARTU PESERTA UJIAN"}
+              </h2>
+              <p className="text-xs md:text-sm text-gray-600 mt-1">
+                {data.exam.exam_name}
               </p>
-              
-              <div className="inline-block mt-1">
-                <h2 className="text-lg md:text-xl font-bold uppercase text-gray-900 tracking-widest border-b-2 border-gray-800 pb-0.5 mb-1">
-                  KARTU PESERTA UJIAN
-                </h2>
-                <p className="text-xs md:text-sm font-bold text-purple-800 uppercase mt-1">
-                  {data.examSettings.card_title || data.exam.exam_name}
-                </p>
-                <p className="text-[10px] md:text-xs font-semibold text-gray-600">
-                  Tahun Ajaran {data.exam.academic_year} — Semester {data.exam.semester}
-                </p>
-              </div>
             </div>
           </div>
 
+          {/* Section 1: DATA PESERTA */}
+          <h3 className="font-bold text-sm md:text-base uppercase text-gray-900 border-b border-gray-800 pb-2 mb-4">
+            DATA PESERTA
+          </h3>
+          
           {/* Identity & Exam Info Section */}
           <div className="flex justify-between items-start mb-4 md:mb-6 gap-6">
             
@@ -127,47 +123,34 @@ export default function ExamCardPreview({ data }: Props) {
               <table className={`font-semibold w-full max-w-md ${infoTextClass}`}>
                 <tbody>
                   <tr>
-                    <td className={`${infoPaddingClass} pr-4 text-gray-600 w-32 whitespace-nowrap`}>Nama Peserta</td>
+                    <td className={`${infoPaddingClass} pr-4 text-gray-600 w-32 whitespace-nowrap`}>NISN</td>
                     <td className={`${infoPaddingClass} px-1 w-3`}>:</td>
-                    <td className={`${infoPaddingClass} font-bold uppercase text-gray-900 border-b border-gray-200`}>{data.student.full_name}</td>
+                    <td className={`${infoPaddingClass} font-bold text-gray-900`}>{data.student.nisn}</td>
                   </tr>
                   <tr>
-                    <td className={`${infoPaddingClass} pr-4 text-gray-600`}>NISN</td>
-                    <td className={`${infoPaddingClass} px-1`}>:</td>
-                    <td className={`${infoPaddingClass} font-bold text-gray-900 border-b border-gray-200`}>{data.student.nisn}</td>
+                    <td className={`${infoPaddingClass} pr-4 text-gray-600 w-32 whitespace-nowrap`}>Nama Lengkap</td>
+                    <td className={`${infoPaddingClass} px-1 w-3`}>:</td>
+                    <td className={`${infoPaddingClass} font-bold text-gray-900 uppercase`}>{data.student.full_name}</td>
+                  </tr>
+                  <tr>
+                    <td className={`${infoPaddingClass} pr-4 text-gray-600 w-32 whitespace-nowrap`}>TTL</td>
+                    <td className={`${infoPaddingClass} px-1 w-3`}>:</td>
+                    <td className={`${infoPaddingClass} font-bold text-gray-900`}>
+                      {data.student.place_of_birth || '-'}, {data.student.date_of_birth ? new Date(data.student.date_of_birth).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' }) : '-'}
+                    </td>
                   </tr>
                   <tr>
                     <td className={`${infoPaddingClass} pr-4 text-gray-600`}>Kelas / Jurusan</td>
                     <td className={`${infoPaddingClass} px-1`}>:</td>
-                    <td className={`${infoPaddingClass} font-bold text-gray-900 border-b border-gray-200`}>{data.classInfo.class_name} - {data.classInfo.major}</td>
-                  </tr>
-                  <tr>
-                    <td className={`${infoPaddingClass} pr-4 text-gray-600`}>Nomor Kartu</td>
-                    <td className={`${infoPaddingClass} px-1`}>:</td>
-                    <td className={`${infoPaddingClass}`}>
-                      <span className="font-bold font-mono tracking-widest text-purple-900 bg-purple-50 px-2 py-0.5 rounded border border-purple-200 inline-block mt-1">
-                        {data.examCard.card_number}
-                      </span>
-                    </td>
+                    <td className={`${infoPaddingClass} font-bold text-gray-900`}>{data.classInfo.class_name} / {data.classInfo.major}</td>
                   </tr>
                 </tbody>
               </table>
             </div>
 
-            {/* Exam Server Info (Optional) */}
-            {data.exam.server_url && (
-              <div className="hidden md:block print:block flex-1 max-w-sm border-l-2 border-purple-200 pl-4">
-                <p className="text-[10px] text-gray-500 font-bold uppercase mb-1">Informasi Server Ujian:</p>
-                <div className="bg-gray-50 border border-gray-200 rounded p-2 text-center">
-                  <p className="text-[10px] text-gray-600">Link Akses Ujian:</p>
-                  <p className="font-mono text-purple-700 font-bold text-xs break-all mt-1">{data.exam.server_url}</p>
-                </div>
-              </div>
-            )}
-
             {/* Photo Placeholder */}
             {data.examSettings.show_photo && (
-              <div className={`w-[2.5cm] h-[3.5cm] md:w-[3cm] md:h-[4cm] border-2 border-purple-800 p-1 flex-shrink-0 bg-gray-50 shadow-sm relative ${isVeryCompact ? 'hidden print:block print:w-[2.5cm] print:h-[3.5cm]' : ''}`}>
+              <div className={`w-[2.5cm] h-[3.5cm] md:w-[3cm] md:h-[4cm] border-2 border-gray-800 p-1 flex-shrink-0 bg-gray-50 shadow-sm relative ${isVeryCompact ? 'hidden print:block print:w-[2.5cm] print:h-[3.5cm]' : ''}`}>
                 {data.student.photo_url ? (
                   <img src={data.student.photo_url} alt="Pas Foto" className="w-full h-full object-cover" />
                 ) : (
@@ -177,14 +160,30 @@ export default function ExamCardPreview({ data }: Props) {
                   </div>
                 )}
                 {/* Stamp overlay */}
-                <div className="absolute -bottom-2 -left-2 w-8 h-8 rounded-full border border-purple-800/30 flex items-center justify-center opacity-50 -rotate-12">
-                  <span className="text-[7px] font-bold text-purple-800/50">SMK</span>
+                <div className="absolute -bottom-2 -left-2 w-8 h-8 rounded-full border border-gray-800/30 flex items-center justify-center opacity-50 -rotate-12">
+                  <span className="text-[7px] font-bold text-gray-800/50">SMK</span>
                 </div>
               </div>
             )}
           </div>
 
-          {/* Schedule Table */}
+          {/* Section 2: Kotak-kotak (Nomor Ujian, Ruang Ujian, Password) */}
+          <div className="grid grid-cols-3 gap-4 mb-6">
+            <div className="border border-gray-800 rounded-lg p-3 text-center flex flex-col justify-center min-h-[80px]">
+              <p className="text-[10px] text-gray-500 uppercase font-semibold mb-1">Nomor Ujian</p>
+              <p className="font-bold text-lg text-gray-900">{data.examCard.card_number}</p>
+            </div>
+            <div className="border border-gray-800 rounded-lg p-3 text-center flex flex-col justify-center min-h-[80px]">
+              <p className="text-[10px] text-gray-500 uppercase font-semibold mb-1">Ruang Ujian</p>
+              <p className="font-bold text-lg text-gray-900">{data.student.exam_room || '-'}</p>
+            </div>
+            <div className="border border-gray-800 rounded-lg p-3 text-center flex flex-col justify-center min-h-[80px]">
+              <p className="text-[10px] text-gray-500 uppercase font-semibold mb-1">Password</p>
+              <p className="font-bold text-lg text-gray-900">{data.student.exam_password || '-'}</p>
+            </div>
+          </div>
+
+          {/* Schedule Table (Keep original purple design) */}
           {data.examSettings.show_schedule && (
             <div className="flex-1 flex flex-col">
               <h4 className="font-bold text-xs md:text-sm uppercase text-gray-800 mb-2 bg-purple-50 inline-block px-3 py-1 border-l-4 border-purple-600">
@@ -199,7 +198,9 @@ export default function ExamCardPreview({ data }: Props) {
                         <th className={`border-x border-purple-200 ${tablePaddingClass} text-left w-1/4 font-bold uppercase tracking-wide`}>Hari / Tanggal</th>
                         <th className={`border-x border-purple-200 ${tablePaddingClass} text-center w-1/6 font-bold uppercase tracking-wide`}>Waktu</th>
                         <th className={`border-x border-purple-200 ${tablePaddingClass} text-left font-bold uppercase tracking-wide`}>Mata Pelajaran</th>
-                        <th className={`border-x border-purple-200 ${tablePaddingClass} text-center w-1/6 font-bold uppercase tracking-wide`}>Ruangan</th>
+                        {data.examSettings.show_room && (
+                          <th className={`border-x border-purple-200 ${tablePaddingClass} text-center w-1/6 font-bold uppercase tracking-wide`}>Ruangan</th>
+                        )}
                         <th className={`border-x border-purple-200 ${tablePaddingClass} text-center w-1/6 font-bold uppercase tracking-wide`}>Paraf Pengawas</th>
                       </tr>
                     </thead>
@@ -222,9 +223,11 @@ export default function ExamCardPreview({ data }: Props) {
                               <td className={`border border-gray-300 ${tablePaddingClass} font-bold text-gray-900`}>
                                 {sch.subject}
                               </td>
-                              <td className={`border border-gray-300 ${tablePaddingClass} text-center font-medium text-gray-700`}>
-                                {sch.room || '-'}
-                              </td>
+                              {data.examSettings.show_room && (
+                                <td className={`border border-gray-300 ${tablePaddingClass} text-center font-medium text-gray-700`}>
+                                  {data.student.exam_room || '-'}
+                                </td>
+                              )}
                               <td className={`border border-gray-300 ${tablePaddingClass} text-center relative`}>
                                 <div className="absolute inset-x-3 bottom-2 border-b border-dotted border-gray-400"></div>
                               </td>
@@ -233,7 +236,7 @@ export default function ExamCardPreview({ data }: Props) {
                           {/* Visual gap between dates */}
                           {dateIndex < Object.keys(groupedSchedules).length - 1 && (
                             <tr>
-                              <td colSpan={5} className={`${gapClass} bg-gray-50/50 border-x border-gray-300 border-y-0`}></td>
+                              <td colSpan={data.examSettings.show_room ? 5 : 4} className={`${gapClass} bg-gray-50/50 border-x border-gray-300 border-y-0`}></td>
                             </tr>
                           )}
                         </React.Fragment>
@@ -252,17 +255,24 @@ export default function ExamCardPreview({ data }: Props) {
           {/* Footer Notes & Signature */}
           <div className="mt-4 md:mt-6 flex justify-between items-end text-xs md:text-sm pt-2">
             <div className="flex-1 pr-8 md:pr-12">
-              {data.examSettings.exam_notes && (
-                <div className="border border-gray-300 p-2 md:p-3 bg-gray-50 rounded">
-                  <p className="font-bold text-[10px] md:text-xs uppercase mb-1 text-gray-800 tracking-wider">Ketentuan Ujian:</p>
-                  <p className="text-[9px] md:text-[10px] text-gray-700 whitespace-pre-wrap leading-relaxed">{data.examSettings.exam_notes}</p>
-                </div>
-              )}
+              {/* Box Ketentuan Ujian based on mockup */}
+              <div className="bg-blue-50/50 border border-blue-200 p-3 md:p-4 rounded-lg max-w-xl">
+                <p className="font-bold text-blue-900 text-sm mb-2">Ketentuan Ujian</p>
+                <p className="text-xs text-blue-800 whitespace-pre-wrap leading-relaxed">{data.examSettings.exam_notes || '-'}</p>
+              </div>
             </div>
             
             <div className="w-48 md:w-56 text-center flex flex-col items-center flex-shrink-0">
               <p className="mb-1 text-gray-800 text-[10px] md:text-xs">Mengetahui,</p>
-              <p className="font-bold text-gray-900 mb-12 md:mb-16 uppercase tracking-wide text-xs">Panitia Pelaksana</p>
+              <p className="font-bold text-gray-900 mb-2 uppercase tracking-wide text-xs">Panitia Pelaksana</p>
+              
+              <div className="h-16 flex items-center justify-center mb-1 w-full">
+                {data.examSettings.signature_url ? (
+                  <img src={data.examSettings.signature_url} alt="Tanda Tangan" className="max-h-full max-w-full object-contain" />
+                ) : (
+                  <div className="h-full"></div>
+                )}
+              </div>
               
               <p className="font-bold text-gray-900 border-b border-gray-800 w-full pb-1 uppercase text-[10px] md:text-xs truncate px-2">
                 {data.examSettings.chairperson_name || '( .......................................... )'}

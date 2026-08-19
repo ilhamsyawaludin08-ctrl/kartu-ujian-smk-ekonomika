@@ -103,9 +103,14 @@ export async function fetchStudentCardData(nisn: string): Promise<CardActionResp
     const data: StudentExamCardData = {
       student: {
         id: student.id,
+        nis: student.nis || null,
         nisn: student.nisn,
         full_name: student.name,
         photo_url: student.photo_url,
+        place_of_birth: student.place_of_birth,
+        date_of_birth: student.date_of_birth,
+        exam_room: student.exam_room,
+        exam_password: student.exam_password,
         class_id: student.class_id,
         approval_status: student.approval_status,
       },
@@ -131,6 +136,7 @@ export async function fetchStudentCardData(nisn: string): Promise<CardActionResp
         allow_download: settingsRes.data?.allow_download ?? true,
         allow_print: settingsRes.data?.allow_print ?? true,
         chairperson_name: settingsRes.data?.chairperson_name || 'Panitia Ujian',
+        signature_url: settingsRes.data?.signature_url || null,
         exam_notes: settingsRes.data?.exam_notes || 'Kartu ini wajib dibawa saat mengikuti ujian.',
       },
       schoolProfile: {

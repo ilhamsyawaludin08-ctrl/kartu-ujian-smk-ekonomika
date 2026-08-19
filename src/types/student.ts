@@ -1,9 +1,14 @@
 export interface StudentExamCardData {
   student: {
     id: string;
+    nis: string | null;
     nisn: string;
     full_name: string;
     photo_url: string | null;
+    place_of_birth: string | null;
+    date_of_birth: string | null;
+    exam_room: string | null;
+    exam_password: string | null;
     class_id: string;
     approval_status: 'Pending' | 'Approved';
   };
@@ -36,6 +41,7 @@ export interface StudentExamCardData {
     allow_download: boolean;
     allow_print: boolean;
     chairperson_name: string | null;
+    signature_url: string | null;
     exam_notes: string | null;
   };
   schoolProfile: {
