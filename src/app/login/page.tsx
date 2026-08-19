@@ -29,17 +29,6 @@ export default function LoginPage() {
     <div className="min-h-screen bg-background flex flex-col font-sans">
       <main className="flex-1 flex flex-col items-center justify-center p-4">
         
-        {/* Back Link */}
-        <div className="w-full max-w-md mb-6">
-          <Link 
-            href="/" 
-            className="inline-flex items-center gap-2 text-primary hover:text-primary-dark font-medium transition-colors"
-          >
-            <ArrowLeft className="w-4 h-4" />
-            Kembali ke Halaman Awal
-          </Link>
-        </div>
-
         {/* Login Card */}
         <div className="w-full max-w-md bg-white rounded-3xl shadow-xl overflow-hidden border border-primary/10">
           <div className="p-8 md:p-10">
@@ -111,7 +100,7 @@ export default function LoginPage() {
               <button
                 type="submit"
                 disabled={isLoading}
-                className="w-full bg-primary hover:bg-primary-dark text-white font-bold py-3.5 rounded-xl transition-all duration-300 flex items-center justify-center gap-2 mt-4 disabled:opacity-70 disabled:cursor-not-allowed shadow-md hover:shadow-lg hover:-translate-y-0.5"
+                className="w-full bg-primary hover:bg-primary-dark text-white font-bold py-3.5 rounded-xl transition-all duration-300 flex items-center justify-center gap-2 mt-4 disabled:opacity-70 disabled:cursor-not-allowed shadow-md hover:shadow-lg hover:-translate-y-0.5 mb-3"
               >
                 {isLoading ? (
                   <>
@@ -119,9 +108,16 @@ export default function LoginPage() {
                     Memproses...
                   </>
                 ) : (
-                  'Masuk Dashboard'
+                  'LOGIN'
                 )}
               </button>
+              
+              <Link
+                href="/"
+                className="w-full bg-white hover:bg-gray-50 text-primary border-2 border-primary font-bold py-3.5 rounded-xl transition-all flex items-center justify-center shadow-sm"
+              >
+                Kembali ke Halaman Awal
+              </Link>
             </form>
             
           </div>
@@ -129,7 +125,7 @@ export default function LoginPage() {
 
         {/* Footer */}
         <div className="mt-10 text-center">
-          <p className="font-extrabold text-primary/80 tracking-[0.2em] mb-2 uppercase text-sm">Saya Mampu Memimpin</p>
+          <p className="text-gray-500 text-sm font-medium">© 2026 SMK Ekonomika. All rights reserved.</p>
         </div>
       </main>
     </div>
