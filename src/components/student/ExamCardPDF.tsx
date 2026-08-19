@@ -1,0 +1,499 @@
+'use client';
+
+import { Document, Page, Text, View, StyleSheet, Image, Link } from '@react-pdf/renderer';
+import { StudentExamCardData } from '@/types/student';
+import React from 'react';
+
+interface Props {
+  data: StudentExamCardData;
+  className?: string;
+}
+
+const MyDocument = ({ data }: Props) => {
+  // Group and sort schedules
+  const sortedSchedules = [...data.schedules].sort((a, b) => {
+    const dateDiff = new Date(a.exam_date).getTime() - new Date(b.exam_date).getTime();
+    if (dateDiff !== 0) return dateDiff;
+    return a.start_time.localeCompare(b.start_time);
+  });
+
+  const groupedSchedules: Record<string, typeof sortedSchedules> = {};
+  sortedSchedules.forEach(sch => {
+    if (!groupedSchedules[sch.exam_date]) {
+      groupedSchedules[sch.exam_date] = [];
+    }
+    groupedSchedules[sch.exam_date].push(sch);
+  });
+
+  const hasSchedules = sortedSchedules.length > 0;
+  
+  // Adaptive scaling logic based on number of schedules to fit in 1 page A4 Landscape
+  const scheduleCount = sortedSchedules.length;
+  const isCompact = scheduleCount > 7;
+  const isVeryCompact = scheduleCount > 12;
+
+  // Dynamic values
+  const tableFontSize = isVeryCompact ? 8 : isCompact ? 9 : 10;
+  const tableHeaderFontSize = isVeryCompact ? 8 : 9;
+  const tablePadding = isVeryCompact ? '4 4' : isCompact ? '5 4' : '6 4';
+  const tableGapHeight = isVeryCompact ? 4 : isCompact ? 8 : 12;
+  const headerMarginBottom = isVeryCompact ? 8 : isCompact ? 12 : 16;
+  const infoMarginBottom = isVeryCompact ? 8 : isCompact ? 12 : 16;
+  const footerMarginTop = isVeryCompact ? 8 : isCompact ? 12 : 16;
+  const photoWidth = isVeryCompact ? 60 : 70;
+  const photoHeight = isVeryCompact ? 80 : 93;
+  const sigLineMarginTop = isVeryCompact ? 30 : isCompact ? 40 : 50;
+
+  const styles = StyleSheet.create({
+    page: {
+      padding: '25 30',
+      fontFamily: 'Helvetica',
+      backgroundColor: '#ffffff',
+    },
+    card: {
+      padding: '15 25',
+      width: '100%',
+      height: '100%',
+      border: '1pt solid #ccc',
+      flexDirection: 'column',
+    },
+    header: {
+      flexDirection: 'row',
+      borderBottom: '3pt solid #6b21a8',
+      paddingBottom: isVeryCompact ? 6 : 10,
+      marginBottom: headerMarginBottom,
+      alignItems: 'center',
+    },
+    logoContainer: {
+      width: 60,
+      height: 60,
+      marginRight: 15,
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    headerTextContainer: {
+      flex: 1,
+      alignItems: 'center',
+      paddingRight: 75, // Balance logo
+    },
+    schoolName: {
+      fontSize: 16,
+      fontWeight: 'extrabold',
+      color: '#4c1d95',
+      textTransform: 'uppercase',
+      letterSpacing: 1,
+    },
+    address: {
+      fontSize: 8,
+      color: '#4b5563',
+      marginTop: 2,
+      marginBottom: 6,
+      textAlign: 'center',
+    },
+    titleContainer: {
+      alignItems: 'center',
+    },
+    title: {
+      fontSize: 12,
+      fontWeight: 'bold',
+      textTransform: 'uppercase',
+      borderBottom: '1pt solid #111827',
+      paddingBottom: 2,
+      marginBottom: 2,
+    },
+    subTitleMain: {
+      fontSize: 10,
+      fontWeight: 'bold',
+      color: '#6b21a8',
+      textTransform: 'uppercase',
+    },
+    subTitle: {
+      fontSize: 8,
+      color: '#4b5563',
+      marginTop: 2,
+    },
+    body: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'flex-start',
+      marginBottom: infoMarginBottom,
+    },
+    infoContainer: {
+      flex: 1,
+      paddingRight: 15,
+    },
+    infoRow: {
+      flexDirection: 'row',
+      marginBottom: isVeryCompact ? 4 : 6,
+      fontSize: isVeryCompact ? 9 : 10,
+      alignItems: 'center',
+    },
+    infoLabel: {
+      width: 85,
+      color: '#4b5563',
+    },
+    infoColon: {
+      width: 10,
+    },
+    infoValue: {
+      flex: 1,
+      fontWeight: 'bold',
+      borderBottom: '1pt solid #e5e7eb',
+      paddingBottom: 2,
+    },
+    infoValueBox: {
+      padding: '2 6',
+      backgroundColor: '#f3e8ff',
+      border: '1pt solid #e9d5ff',
+      color: '#4c1d95',
+      fontWeight: 'bold',
+      fontFamily: 'Courier',
+      letterSpacing: 1,
+    },
+    serverContainer: {
+      width: 180,
+      borderLeft: '2pt solid #e9d5ff',
+      paddingLeft: 10,
+      marginRight: 15,
+      justifyContent: 'center',
+    },
+    serverTitle: {
+      fontSize: 8,
+      color: '#6b7280',
+      fontWeight: 'bold',
+      textTransform: 'uppercase',
+      marginBottom: 4,
+    },
+    serverBox: {
+      backgroundColor: '#f9fafb',
+      border: '1pt solid #e5e7eb',
+      padding: 6,
+      borderRadius: 2,
+    },
+    serverText: {
+      fontSize: 8,
+      color: '#4b5563',
+    },
+    serverLink: {
+      fontFamily: 'Courier',
+      color: '#6b21a8',
+      fontWeight: 'bold',
+      fontSize: 9,
+      marginTop: 4,
+    },
+    photoContainer: {
+      width: photoWidth,
+      height: photoHeight,
+      border: '2pt solid #6b21a8',
+      padding: 1,
+      backgroundColor: '#f9fafb',
+    },
+    photoTextContainer: {
+      width: '100%',
+      height: '100%',
+      border: '1pt dashed #9ca3af',
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    photoText: {
+      fontSize: 8,
+      color: '#9ca3af',
+    },
+    photoTextBold: {
+      fontSize: 9,
+      fontWeight: 'bold',
+      color: '#9ca3af',
+      marginTop: 2,
+    },
+    scheduleContainer: {
+      flex: 1, // Take remaining space
+    },
+    scheduleTitle: {
+      fontSize: 9,
+      fontWeight: 'bold',
+      textTransform: 'uppercase',
+      color: '#1f2937',
+      marginBottom: 4,
+      backgroundColor: '#f3f4f6',
+      padding: '3 6',
+      border: '1pt solid #e5e7eb',
+      alignSelf: 'flex-start',
+    },
+    table: {
+      width: '100%',
+      borderTop: '2pt solid #6b21a8',
+      borderBottom: '2pt solid #6b21a8',
+    },
+    tableRow: {
+      flexDirection: 'row',
+    },
+    tableHeader: {
+      backgroundColor: '#f3e8ff',
+      borderBottom: '2pt solid #d8b4fe',
+    },
+    tableColHeader: {
+      padding: tablePadding,
+      fontSize: tableHeaderFontSize,
+      fontWeight: 'bold',
+      color: '#4c1d95',
+      textTransform: 'uppercase',
+      borderRight: '1pt solid #e9d5ff',
+      borderLeft: '1pt solid #e9d5ff',
+    },
+    tableColDate: { width: '25%' },
+    tableColTime: { width: '15%', textAlign: 'center' },
+    tableColSubject: { width: '30%' },
+    tableColRoom: { width: '15%', textAlign: 'center' },
+    tableColSignature: { width: '15%', textAlign: 'center' },
+    tableCell: {
+      padding: tablePadding,
+      fontSize: tableFontSize,
+      borderRight: '1pt solid #d1d5db',
+      borderLeft: '1pt solid #d1d5db',
+      justifyContent: 'center',
+    },
+    tableCellDate: {
+      padding: tablePadding,
+      fontSize: tableFontSize,
+      borderRight: '1pt solid #d1d5db',
+      borderLeft: '1pt solid #d1d5db',
+      backgroundColor: '#f9fafb',
+      fontWeight: 'bold',
+      color: '#1f2937',
+    },
+    tableGap: {
+      height: tableGapHeight,
+      backgroundColor: '#f3f4f6',
+      borderLeft: '1pt solid #d1d5db',
+      borderRight: '1pt solid #d1d5db',
+    },
+    signatureCellLine: {
+      borderBottom: '1pt dotted #9ca3af',
+      width: '80%',
+      alignSelf: 'center',
+      marginTop: tableFontSize,
+    },
+    footer: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      marginTop: footerMarginTop,
+    },
+    notesContainer: {
+      flex: 1,
+      paddingRight: 30,
+    },
+    notesBox: {
+      border: '1pt solid #e5e7eb',
+      backgroundColor: '#f9fafb',
+      padding: isVeryCompact ? 6 : 8,
+      borderRadius: 2,
+    },
+    notesTitle: {
+      fontSize: 8,
+      fontWeight: 'bold',
+      textTransform: 'uppercase',
+      marginBottom: 4,
+      color: '#1f2937',
+    },
+    notesText: {
+      fontSize: isVeryCompact ? 7 : 8,
+      color: '#374151',
+      lineHeight: 1.3,
+    },
+    signatureContainer: {
+      width: 140,
+      alignItems: 'center',
+    },
+    signatureTitle: {
+      fontSize: 9,
+      color: '#1f2937',
+      marginBottom: 2,
+    },
+    signatureRole: {
+      fontSize: 9,
+      fontWeight: 'bold',
+      color: '#111827',
+      textTransform: 'uppercase',
+      letterSpacing: 1,
+    },
+    signatureLine: {
+      borderBottom: '1pt solid #111827',
+      width: '100%',
+      marginTop: sigLineMarginTop,
+      marginBottom: 2,
+    },
+    chairpersonName: {
+      fontSize: 9,
+      fontWeight: 'bold',
+      textAlign: 'center',
+      textTransform: 'uppercase',
+    }
+  });
+
+  return (
+    <Document>
+      <Page size="A4" orientation="landscape" style={styles.page}>
+        <View style={styles.card}>
+          
+          {/* Header */}
+          <View style={styles.header}>
+            <View style={styles.logoContainer}>
+              <Image src="/logo.png" />
+            </View>
+            <View style={styles.headerTextContainer}>
+              <Text style={styles.schoolName}>{data.schoolProfile.school_name}</Text>
+              <Text style={styles.address}>{data.schoolProfile.address}</Text>
+              
+              <View style={styles.titleContainer}>
+                <Text style={styles.title}>KARTU PESERTA UJIAN</Text>
+                <Text style={styles.subTitleMain}>{data.examSettings.card_title || data.exam.exam_name}</Text>
+                <Text style={styles.subTitle}>Tahun Ajaran {data.exam.academic_year} — Semester {data.exam.semester}</Text>
+              </View>
+            </View>
+          </View>
+
+          {/* Identity Section */}
+          <View style={styles.body}>
+            <View style={styles.infoContainer}>
+              <View style={styles.infoRow}>
+                <Text style={styles.infoLabel}>Nama Peserta</Text>
+                <Text style={styles.infoColon}>:</Text>
+                <Text style={[styles.infoValue, { textTransform: 'uppercase' }]}>{data.student.full_name}</Text>
+              </View>
+              <View style={styles.infoRow}>
+                <Text style={styles.infoLabel}>NISN</Text>
+                <Text style={styles.infoColon}>:</Text>
+                <Text style={styles.infoValue}>{data.student.nisn}</Text>
+              </View>
+              <View style={styles.infoRow}>
+                <Text style={styles.infoLabel}>Kelas / Jurusan</Text>
+                <Text style={styles.infoColon}>:</Text>
+                <Text style={styles.infoValue}>{data.classInfo.class_name} - {data.classInfo.major}</Text>
+              </View>
+              <View style={styles.infoRow}>
+                <Text style={styles.infoLabel}>Nomor Kartu</Text>
+                <Text style={styles.infoColon}>:</Text>
+                <View style={styles.infoValueBox}>
+                  <Text>{data.examCard.card_number}</Text>
+                </View>
+              </View>
+            </View>
+            
+            {data.exam.server_url && (
+              <View style={styles.serverContainer}>
+                <Text style={styles.serverTitle}>Informasi Server Ujian:</Text>
+                <View style={styles.serverBox}>
+                  <Text style={styles.serverText}>Link Akses Ujian:</Text>
+                  <Text style={styles.serverLink}>{data.exam.server_url}</Text>
+                </View>
+              </View>
+            )}
+
+            {data.examSettings.show_photo && (
+              <View style={styles.photoContainer}>
+                {data.student.photo_url ? (
+                  <Image src={data.student.photo_url} />
+                ) : (
+                  <View style={styles.photoTextContainer}>
+                    <Text style={styles.photoText}>Pas Foto</Text>
+                    <Text style={styles.photoTextBold}>3 × 4</Text>
+                  </View>
+                )}
+              </View>
+            )}
+          </View>
+
+          {/* Schedule Table */}
+          {data.examSettings.show_schedule && (
+            <View style={styles.scheduleContainer}>
+              <Text style={styles.scheduleTitle}>Jadwal Ujian Peserta</Text>
+              
+              {hasSchedules ? (
+                <View style={styles.table}>
+                  <View style={[styles.tableRow, styles.tableHeader]}>
+                    <Text style={[styles.tableColHeader, styles.tableColDate]}>Hari / Tanggal</Text>
+                    <Text style={[styles.tableColHeader, styles.tableColTime]}>Waktu</Text>
+                    <Text style={[styles.tableColHeader, styles.tableColSubject]}>Mata Pelajaran</Text>
+                    <Text style={[styles.tableColHeader, styles.tableColRoom]}>Ruangan</Text>
+                    <Text style={[styles.tableColHeader, styles.tableColSignature]}>Paraf Pengawas</Text>
+                  </View>
+                  
+                  {Object.entries(groupedSchedules).map(([date, schedules], dateIndex) => (
+                    <React.Fragment key={date}>
+                      {schedules.map((sch, index) => (
+                        <View style={styles.tableRow} key={sch.id}>
+                          <View style={[styles.tableCellDate, styles.tableColDate]}>
+                            <Text>{index === 0 ? new Date(date).toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) : ''}</Text>
+                          </View>
+                          <View style={[styles.tableCell, styles.tableColTime]}>
+                            <Text style={{ fontFamily: 'Courier' }}>{sch.start_time.slice(0,5)} - {sch.end_time.slice(0,5)}</Text>
+                          </View>
+                          <View style={[styles.tableCell, styles.tableColSubject, { fontWeight: 'bold' }]}>
+                            <Text>{sch.subject}</Text>
+                          </View>
+                          <View style={[styles.tableCell, styles.tableColRoom]}>
+                            <Text>{sch.room || '-'}</Text>
+                          </View>
+                          <View style={[styles.tableCell, styles.tableColSignature]}>
+                            <View style={styles.signatureCellLine}></View>
+                          </View>
+                        </View>
+                      ))}
+                      {dateIndex < Object.keys(groupedSchedules).length - 1 && (
+                        <View style={styles.tableGap}></View>
+                      )}
+                    </React.Fragment>
+                  ))}
+                </View>
+              ) : (
+                <Text style={{ fontSize: 10, color: '#6b7280', padding: 20, textAlign: 'center', border: '1pt dashed #ccc' }}>
+                  Tidak ada jadwal ujian untuk kelas ini.
+                </Text>
+              )}
+            </View>
+          )}
+
+          {/* Footer Notes & Signature */}
+          <View style={styles.footer}>
+            <View style={styles.notesContainer}>
+              {data.examSettings.exam_notes && (
+                <View style={styles.notesBox}>
+                  <Text style={styles.notesTitle}>Ketentuan Ujian:</Text>
+                  <Text style={styles.notesText}>{data.examSettings.exam_notes}</Text>
+                </View>
+              )}
+            </View>
+            <View style={styles.signatureContainer}>
+              <Text style={styles.signatureTitle}>Mengetahui,</Text>
+              <Text style={styles.signatureRole}>Panitia Pelaksana</Text>
+              <View style={styles.signatureLine}></View>
+              <Text style={styles.chairpersonName}>{data.examSettings.chairperson_name || '( .......................................... )'}</Text>
+            </View>
+          </View>
+
+        </View>
+      </Page>
+    </Document>
+  );
+};
+
+import { PDFDownloadLink } from '@react-pdf/renderer';
+import { Download } from 'lucide-react';
+
+export default function ExamCardPDFDownloadButton({ data, className }: Props) {
+  return (
+    <PDFDownloadLink
+      document={<MyDocument data={data} />}
+      fileName={`Kartu_Ujian_${data.student.nisn}.pdf`}
+      className={className || "flex items-center gap-2 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors font-medium text-sm shadow-sm"}
+    >
+      {/* @ts-ignore */}
+      {({ loading }) => (
+        <>
+          <Download className="w-4 h-4" />
+          {loading ? 'Menyiapkan PDF...' : 'Download PDF'}
+        </>
+      )}
+    </PDFDownloadLink>
+  );
+}
