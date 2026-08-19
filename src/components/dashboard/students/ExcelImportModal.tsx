@@ -99,7 +99,7 @@ export default function ExcelImportModal({ isOpen, onClose }: ExcelImportModalPr
        return mappedRow;
     });
 
-    const res = await bulkImportStudents(formattedData);
+    const res = await bulkImportStudents(JSON.parse(JSON.stringify(formattedData)));
     setIsImporting(false);
     
     if (res.success) {

@@ -54,7 +54,14 @@ export default function ImportSubjectModal({ isOpen, onClose }: ImportSubjectMod
       const worksheet = workbook.Sheets[workbook.SheetNames[0]];
       const jsonData = XLSX.utils.sheet_to_json(worksheet);
 
-      const res = await bulkImportSubjects(jsonData);
+      // Map keys to expected format (name, teacher_name) in case they use Indonesian headers
+      const mappedData = jsonData.map((row: any) => ({
+        name: row['Mata Pelajaran'] || row.name || row['MataPelajaran'] || '',
+        teacher_name: row['Nama Guru'] || row.teacher_name || row['NamaGuru'] || ''
+      }));
+
+      // JSON.parse(JSON.stringify) is REQUIRED by Next.js to pass plain objects to Server Actions
+      const res = await bulkImportSubjects(JSON.parse(JSON.stringify(mappedData)));
       
       if (res.success) {
         setSuccess('Data berhasil diimport!');
