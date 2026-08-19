@@ -278,3 +278,27 @@ export async function bulkImportStudents(data: any[]) {
   revalidatePath('/dashboard/students');
   return { success: true };
 }
+export async function updateStudentPhotoByNisn(nisn: string, photo_url: string) {
+  const supabase = await createClient();
+  const { data: student, error: searchError } = await supabase
+    .from('students')
+    .select('id')
+    .eq('nisn', nisn)
+    .single();
+
+  if (searchError || !student) {
+    return { success: false, error: 'Siswa dengan NISN ini tidak ditemukan.' };
+  }
+
+  const { error: updateError } = await supabase
+    .from('students')
+    .update({ photo_url })
+    .eq('id', student.id);
+
+  if (updateError) {
+    return { success: false, error: updateError.message };
+  }
+
+  revalidatePath('/dashboard/students');
+  return { success: true };
+}

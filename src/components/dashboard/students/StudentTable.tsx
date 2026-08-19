@@ -1,9 +1,10 @@
 'use client';
 
 import { useState } from 'react';
-import { Search, Plus, Filter, MoreVertical, Edit2, Trash2, CheckCircle, FileSpreadsheet, XCircle } from 'lucide-react';
+import { Search, Plus, Filter, MoreVertical, Edit2, Trash2, CheckCircle, FileSpreadsheet, XCircle, Image as ImageIcon } from 'lucide-react';
 import StudentFormModal from './StudentFormModal';
 import ExcelImportModal from './ExcelImportModal';
+import BulkPhotoUploadModal from './BulkPhotoUploadModal';
 import { deleteStudent, approveStudent, setPendingStudent } from '@/app/dashboard/students/actions';
 
 interface StudentTableProps {
@@ -17,6 +18,7 @@ export default function StudentTable({ students: initialStudents, classes }: Stu
   const [classFilter, setClassFilter] = useState('All');
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [isExcelOpen, setIsExcelOpen] = useState(false);
+  const [isPhotoUploadOpen, setIsPhotoUploadOpen] = useState(false);
   const [editingStudent, setEditingStudent] = useState<any | null>(null);
 
   // Filter Logic
@@ -71,6 +73,13 @@ export default function StudentTable({ students: initialStudents, classes }: Stu
         </div>
         
         <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full sm:w-auto">
+          <button 
+            onClick={() => setIsPhotoUploadOpen(true)}
+            className="flex items-center justify-center gap-2 px-4 py-2.5 bg-purple-50 hover:bg-purple-100 text-purple-700 rounded-xl transition-colors font-semibold text-sm border border-purple-200 w-full sm:w-auto"
+          >
+            <ImageIcon className="w-4 h-4" />
+            Upload Foto
+          </button>
           <button 
             onClick={() => setIsExcelOpen(true)}
             className="flex items-center justify-center gap-2 px-4 py-2.5 bg-green-50 hover:bg-green-100 text-green-700 rounded-xl transition-colors font-semibold text-sm border border-green-200 w-full sm:w-auto"
@@ -227,6 +236,11 @@ export default function StudentTable({ students: initialStudents, classes }: Stu
       <ExcelImportModal 
         isOpen={isExcelOpen}
         onClose={() => setIsExcelOpen(false)}
+      />
+
+      <BulkPhotoUploadModal
+        isOpen={isPhotoUploadOpen}
+        onClose={() => setIsPhotoUploadOpen(false)}
       />
 
     </div>
