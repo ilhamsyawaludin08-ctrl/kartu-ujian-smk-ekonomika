@@ -89,18 +89,14 @@ export default function ScheduleFormModal({ isOpen, onClose, scheduleData, exams
       res = await updateSchedule(scheduleData.id, formData);
     } else {
       // Add mode -> bulk create
-      const payload = {
-        exam_id: parseInt(examId),
-        class_id: parseInt(classId),
-        schedules: rows.map(r => ({
-          subject: r.subject,
-          exam_date: r.exam_date,
-          start_time: r.start_time,
-          end_time: r.end_time,
-          is_active: r.is_active
-        }))
-      };
-      res = await createBulkSchedules(payload);
+      const formattedRows = rows.map(r => ({
+        subject: r.subject,
+        exam_date: r.exam_date,
+        start_time: r.start_time,
+        end_time: r.end_time,
+        is_active: r.is_active
+      }));
+      res = await createBulkSchedules(parseInt(examId), parseInt(classId), formattedRows);
     }
 
     setIsLoading(false);

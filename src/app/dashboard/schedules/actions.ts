@@ -60,7 +60,6 @@ export async function createSchedule(formData: FormData) {
   const exam_date = formData.get('exam_date') as string;
   const start_time = formData.get('start_time') as string;
   const end_time = formData.get('end_time') as string;
-  const room = formData.get('room') as string;
   const is_active = formData.get('is_active') === 'true';
 
   const { error } = await supabase.from('schedules').insert({
@@ -70,7 +69,6 @@ export async function createSchedule(formData: FormData) {
     exam_date,
     start_time,
     end_time,
-    room: room || null,
     is_active
   });
 
@@ -90,7 +88,6 @@ export async function createBulkSchedules(exam_id: number, class_id: number, sch
     exam_date: s.exam_date,
     start_time: s.start_time,
     end_time: s.end_time,
-    room: s.room || null,
     is_active: s.is_active
   }));
 
@@ -111,7 +108,6 @@ export async function updateSchedule(id: number, formData: FormData) {
   const exam_date = formData.get('exam_date') as string;
   const start_time = formData.get('start_time') as string;
   const end_time = formData.get('end_time') as string;
-  const room = formData.get('room') as string;
   const is_active = formData.get('is_active') === 'true';
 
   const { error } = await supabase.from('schedules').update({
@@ -121,7 +117,6 @@ export async function updateSchedule(id: number, formData: FormData) {
     exam_date,
     start_time,
     end_time,
-    room: room || null,
     is_active
   }).eq('id', id);
 
