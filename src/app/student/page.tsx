@@ -135,8 +135,6 @@ export default function StudentPortal() {
 
   return (
     <div className="min-h-screen bg-[#f3e8ff] flex flex-col font-sans">
-      {renderHeader()}
-
       <main className="flex-1 flex flex-col items-center justify-center p-4 md:p-8 print:p-0 print:bg-white">
         
         {uiState === 'SEARCH' && (
