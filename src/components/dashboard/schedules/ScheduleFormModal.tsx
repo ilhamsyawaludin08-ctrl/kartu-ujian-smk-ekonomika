@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 
 import { useState, useEffect } from 'react';
 import { updateSchedule, createBulkSchedules } from '@/app/dashboard/schedules/actions';
@@ -66,7 +66,7 @@ export default function ScheduleFormModal({ isOpen, onClose, scheduleData, exams
     for (let i = 0; i < rows.length; i++) {
       const r = rows[i];
       if (!r.subject || !r.exam_date || !r.start_time || !r.end_time) {
-        setError(\Baris ke-\ memiliki data yang belum lengkap (Mata Pelajaran, Tanggal, atau Jam).\);
+        setError(`Baris ke-${i + 1} memiliki data yang belum lengkap (Mata Pelajaran, Tanggal, atau Jam).`);
         return;
       }
     }
@@ -211,7 +211,7 @@ export default function ScheduleFormModal({ isOpen, onClose, scheduleData, exams
                     >
                       <option value="" disabled>-- Pilih Mapel --</option>
                       {subjects.map(s => (
-                        <option key={s.id} value={s.name}>{s.name} {s.teacher_name ? \(\)\ : ''}</option>
+                        <option key={s.id} value={s.name}>{s.name} {s.teacher_name ? `(${s.teacher_name})` : ''}</option>
                       ))}
                     </select>
                   </div>

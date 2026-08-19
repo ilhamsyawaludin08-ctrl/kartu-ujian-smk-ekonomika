@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 
 import { useState } from 'react';
 import { bulkImportSubjects } from '@/app/dashboard/subjects/actions';
@@ -129,7 +129,7 @@ export default function ImportSubjectModal({ isOpen, onClose }: ImportSubjectMod
                   className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
                 />
                 <div className="flex flex-col items-center justify-center gap-2 pointer-events-none">
-                  <Upload className={w-8 h-8 } />
+                  <Upload className={`w-8 h-8 ${file ? 'text-primary' : 'text-gray-400'}`} />
                   {file ? (
                     <span className="text-sm font-medium text-primary">{file.name}</span>
                   ) : (
