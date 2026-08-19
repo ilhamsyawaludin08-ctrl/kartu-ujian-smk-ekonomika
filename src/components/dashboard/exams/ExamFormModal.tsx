@@ -205,6 +205,19 @@ export default function ExamFormModal({ isOpen, onClose, examData }: ExamFormMod
               </div>
 
               <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-1.5">Tanda Tangan Ketua Pelaksana</label>
+                <input 
+                  name="signature" 
+                  type="file" 
+                  accept="image/png, image/jpeg"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary focus:border-primary outline-none file:mr-4 file:py-1 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-purple-50 file:text-purple-700 hover:file:bg-purple-100 text-sm"
+                />
+                {settings.signature_url && (
+                  <p className="text-xs text-green-600 mt-1">Ujian ini sudah memiliki foto tanda tangan. Upload baru untuk mengganti.</p>
+                )}
+              </div>
+
+              <div>
                 <label className="block text-sm font-semibold text-gray-700 mb-1.5">Catatan/Peraturan Ujian</label>
                 <textarea 
                   name="exam_notes" 

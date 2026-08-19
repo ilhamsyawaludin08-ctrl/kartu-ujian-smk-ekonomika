@@ -59,11 +59,25 @@ export async function createExam(formData: FormData) {
 
   if (examError) return { success: false, error: examError.message };
 
+  // Handle signature upload
+  let signature_url = null;
+  const signature = formData.get('signature') as File | null;
+  if (signature && signature.size > 0) {
+    const fileExt = signature.name.split('.').pop();
+    const fileName = `${exam.id}-${Date.now()}.${fileExt}`;
+    const { data: uploadData, error: uploadError } = await supabase.storage.from('signatures').upload(fileName, signature);
+    if (!uploadError && uploadData) {
+      const { data: publicUrlData } = supabase.storage.from('signatures').getPublicUrl(uploadData.path);
+      signature_url = publicUrlData.publicUrl;
+    }
+  }
+
   // Insert Settings
   const settingsData = {
     exam_id: exam.id,
     card_title: formData.get('card_title') as string,
     chairperson_name: formData.get('chairperson_name') as string || null,
+    signature_url,
     exam_notes: formData.get('exam_notes') as string || null,
     show_photo: formData.get('show_photo') === 'true',
     show_room: formData.get('show_room') === 'true',
@@ -108,8 +122,21 @@ export async function updateExam(id: number, formData: FormData) {
   // Propagasi status ke schedules milik ujian ini
   await supabase.from('schedules').update({ is_active }).eq('exam_id', id);
 
+  // Handle signature upload
+  let signature_url = undefined;
+  const signature = formData.get('signature') as File | null;
+  if (signature && signature.size > 0) {
+    const fileExt = signature.name.split('.').pop();
+    const fileName = `${id}-${Date.now()}.${fileExt}`;
+    const { data: uploadData, error: uploadError } = await supabase.storage.from('signatures').upload(fileName, signature);
+    if (!uploadError && uploadData) {
+      const { data: publicUrlData } = supabase.storage.from('signatures').getPublicUrl(uploadData.path);
+      signature_url = publicUrlData.publicUrl;
+    }
+  }
+
   // Update Settings
-  const settingsData = {
+  const settingsData: any = {
     card_title: formData.get('card_title') as string,
     chairperson_name: formData.get('chairperson_name') as string || null,
     exam_notes: formData.get('exam_notes') as string || null,
@@ -119,6 +146,10 @@ export async function updateExam(id: number, formData: FormData) {
     allow_print: formData.get('allow_print') === 'true',
     allow_download: formData.get('allow_download') === 'true',
   };
+
+  if (signature_url !== undefined) {
+    settingsData.signature_url = signature_url;
+  }
 
   // Check if settings exist, if not insert
   const { data: existingSettings } = await supabase.from('exam_settings').select('id').eq('exam_id', id).single();
