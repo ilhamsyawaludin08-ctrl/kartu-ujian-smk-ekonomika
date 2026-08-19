@@ -103,13 +103,12 @@ export default function Sidebar() {
         ${isMobileOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
       `}>
         {/* Sidebar Header */}
-        <div className="h-[5.5rem] flex items-center gap-3.5 px-6 border-b border-gray-100 bg-white">
-          <div className="relative w-12 h-12 flex-shrink-0">
-            <Image src="/images/logo.png" alt="Logo" fill className="object-contain" sizes="48px" />
+        <div className="py-8 flex flex-col items-center justify-center px-4 border-b border-gray-100 bg-white">
+          <div className="relative w-48 h-48 flex-shrink-0 mb-3">
+            <Image src="/logo.png" alt="Logo SMK Ekonomika" fill className="object-contain" sizes="192px" priority />
           </div>
-          <div className="flex flex-col justify-center">
-            <span className="font-extrabold text-primary text-xl leading-tight tracking-tight">Tata Usaha</span>
-            <span className="text-[0.8rem] font-bold text-gray-500 uppercase tracking-wider mt-0.5">SMK Ekonomika</span>
+          <div className="flex flex-col justify-center text-center">
+            <span className="text-xs font-bold text-[#5c2b90] uppercase tracking-widest">SISTEM KARTU UJIAN DIGITAL</span>
           </div>
         </div>
 
