@@ -35,14 +35,8 @@ export default function LoginPage() {
             
             {/* Header */}
             <div className="text-center mb-8">
-              <div className="bg-primary/5 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4 p-2">
-                <Image 
-                  src="/images/logo.png" 
-                  alt="Logo SMK Ekonomika" 
-                  width={56} 
-                  height={56} 
-                  className="object-contain"
-                />
+              <div className="flex flex-col items-center justify-center mb-6">
+                <Image src="/logo.png" alt="Logo SMK Ekonomika" width={140} height={140} className="mb-4 object-contain" />
               </div>
               <h1 className="text-2xl font-extrabold text-gray-900 tracking-tight">Login Tata Usaha</h1>
               <p className="text-sm text-gray-500 mt-2 font-medium">Sistem Kartu Ujian SMK Ekonomika</p>
