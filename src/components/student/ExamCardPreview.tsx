@@ -259,6 +259,13 @@ export default function ExamCardPreview({ data }: Props) {
               <div className="bg-blue-50/50 border border-blue-200 p-3 md:p-4 rounded-lg max-w-xl">
                 <p className="font-bold text-blue-900 text-sm mb-2">Ketentuan Ujian</p>
                 <p className="text-xs text-blue-800 whitespace-pre-wrap leading-relaxed">{data.examSettings.exam_notes || '-'}</p>
+                
+                {data.exam.server_url && (
+                  <div className="mt-3 pt-3 border-t border-blue-200/50">
+                    <p className="text-[10px] text-blue-700 font-semibold mb-0.5">Link Server Ujian:</p>
+                    <p className="font-mono text-xs font-bold text-blue-900 break-all">{data.exam.server_url}</p>
+                  </div>
+                )}
               </div>
             </div>
             
