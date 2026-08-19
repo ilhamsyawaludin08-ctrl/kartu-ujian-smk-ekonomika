@@ -1,9 +1,9 @@
-import { createClient } from '@/lib/supabase/server';
+﻿import { createClient } from '@/lib/supabase/server';
 import { redirect } from 'next/navigation';
-import { Users, Building, Calendar, Activity, Clock, AlertCircle } from 'lucide-react';
+import { AlertCircle } from 'lucide-react';
+import Link from 'next/link';
 import React from 'react';
 
-// Pastikan dashboard selalu mengambil data terbaru (opt-out dari static rendering)
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 
@@ -15,25 +15,22 @@ export default async function DashboardPage() {
     redirect('/login');
   }
 
-  // Fetch all data in parallel for optimal performance
+  // Fetch all data
   const [
     { count: studentsCount, error: studentsError },
+    { count: approvedCount, error: approvedError },
+    { count: pendingCount, error: pendingError },
     { count: classesCount, error: classesError },
-    { count: schedulesCount, error: schedulesError },
-    { count: activeExamsCount, error: activeExamsError },
-    { data: activeExams, error: activeExamsDataError },
-    { data: recentSchedules, error: recentSchedulesError }
+    { data: classesData, error: classesDataError },
   ] = await Promise.all([
     supabase.from('students').select('*', { count: 'exact', head: true }),
+    supabase.from('students').select('*', { count: 'exact', head: true }).eq('approval_status', 'Approved'),
+    supabase.from('students').select('*', { count: 'exact', head: true }).eq('approval_status', 'Pending'),
     supabase.from('classes').select('*', { count: 'exact', head: true }),
-    supabase.from('schedules').select('*', { count: 'exact', head: true }),
-    supabase.from('exams').select('*', { count: 'exact', head: true }).eq('is_active', true),
-    supabase.from('exams').select('id, name, academic_year, semester').eq('is_active', true).order('created_at', { ascending: false }),
-    supabase.from('schedules').select('*, classes(class_name), exams(name)').order('created_at', { ascending: false }).limit(5)
+    supabase.from('classes').select('major'),
   ]);
 
-  // Handle generic error state if any critical query fails
-  const hasError = studentsError || classesError || schedulesError || activeExamsError || activeExamsDataError || recentSchedulesError;
+  const hasError = studentsError || approvedError || pendingError || classesError || classesDataError;
 
   if (hasError) {
     return (
@@ -45,140 +42,114 @@ export default async function DashboardPage() {
     );
   }
 
-  const stats = [
-    { name: 'Total Siswa', value: studentsCount || 0, icon: Users, color: 'text-blue-600', bg: 'bg-blue-50', border: 'border-blue-100' },
-    { name: 'Total Kelas', value: classesCount || 0, icon: Building, color: 'text-indigo-600', bg: 'bg-indigo-50', border: 'border-indigo-100' },
-    { name: 'Jadwal Ujian', value: schedulesCount || 0, icon: Calendar, color: 'text-purple-600', bg: 'bg-purple-50', border: 'border-purple-100' },
-    { name: 'Ujian Aktif', value: activeExamsCount || 0, icon: Activity, color: 'text-emerald-600', bg: 'bg-emerald-50', border: 'border-emerald-100' },
-  ];
+  const majors = new Set(classesData?.map((c) => c.major).filter(Boolean));
+  const majorsCount = majors.size;
+  
+  const total = studentsCount || 0;
+  const approved = approvedCount || 0;
+  const pending = pendingCount || 0;
+  
+  const approvedPercent = total === 0 ? 0 : Math.round((approved / total) * 100);
+  const pendingPercent = total === 0 ? 0 : Math.round((pending / total) * 100);
 
   return (
     <div className="space-y-6 md:space-y-8 max-w-[100vw] overflow-hidden px-1 sm:px-0">
       
       {/* Header Section */}
-      <div className="bg-white p-6 md:p-8 rounded-2xl shadow-sm border border-gray-100">
-        <h1 className="text-xl md:text-2xl font-bold text-gray-900 mb-2 truncate">Selamat Datang di Dashboard TU</h1>
-        <p className="text-sm md:text-base text-gray-500">
-          Ringkasan data sistem Kartu Ujian SMK Ekonomika saat ini.
-        </p>
+      <div className="mb-4 pt-2">
+        <h1 className="text-3xl font-extrabold text-gray-900 mb-2">Dashboard</h1>
+        <p className="text-gray-500 font-medium">Ringkasan sistem kartu ujian SMK Ekonomika.</p>
       </div>
       
-      {/* Stats Grid - Responsive: 1 col mobile, 2 col tablet, 4 col desktop */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
-        {stats.map((stat, idx) => {
-          const Icon = stat.icon;
-          return (
-            <div key={idx} className={`bg-white p-6 rounded-2xl shadow-sm border ${stat.border} flex items-center justify-between hover:shadow-md transition-shadow`}>
-              <div>
-                <p className="text-sm font-medium text-gray-500 mb-1">{stat.name}</p>
-                <h3 className="text-3xl font-bold text-gray-900">{stat.value}</h3>
-              </div>
-              <div className={`${stat.bg} p-4 rounded-xl`}>
-                <Icon className={`w-6 h-6 ${stat.color}`} />
-              </div>
-            </div>
-          );
-        })}
+      {/* Top Stats Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {/* Total Siswa */}
+        <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex flex-col justify-center">
+          <p className="text-gray-500 font-medium mb-3">Total Siswa</p>
+          <h3 className="text-4xl font-extrabold text-gray-900 mb-3">{total}</h3>
+          <p className="text-gray-400 text-sm">Seluruh siswa terdaftar</p>
+        </div>
+
+        {/* Kartu Siap */}
+        <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex flex-col justify-center">
+          <p className="text-gray-500 font-medium mb-3">Kartu Siap</p>
+          <h3 className="text-4xl font-extrabold text-[#16a34a] mb-3">{approved}</h3>
+          <p className="text-gray-400 text-sm">Siswa yang dapat mencetak kartu</p>
+        </div>
+
+        {/* Belum Siap */}
+        <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex flex-col justify-center">
+          <p className="text-gray-500 font-medium mb-3">Belum Siap</p>
+          <h3 className="text-4xl font-extrabold text-[#dc2626] mb-3">{pending}</h3>
+          <p className="text-gray-400 text-sm">Siswa yang perlu ditindaklanjuti</p>
+        </div>
       </div>
 
-      {/* Main Content Grid */}
-      <div className="grid grid-cols-1 xl:grid-cols-3 gap-6 md:gap-8">
+      {/* Second Row Stats */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex flex-col justify-center">
+          <p className="text-gray-500 font-medium mb-3">Total Kelas</p>
+          <h3 className="text-4xl font-extrabold text-gray-900 mb-3">{classesCount || 0}</h3>
+          <p className="text-gray-400 text-sm">Kelas yang tersedia</p>
+        </div>
+
+        <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex flex-col justify-center">
+          <p className="text-gray-500 font-medium mb-3">Total Jurusan</p>
+          <h3 className="text-4xl font-extrabold text-gray-900 mb-3">{majorsCount}</h3>
+          <p className="text-gray-400 text-sm">Program keahlian</p>
+        </div>
+      </div>
+
+      {/* Progress Kartu Ujian */}
+      <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+        <h2 className="text-lg font-bold text-gray-900">Progress Kartu Ujian</h2>
+        <p className="text-sm text-gray-500 mb-8 mt-1">Persentase kesiapan kartu seluruh siswa.</p>
+
+        <div className="space-y-6">
+          <div>
+            <div className="flex justify-between text-sm font-medium mb-2">
+              <span className="text-gray-700">Kartu Siap</span>
+              <span className="text-gray-900 font-bold">{approvedPercent}%</span>
+            </div>
+            <div className="w-full bg-gray-100 rounded-full h-3">
+              <div className="bg-[#16a34a] h-3 rounded-full" style={{ width: ${approvedPercent}% }}></div>
+            </div>
+          </div>
+          
+          <div>
+            <div className="flex justify-between text-sm font-medium mb-2">
+              <span className="text-gray-700">Belum Siap</span>
+              <span className="text-gray-900 font-bold">{pendingPercent}%</span>
+            </div>
+            <div className="w-full bg-gray-100 rounded-full h-3">
+              <div className="bg-[#dc2626] h-3 rounded-full" style={{ width: ${pendingPercent}% }}></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Menu Cepat */}
+      <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+        <h2 className="text-lg font-bold text-gray-900 mb-6">Menu Cepat</h2>
         
-        {/* Left Column: Recent Schedules */}
-        <div className="xl:col-span-2 space-y-6">
-          <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden flex flex-col">
-            <div className="p-6 border-b border-gray-100 flex items-center justify-between">
-              <h2 className="text-lg font-bold text-gray-900 flex items-center gap-2">
-                <Clock className="w-5 h-5 text-purple-600" />
-                Jadwal Ujian Terbaru
-              </h2>
-            </div>
-            
-            {recentSchedules && recentSchedules.length > 0 ? (
-              <div className="w-full overflow-x-auto">
-                <table className="w-full text-left border-collapse min-w-[600px]">
-                  <thead>
-                    <tr className="bg-gray-50/50">
-                      <th className="px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Mata Pelajaran</th>
-                      <th className="px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Kelas</th>
-                      <th className="px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Waktu</th>
-                      <th className="px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Ujian</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-gray-100 bg-white">
-                    {recentSchedules.map((schedule) => (
-                      <tr key={schedule.id} className="hover:bg-gray-50/50 transition-colors">
-                        <td className="px-6 py-4">
-                          <div className="font-semibold text-gray-900">{schedule.subject}</div>
-                        </td>
-                        <td className="px-6 py-4">
-                          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-100 text-purple-800">
-                            {/* @ts-ignore */}
-                            {schedule.classes?.class_name || '-'}
-                          </span>
-                        </td>
-                        <td className="px-6 py-4">
-                          <div className="text-sm text-gray-900 font-medium">
-                            {new Date(schedule.exam_date).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })}
-                          </div>
-                          <div className="text-xs text-gray-500">
-                            {schedule.start_time.slice(0,5)} - {schedule.end_time.slice(0,5)}
-                          </div>
-                        </td>
-                        <td className="px-6 py-4">
-                          <div className="text-sm text-gray-600 truncate max-w-[150px]">
-                            {/* @ts-ignore */}
-                            {schedule.exams?.name || '-'}
-                          </div>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            ) : (
-              <div className="p-8 text-center flex flex-col items-center justify-center text-gray-500">
-                <Calendar className="w-12 h-12 text-gray-300 mb-3" />
-                <p>Belum ada jadwal ujian yang ditambahkan.</p>
-              </div>
-            )}
-          </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <Link href="/dashboard/students" className="p-6 rounded-xl border border-gray-200 hover:border-[#5c2b90] hover:shadow-md transition-all group">
+            <h3 className="font-bold text-gray-900 group-hover:text-[#5c2b90] transition-colors mb-2">Data Siswa</h3>
+            <p className="text-sm text-gray-500">Kelola data peserta ujian.</p>
+          </Link>
+          
+          <Link href="/dashboard/schedules" className="p-6 rounded-xl border border-gray-200 hover:border-[#5c2b90] hover:shadow-md transition-all group">
+            <h3 className="font-bold text-gray-900 group-hover:text-[#5c2b90] transition-colors mb-2">Jadwal Ujian</h3>
+            <p className="text-sm text-gray-500">Kelola jadwal berdasarkan kelas.</p>
+          </Link>
+          
+          <Link href="/dashboard/exam-cards" className="p-6 rounded-xl border border-gray-200 hover:border-[#5c2b90] hover:shadow-md transition-all group">
+            <h3 className="font-bold text-gray-900 group-hover:text-[#5c2b90] transition-colors mb-2">Kartu Ujian</h3>
+            <p className="text-sm text-gray-500">Cari dan cetak kartu peserta.</p>
+          </Link>
         </div>
-
-        {/* Right Column: Active Exams */}
-        <div className="xl:col-span-1 space-y-6">
-          <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 flex flex-col h-full">
-            <h2 className="text-lg font-bold text-gray-900 flex items-center gap-2 mb-6">
-              <Activity className="w-5 h-5 text-emerald-500" />
-              Ujian Aktif Saat Ini
-            </h2>
-            
-            <div className="space-y-4 flex-1">
-              {activeExams && activeExams.length > 0 ? (
-                activeExams.map((exam) => (
-                  <div key={exam.id} className="p-4 rounded-xl border border-emerald-100 bg-emerald-50/30 flex flex-col gap-1 hover:bg-emerald-50/50 transition-colors">
-                    <div className="flex items-start justify-between gap-2">
-                      <h3 className="font-bold text-gray-900 text-sm">{exam.name}</h3>
-                      <span className="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-100 text-emerald-700 uppercase tracking-wide">
-                        Aktif
-                      </span>
-                    </div>
-                    <p className="text-xs text-gray-600 font-medium mt-1">
-                      {exam.academic_year} — {exam.semester}
-                    </p>
-                  </div>
-                ))
-              ) : (
-                <div className="p-6 border-2 border-dashed border-gray-200 rounded-xl text-center flex flex-col items-center justify-center h-full min-h-[200px]">
-                  <p className="text-sm text-gray-500 font-medium">Belum ada ujian aktif.</p>
-                  <p className="text-xs text-gray-400 mt-1">Aktifkan ujian di menu Pengaturan Ujian.</p>
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
-
       </div>
+
     </div>
   );
 }
