@@ -141,9 +141,7 @@ export default function StudentPortal() {
           <div className="w-full max-w-xl bg-white rounded-3xl shadow-xl overflow-hidden print:hidden border border-purple-100 relative">
             <div className="p-8 md:p-12 text-center">
               <div className="flex flex-col items-center justify-center mb-6">
-                <Image src="/logo.png" alt="Logo SMK Ekonomika" width={80} height={80} className="mb-2" />
-                <h1 className="text-[#5c2b90] font-extrabold text-xl tracking-wider">SMK EKONOMIKA</h1>
-                <p className="text-[10px] text-red-600 font-bold uppercase tracking-widest mt-0.5">Membentuk Siswa DISJAYA</p>
+                <Image src="/logo.png" alt="Logo SMK Ekonomika" width={140} height={140} className="mb-4 object-contain" />
               </div>
               
               <h2 className="text-[#5c2b90] text-2xl font-extrabold tracking-wide mb-2">SELAMAT DATANG</h2>
@@ -190,13 +188,6 @@ export default function StudentPortal() {
                     </>
                   )}
                 </button>
-                
-                <Link
-                  href="/"
-                  className="w-full bg-white hover:bg-gray-50 text-[#6a1b9a] border-2 border-[#6a1b9a] font-bold py-3.5 rounded-xl transition-all flex items-center justify-center shadow-sm"
-                >
-                  Kembali ke Halaman Awal
-                </Link>
               </form>
               
               <div className="mt-8 flex items-center justify-center gap-2 text-xs font-medium text-gray-600">
@@ -211,9 +202,7 @@ export default function StudentPortal() {
           <div className="w-full max-w-3xl bg-white rounded-3xl shadow-xl overflow-hidden print:hidden border border-purple-100">
             <div className="p-8 md:p-12 text-center flex flex-col items-center">
               <div className="flex flex-col items-center justify-center mb-6">
-                <Image src="/logo.png" alt="Logo SMK Ekonomika" width={80} height={80} className="mb-2" />
-                <h1 className="text-[#5c2b90] font-extrabold text-xl tracking-wider">SMK EKONOMIKA</h1>
-                <p className="text-[10px] text-red-600 font-bold uppercase tracking-widest mt-0.5">Membentuk Siswa DISJAYA</p>
+                <Image src="/logo.png" alt="Logo SMK Ekonomika" width={140} height={140} className="mb-4 object-contain" />
               </div>
 
               <div className="w-16 h-16 bg-[#fff9c4] text-[#fbc02d] rounded-full flex items-center justify-center mb-4">
@@ -241,9 +230,7 @@ export default function StudentPortal() {
           <div className="w-full max-w-3xl bg-white rounded-3xl shadow-xl overflow-hidden print:hidden border border-purple-100">
             <div className="p-8 md:p-12 text-center flex flex-col items-center">
               <div className="flex flex-col items-center justify-center mb-6">
-                <Image src="/logo.png" alt="Logo SMK Ekonomika" width={80} height={80} className="mb-2" />
-                <h1 className="text-[#5c2b90] font-extrabold text-xl tracking-wider">SMK EKONOMIKA</h1>
-                <p className="text-[10px] text-red-600 font-bold uppercase tracking-widest mt-0.5">Membentuk Siswa DISJAYA</p>
+                <Image src="/logo.png" alt="Logo SMK Ekonomika" width={140} height={140} className="mb-4 object-contain" />
               </div>
 
               <div className="w-16 h-16 bg-[#20c997] text-white rounded-full flex items-center justify-center mb-4 shadow-md">
@@ -274,9 +261,7 @@ export default function StudentPortal() {
               {/* Preview Header (Hidden in Print) */}
               <div className="w-full flex flex-col md:flex-row items-center justify-between mb-8 print:hidden gap-4">
                 <div className="flex flex-col items-center md:items-start justify-center">
-                  <Image src="/logo.png" alt="Logo SMK Ekonomika" width={64} height={64} className="mb-1" />
-                  <h1 className="text-[#5c2b90] font-extrabold text-lg tracking-wider">SMK EKONOMIKA</h1>
-                  <p className="text-[8px] text-red-600 font-bold uppercase tracking-widest">Membentuk Siswa DISJAYA</p>
+                  <Image src="/logo.png" alt="Logo SMK Ekonomika" width={140} height={140} className="mb-2 object-contain" />
                 </div>
                 
                 <div className="flex flex-col md:flex-row items-center gap-4 w-full md:w-auto mt-4 md:mt-0">
