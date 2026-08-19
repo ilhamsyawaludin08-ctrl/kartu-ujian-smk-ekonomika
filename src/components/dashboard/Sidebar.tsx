@@ -20,12 +20,13 @@ import { logoutAction } from '@/app/dashboard/actions';
 
 const navigation = [
   { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
+  { section: 'MASTER DATA' },
   { name: 'Data Siswa', href: '/dashboard/students', icon: Users },
   { name: 'Data Kelas', href: '/dashboard/classes', icon: BookOpen },
+  { section: 'UJIAN' },
   { name: 'Jadwal Ujian', href: '/dashboard/schedules', icon: Calendar },
   { name: 'Pengaturan Ujian', href: '/dashboard/exams', icon: Settings },
   { name: 'Kartu Ujian', href: '/dashboard/exam-cards', icon: CreditCard },
-  { name: 'Pengaturan', href: '/dashboard/settings', icon: Settings },
 ];
 
 export default function Sidebar() {
@@ -35,16 +36,24 @@ export default function Sidebar() {
   const NavLinks = () => (
     <>
       <div className="space-y-1">
-        {navigation.map((item) => {
+        {navigation.map((item, index) => {
+          if (item.section) {
+            return (
+              <div key={`section-${index}`} className="px-4 pt-6 pb-2">
+                <span className="text-[11px] font-bold text-gray-400 uppercase tracking-widest">{item.section}</span>
+              </div>
+            );
+          }
+
           const isActive = item.href === '/dashboard' 
             ? pathname === '/dashboard' 
-            : pathname === item.href || pathname.startsWith(item.href + '/');
+            : pathname === item.href || (item.href && pathname.startsWith(item.href + '/'));
             
-          const Icon = item.icon;
+          const Icon = item.icon as any;
           return (
             <Link
               key={item.name}
-              href={item.href}
+              href={item.href as string}
               onClick={() => setIsMobileOpen(false)}
               className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 ${
                 isActive 
@@ -59,14 +68,18 @@ export default function Sidebar() {
         })}
       </div>
 
-      <div className="mt-auto pt-8">
+      <div className="mt-auto pt-6 border-t border-gray-100 pb-4">
+        <div className="px-4 mb-4">
+          <p className="text-sm font-semibold text-gray-800">Admin TU</p>
+          <p className="text-xs text-gray-500">SMK Ekonomika</p>
+        </div>
         <form action={logoutAction}>
           <button
             type="submit"
-            className="w-full flex items-center gap-3 px-4 py-3 text-red-600 hover:bg-red-50 rounded-xl transition-colors font-medium"
+            className="w-full flex items-center gap-3 px-4 py-2 text-red-600 hover:bg-red-50 rounded-xl transition-colors font-semibold"
           >
-            <LogOut className="w-5 h-5" />
-            Keluar Sistem
+            <LogOut className="w-5 h-5" strokeWidth={2.5} />
+            Keluar
           </button>
         </form>
       </div>
