@@ -115,6 +115,9 @@ export default function ExamCardPreview({ data }: Props) {
             </div>
           </div>
 
+          {/* Main Content Body (with padding to avoid purple bar on the right) */}
+          <div className="w-full flex-1 flex flex-col print:pr-28 print:pl-8 print:pt-4">
+
           {/* Section 1: DATA PESERTA */}
           <h3 className="font-bold text-sm md:text-base uppercase text-gray-900 border-b border-gray-800 pb-2 mb-4">
             DATA PESERTA
@@ -290,6 +293,7 @@ export default function ExamCardPreview({ data }: Props) {
                 {data.examSettings.chairperson_name || '( .......................................... )'}
               </p>
             </div>
+          </div>
           </div>
           </div>
           {/* End Content Wrapper */}
