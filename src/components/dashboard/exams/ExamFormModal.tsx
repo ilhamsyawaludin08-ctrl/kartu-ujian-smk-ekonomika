@@ -221,9 +221,9 @@ export default function ExamFormModal({ isOpen, onClose, examData }: ExamFormMod
                 <label className="block text-sm font-semibold text-gray-700 mb-1.5">Catatan/Peraturan Ujian</label>
                 <textarea 
                   name="exam_notes" 
-                  rows={3}
-                  placeholder="1. Peserta wajib hadir 15 menit sebelum ujian dimulai..."
-                  defaultValue={settings.exam_notes || ''}
+                  rows={5}
+                  placeholder="1. Peserta Wajib mengambil kartu peserta ujian..."
+                  defaultValue={settings.exam_notes || '1. Peserta Wajib mengambil kartu peserta ujian\n2. Peserta yang terlambat LOGIN tidak mendapat tambahan waktu \n3. Peserta Wajib memakai Seragam lengkap selama ujian \n4. Peserta Wajib Rapih ( Rambut bagi Pria , dan kuku ) \n5. Tidak di perkenankan membawa peralatan terkait dengan keperluan ujian'}
                   className="w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary focus:border-primary outline-none text-sm resize-none"
                 ></textarea>
               </div>
