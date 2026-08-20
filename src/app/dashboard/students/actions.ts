@@ -123,11 +123,13 @@ export async function deleteStudent(id: number) {
 export async function approveStudent(studentId: number) {
   const supabase = await createClient();
 
-  // 1. Update status student
-  const { error: updateError } = await supabase
+  // 1. Update status student and get their pre-defined exam_number (if any)
+  const { data: student, error: updateError } = await supabase
     .from('students')
     .update({ approval_status: 'Approved' })
-    .eq('id', studentId);
+    .eq('id', studentId)
+    .select('exam_number')
+    .single();
 
   if (updateError) return { success: false, error: updateError.message };
 
@@ -153,25 +155,25 @@ export async function approveStudent(studentId: number) {
     .single();
 
   if (!existingCard) {
-    // Generate card number
-    // Format: EKM-[KODE_UJIAN]-[TAHUN]-[NOMOR_URUT]
-    // KODE_UJIAN: ambil kata pertama atau uppercase dari exam name (contoh 'PSAT' dari 'PSAT 2026')
-    const examCode = activeExam.name.split(' ')[0].toUpperCase();
-    
-    // TAHUN: ambil 4 digit tahun dari academic_year (contoh '2025/2026' -> '2026' atau '2025')
-    // Kita ambil bagian depan saja biar konsisten, misalnya '2025'
-    const tahun = activeExam.academic_year.substring(0, 4);
+    let cardNumber = student.exam_number;
 
-    // NOMOR URUT: Hitung jumlah kartu yang ada di exam ini
-    const { count } = await supabase
-      .from('exam_cards')
-      .select('id', { count: 'exact', head: true })
-      .eq('exam_id', activeExam.id);
+    if (!cardNumber) {
+      // Generate card number if not provided by Excel/Admin
+      // Format: EKM-[KODE_UJIAN]-[TAHUN]-[NOMOR_URUT]
+      const examCode = activeExam.name.split(' ')[0].toUpperCase();
+      const tahun = activeExam.academic_year.substring(0, 4);
 
-    const urut = (count || 0) + 1;
-    const urutStr = urut.toString().padStart(5, '0');
-    
-    const cardNumber = `EKM-${examCode}-${tahun}-${urutStr}`;
+      // NOMOR URUT: Hitung jumlah kartu yang ada di exam ini
+      const { count } = await supabase
+        .from('exam_cards')
+        .select('id', { count: 'exact', head: true })
+        .eq('exam_id', activeExam.id);
+
+      const urut = (count || 0) + 1;
+      const urutStr = urut.toString().padStart(5, '0');
+      
+      cardNumber = `EKM-${examCode}-${tahun}-${urutStr}`;
+    }
 
     const { error: insertError } = await supabase.from('exam_cards').insert({
       student_id: studentId,

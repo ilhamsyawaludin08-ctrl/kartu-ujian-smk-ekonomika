@@ -25,6 +25,7 @@ export default function ExcelImportModal({ isOpen, onClose }: ExcelImportModalPr
     { value: 'class_id', label: 'Kelas / Jurusan' },
     { value: 'place_of_birth', label: 'Tempat Lahir' },
     { value: 'date_of_birth', label: 'Tanggal Lahir' },
+    { value: 'exam_number', label: 'Nomor Ujian' },
     { value: 'exam_room', label: 'Ruang Ujian' },
     { value: 'exam_password', label: 'Password Ujian' },
     { value: 'ignore', label: 'Tidak Di-import (Abaikan)' },
@@ -59,6 +60,7 @@ export default function ExcelImportModal({ isOpen, onClose }: ExcelImportModalPr
           else if (lower.includes('kelas') || lower.includes('class')) autoMappings[h] = 'class_id';
           else if (lower.includes('tempat') || lower.includes('lahir') && !lower.includes('tanggal')) autoMappings[h] = 'place_of_birth';
           else if (lower.includes('tanggal') || lower.includes('tgl') || lower.includes('dob')) autoMappings[h] = 'date_of_birth';
+          else if (lower.includes('nomor ujian') || lower.includes('no ujian')) autoMappings[h] = 'exam_number';
           else if (lower.includes('ruang') || lower.includes('room')) autoMappings[h] = 'exam_room';
           else if (lower.includes('password') || lower.includes('pass') || lower.includes('sandi')) autoMappings[h] = 'exam_password';
           else autoMappings[h] = 'unknown'; // default untuk field tak dikenal
