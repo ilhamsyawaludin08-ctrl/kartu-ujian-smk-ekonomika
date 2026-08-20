@@ -33,21 +33,21 @@ const MyDocument = ({ data }: Props) => {
   const isVeryCompact = scheduleCount > 12;
 
   // Dynamic values
-  const tableFontSize = isVeryCompact ? 8 : isCompact ? 9 : 10;
-  const tableHeaderFontSize = isVeryCompact ? 8 : 9;
-  const padV = isVeryCompact ? 4 : isCompact ? 5 : 6;
+  const tableFontSize = 7;
+  const tableHeaderFontSize = 7;
+  const padV = 3;
   const padH = 4;
-  const tableGapHeight = isVeryCompact ? 4 : isCompact ? 8 : 12;
-  const headerMarginBottom = isVeryCompact ? 8 : isCompact ? 12 : 16;
-  const infoMarginBottom = isVeryCompact ? 8 : isCompact ? 12 : 16;
-  const footerMarginTop = isVeryCompact ? 8 : isCompact ? 12 : 16;
-  const photoWidth = isVeryCompact ? 60 : 70;
-  const photoHeight = isVeryCompact ? 80 : 93;
-  const sigLineMarginTop = isVeryCompact ? 30 : isCompact ? 40 : 50;
+  const tableGapHeight = 4;
+  const headerMarginBottom = 8;
+  const infoMarginBottom = 8;
+  const footerMarginTop = 8;
+  const photoWidth = 60;
+  const photoHeight = 80;
+  const sigLineMarginTop = 20;
 
   const styles = StyleSheet.create({
     page: {
-      padding: '25 30',
+      padding: '15 25',
       fontFamily: 'Helvetica',
       backgroundColor: '#ffffff',
     },
@@ -63,56 +63,56 @@ const MyDocument = ({ data }: Props) => {
     },
     titleBlock: {
       alignItems: 'center',
-      paddingVertical: 10,
+      paddingVertical: 6,
       borderBottom: '2pt solid #1f2937',
     },
     titleText: {
-      fontSize: 16,
+      fontSize: 14,
       fontWeight: 'extrabold',
       color: '#111827',
       textTransform: 'uppercase',
-      marginBottom: 4,
+      marginBottom: 2,
     },
     subTitleMain: {
-      fontSize: 14,
+      fontSize: 11,
       fontWeight: 'bold',
       color: '#111827',
       textTransform: 'uppercase',
-      marginBottom: 4,
+      marginBottom: 2,
     },
     subTitle: {
-      fontSize: 12,
+      fontSize: 9,
       fontWeight: 'bold',
       color: '#111827',
       textTransform: 'uppercase',
     },
     bodyContainer: {
-      paddingHorizontal: 25,
-      paddingBottom: 25,
-      paddingTop: 15,
+      paddingHorizontal: 20,
+      paddingBottom: 15,
+      paddingTop: 10,
     },
     body: {
       flexDirection: 'row',
       justifyContent: 'space-between',
       alignItems: 'flex-start',
-      marginBottom: infoMarginBottom,
+      marginBottom: 8,
     },
     infoContainer: {
       flex: 1,
-      paddingRight: 15,
+      paddingRight: 10,
     },
     infoRow: {
       flexDirection: 'row',
-      marginBottom: isVeryCompact ? 4 : 6,
-      fontSize: isVeryCompact ? 9 : 10,
+      marginBottom: 4,
+      fontSize: 9,
       alignItems: 'center',
     },
     infoLabel: {
-      width: 85,
+      width: 75,
       color: '#4b5563',
     },
     infoColon: {
-      width: 10,
+      width: 8,
     },
     infoValue: {
       flex: 1,
@@ -121,36 +121,36 @@ const MyDocument = ({ data }: Props) => {
       paddingBottom: 2,
     },
     sectionTitle: {
-      fontSize: 10,
+      fontSize: 9,
       fontWeight: 'bold',
       color: '#111827',
       textTransform: 'uppercase',
       borderBottom: '1pt solid #1f2937',
-      paddingBottom: 4,
-      marginBottom: 8,
+      paddingBottom: 2,
+      marginBottom: 6,
     },
     boxesRow: {
       flexDirection: 'row',
       justifyContent: 'space-between',
-      marginBottom: infoMarginBottom,
+      marginBottom: 10,
     },
     box: {
       flex: 1,
       border: '1pt solid #1f2937',
       borderRadius: 4,
-      padding: 6,
+      padding: 4,
       alignItems: 'center',
       justifyContent: 'center',
       marginHorizontal: 4,
     },
     boxLabel: {
-      fontSize: 8,
+      fontSize: 7,
       color: '#6b7280',
       textTransform: 'uppercase',
-      marginBottom: 4,
+      marginBottom: 2,
     },
     boxValue: {
-      fontSize: 12,
+      fontSize: 10,
       fontWeight: 'bold',
       color: '#111827',
     },
@@ -261,36 +261,34 @@ const MyDocument = ({ data }: Props) => {
     notesBox: {
       border: '1pt solid #e5e7eb',
       backgroundColor: '#f9fafb',
-      padding: isVeryCompact ? 6 : 8,
+      padding: 4,
       borderRadius: 2,
     },
     notesTitle: {
-      fontSize: 8,
+      fontSize: 7,
       fontWeight: 'bold',
       textTransform: 'uppercase',
-      marginBottom: 4,
+      marginBottom: 2,
       color: '#1f2937',
     },
     notesText: {
-      fontSize: isVeryCompact ? 7 : 8,
+      fontSize: 6,
       color: '#374151',
       lineHeight: 1.3,
     },
     signatureContainer: {
-      width: 140,
+      width: 120,
       alignItems: 'center',
     },
     signatureTitle: {
-      fontSize: 9,
+      fontSize: 7,
       color: '#1f2937',
       marginBottom: 2,
     },
     signatureRole: {
-      fontSize: 9,
+      fontSize: 7,
       fontWeight: 'bold',
-      color: '#111827',
-      textTransform: 'uppercase',
-      letterSpacing: 1,
+      color: '#1f2937',
     },
     signatureLine: {
       borderBottom: '1pt solid #111827',
@@ -299,7 +297,7 @@ const MyDocument = ({ data }: Props) => {
       marginBottom: 2,
     },
     chairpersonName: {
-      fontSize: 9,
+      fontSize: 7,
       fontWeight: 'bold',
       textAlign: 'center',
       textTransform: 'uppercase',
@@ -308,7 +306,7 @@ const MyDocument = ({ data }: Props) => {
 
   return (
     <Document>
-      <Page size="A4" orientation="portrait" style={styles.page}>
+      <Page size="A4" orientation="landscape" style={styles.page}>
         <View style={styles.card}>
           
           {/* Header Image */}
