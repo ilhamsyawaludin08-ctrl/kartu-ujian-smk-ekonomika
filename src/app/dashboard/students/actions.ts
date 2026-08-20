@@ -260,22 +260,18 @@ export async function bulkImportStudents(data: any[]) {
     date_of_birth: r.date_of_birth ? new Date(r.date_of_birth).toISOString() : null,
     exam_room: r.exam_room ? r.exam_room.toString().trim() : null,
     exam_password: r.exam_password ? r.exam_password.toString().trim() : null,
+    exam_number: r.exam_number ? r.exam_number.toString().trim() : null,
     class_id: r.class_name ? classMap.get(r.class_name.toString().trim().toUpperCase()) : null,
     approval_status: 'Pending'
   }));
 
   if (insertData.length === 0) return { success: false, error: 'Tidak ada data valid untuk diimport.' };
 
-  const nisns = insertData.map(d => d.nisn);
-  const { data: existingStudents } = await supabase.from('students').select('nisn').in('nisn', nisns);
-  const existingNisns = new Set(existingStudents?.map(s => s.nisn) || []);
+  const { error: upsertError } = await supabase
+    .from('students')
+    .upsert(insertData, { onConflict: 'nisn' });
 
-  const newStudents = insertData.filter(d => !existingNisns.has(d.nisn));
-
-  if (newStudents.length > 0) {
-    const { error: insertError } = await supabase.from('students').insert(newStudents);
-    if (insertError) return { success: false, error: insertError.message };
-  }
+  if (upsertError) return { success: false, error: upsertError.message };
 
   revalidatePath('/dashboard/students');
   return { success: true };
