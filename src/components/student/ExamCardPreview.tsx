@@ -89,7 +89,7 @@ export default function ExamCardPreview({ data }: Props) {
         {/* The Card - A4 Landscape Dimensions */}
         <div 
           id="print-container"
-          className="w-full max-w-[297mm] min-h-[210mm] print:min-h-0 bg-white border border-gray-300 print:border-0 shadow-xl print:shadow-none relative font-sans text-gray-900 mx-auto flex flex-col print:break-inside-avoid overflow-hidden"
+          className="w-full max-w-[297mm] min-h-[210mm] print:min-h-0 bg-white border border-gray-300 print:border-2 print:border-gray-800 shadow-xl print:shadow-none relative font-sans text-gray-900 mx-auto flex flex-col print:break-inside-avoid overflow-hidden"
         >
 
           {/* Content Wrapper */}
@@ -102,8 +102,8 @@ export default function ExamCardPreview({ data }: Props) {
               </div>
             </div>
             
-            {/* Boxed Content (Bordered on left, right, bottom) */}
-            <div className="w-full flex-1 flex flex-col print:border-x-2 print:border-b-2 print:border-gray-800">
+            {/* Boxed Content (Now borderless since outer container has border) */}
+            <div className="w-full flex-1 flex flex-col">
               
               {/* Title Block */}
               <div className="text-center w-full pb-2 pt-2 border-b-2 border-gray-800"> 
