@@ -89,7 +89,7 @@ export default function ExamCardPreview({ data }: Props) {
         {/* The Card - A4 Landscape Dimensions */}
         <div 
           id="print-container"
-          className="w-full max-w-[297mm] min-h-[210mm] print:min-h-0 bg-white border border-gray-300 print:border-2 print:border-gray-800 shadow-xl print:shadow-none p-6 md:p-8 print:p-8 relative font-sans text-gray-900 mx-auto flex flex-col print:break-inside-avoid"
+          className="w-full max-w-[297mm] min-h-[210mm] print:min-h-0 bg-white border border-gray-300 print:border-0 shadow-xl print:shadow-none p-6 md:p-8 print:p-0 relative font-sans text-gray-900 mx-auto flex flex-col print:break-inside-avoid"
         >
           
           {/* Header */}
