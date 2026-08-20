@@ -56,7 +56,7 @@ export default function ExamCardPreview({ data }: Props) {
       <style dangerouslySetInnerHTML={{__html: `
         @media print {
           @page {
-            size: A4 landscape;
+            size: A4 portrait;
             margin: 0; /* Menghilangkan URL dan header/footer bawaan browser */
           }
           body {
@@ -75,9 +75,12 @@ export default function ExamCardPreview({ data }: Props) {
             position: absolute;
             left: 0;
             top: 0;
-            width: calc(100% - 20mm);
+            width: 277mm !important; /* Force wide landscape layout */
             height: auto;
             margin: 10mm;
+            /* Di orientasi Portrait, container dengan lebar 277mm akan membuat 
+               Chrome otomatis melakukan "Shrink to Fit", menekan ukurannya 
+               sehingga selalu pas di 1 halaman tanpa perlu setting Pages per Sheet! */
           }
         }
       `}} />
