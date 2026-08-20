@@ -105,12 +105,15 @@ export default function ExamCardPreview({ data }: Props) {
               <img src="/header_gds.png" alt="Header SMK Ekonomika" className="w-full h-auto object-contain" />
             </div>
             
-            <div className="text-center w-full"> 
-              <h2 className="text-lg md:text-xl font-bold text-gray-900">
-                {data.examSettings.card_title || "KARTU PESERTA UJIAN"}
+            <div className="text-center w-full pb-2"> 
+              <h2 className="text-base md:text-lg font-extrabold text-gray-900 uppercase">
+                KARTU PESERTA
               </h2>
-              <p className="text-xs md:text-sm text-gray-600 mt-1">
-                {data.exam.exam_name}
+              <h3 className="text-sm md:text-base font-bold text-gray-900 mt-0.5 uppercase">
+                {data.exam.exam_name} ({data.exam.semester})
+              </h3>
+              <p className="text-xs md:text-sm font-bold text-gray-900 mt-0.5 uppercase">
+                TAHUN PELAJARAN {data.exam.academic_year}
               </p>
             </div>
           </div>
