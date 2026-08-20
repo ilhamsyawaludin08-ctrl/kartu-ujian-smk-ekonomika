@@ -53,7 +53,6 @@ const MyDocument = ({ data }: Props) => {
     },
     card: {
       width: '100%',
-      height: '100%',
       border: '2pt solid #1f2937',
       flexDirection: 'column',
     },
@@ -88,7 +87,6 @@ const MyDocument = ({ data }: Props) => {
       textTransform: 'uppercase',
     },
     bodyContainer: {
-      flex: 1,
       paddingHorizontal: 25,
       paddingBottom: 25,
       paddingTop: 15,
@@ -310,7 +308,7 @@ const MyDocument = ({ data }: Props) => {
 
   return (
     <Document>
-      <Page size="A4" orientation="landscape" style={styles.page}>
+      <Page size="A4" orientation="portrait" style={styles.page}>
         <View style={styles.card}>
           
           {/* Header Image */}
