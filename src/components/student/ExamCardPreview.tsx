@@ -151,8 +151,8 @@ export default function ExamCardPreview({ data }: Props) {
                     </td>
                   </tr>
                   <tr>
-                    <td className={`${infoPaddingClass} pr-4 text-gray-600`}>Kelas / Jurusan</td>
-                    <td className={`${infoPaddingClass} px-1`}>:</td>
+                    <td className={`${infoPaddingClass} pr-4 text-gray-600 w-32 whitespace-nowrap`}>Kelas / Jurusan</td>
+                    <td className={`${infoPaddingClass} px-1 w-3`}>:</td>
                     <td className={`${infoPaddingClass} font-bold text-gray-900`}>{data.classInfo.class_name} / {data.classInfo.major}</td>
                   </tr>
                 </tbody>

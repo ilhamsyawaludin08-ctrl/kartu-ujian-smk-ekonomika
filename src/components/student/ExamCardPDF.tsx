@@ -109,7 +109,7 @@ const MyDocument = ({ data }: Props) => {
       alignItems: 'center',
     },
     infoLabel: {
-      width: 85,
+      width: 95,
       color: '#4b5563',
     },
     infoColon: {
