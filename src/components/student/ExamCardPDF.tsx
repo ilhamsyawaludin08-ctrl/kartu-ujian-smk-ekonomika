@@ -63,7 +63,8 @@ const MyDocument = ({ data }: Props) => {
     },
     titleBlock: {
       alignItems: 'center',
-      paddingVertical: 4,
+      paddingBottom: 4,
+      paddingTop: 0,
       borderBottom: '2pt solid #1f2937',
     },
     titleText: {

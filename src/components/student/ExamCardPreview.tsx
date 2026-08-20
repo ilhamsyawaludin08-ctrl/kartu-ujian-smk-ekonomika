@@ -96,8 +96,8 @@ export default function ExamCardPreview({ data }: Props) {
           <div className="relative z-10 p-6 md:p-8 print:p-0 w-full flex-1 flex flex-col">
             
             {/* Header Image Only (Borderless) */}
-            <div className={`w-full flex flex-col items-center justify-center ${headerPaddingClass}`}>
-              <div className="w-full mb-3">
+            <div className="w-full flex flex-col items-center justify-center">
+              <div className="w-full">
                 <img src="/header_gds.png" alt="Header SMK Ekonomika" className="w-full h-auto object-contain" />
               </div>
             </div>
@@ -106,7 +106,7 @@ export default function ExamCardPreview({ data }: Props) {
             <div className="w-full flex-1 flex flex-col">
               
               {/* Title Block */}
-              <div className="text-center w-full pb-2 pt-2 border-b-2 border-gray-800"> 
+              <div className="text-center w-full pb-2 pt-0 border-b-2 border-gray-800"> 
                 <h2 className="text-base md:text-lg font-extrabold text-gray-900 uppercase">
                   KARTU PESERTA
                 </h2>
