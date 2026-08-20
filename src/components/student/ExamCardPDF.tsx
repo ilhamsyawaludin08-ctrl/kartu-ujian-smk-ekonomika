@@ -273,6 +273,23 @@ const MyDocument = ({ data }: Props) => {
       color: '#1e40af',
       lineHeight: 1.3,
     },
+    serverUrlContainer: {
+      marginTop: 6,
+      paddingTop: 6,
+      borderTop: '1pt solid #bfdbfe',
+    },
+    serverUrlLabel: {
+      fontSize: 7,
+      color: '#1d4ed8',
+      fontWeight: 'bold',
+      marginBottom: 2,
+    },
+    serverUrlText: {
+      fontSize: 9,
+      color: '#1e3a8a',
+      fontWeight: 'bold',
+      fontFamily: 'Courier',
+    },
     signatureContainer: {
       width: 140,
       alignItems: 'center',
@@ -433,6 +450,13 @@ const MyDocument = ({ data }: Props) => {
                 <View style={styles.notesBox}>
                   <Text style={styles.notesTitle}>Ketentuan Ujian:</Text>
                   <Text style={styles.notesText}>{data.examSettings.exam_notes}</Text>
+                  
+                  {data.exam.server_url && (
+                    <View style={styles.serverUrlContainer}>
+                      <Text style={styles.serverUrlLabel}>Link Server Ujian:</Text>
+                      <Text style={styles.serverUrlText}>{data.exam.server_url}</Text>
+                    </View>
+                  )}
                 </View>
               )}
             </View>
