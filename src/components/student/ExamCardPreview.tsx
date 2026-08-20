@@ -89,11 +89,18 @@ export default function ExamCardPreview({ data }: Props) {
         {/* The Card - A4 Landscape Dimensions */}
         <div 
           id="print-container"
-          className="w-full max-w-[297mm] min-h-[210mm] print:min-h-0 bg-white border border-gray-300 print:border-0 shadow-xl print:shadow-none p-6 md:p-8 print:p-0 relative font-sans text-gray-900 mx-auto flex flex-col print:break-inside-avoid"
+          className="w-full max-w-[297mm] min-h-[210mm] print:min-h-0 bg-white border border-gray-300 print:border-0 shadow-xl print:shadow-none relative font-sans text-gray-900 mx-auto flex flex-col print:break-inside-avoid overflow-hidden"
         >
-          
-          {/* Header */}
-          <div className={`flex flex-col items-center justify-center border-b border-gray-800 ${headerPaddingClass}`}>
+          {/* Footer / Background Image Overlay */}
+          <div className="absolute inset-0 z-0 pointer-events-none flex flex-col justify-end">
+            <img src="/footer_gds.png" alt="Footer Background" className="w-full h-auto object-cover object-bottom" />
+          </div>
+
+          {/* Content Wrapper */}
+          <div className="relative z-10 p-6 md:p-8 print:p-0 print:pb-24 pb-24 w-full flex-1 flex flex-col">
+            
+            {/* Header */}
+            <div className={`flex flex-col items-center justify-center border-b border-gray-800 ${headerPaddingClass}`}>
             <div className="w-full mb-3">
               <img src="/header_gds.png" alt="Header SMK Ekonomika" className="w-full h-auto object-contain" />
             </div>
@@ -284,6 +291,8 @@ export default function ExamCardPreview({ data }: Props) {
               </p>
             </div>
           </div>
+          </div>
+          {/* End Content Wrapper */}
 
         </div>
       </div>
