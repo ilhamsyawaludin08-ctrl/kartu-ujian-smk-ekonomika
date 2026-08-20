@@ -197,8 +197,8 @@ export default function ExamCardPreview({ data }: Props) {
           {/* Schedule Table (Keep original purple design) */}
           {data.examSettings.show_schedule && (
             <div className="flex-1 flex flex-col">
-              <h4 className="font-bold text-xs md:text-sm uppercase text-gray-800 mb-2 bg-purple-50 inline-block px-3 py-1 border-l-4 border-purple-600">
-                Jadwal Ujian Peserta
+              <h4 className="font-bold text-base md:text-lg uppercase text-gray-900 border-b border-gray-800 pb-2 mb-4">
+                JADWAL UJIAN PESERTA
               </h4>
               
               {hasSchedules ? (
