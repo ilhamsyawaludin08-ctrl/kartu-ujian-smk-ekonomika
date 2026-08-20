@@ -97,7 +97,7 @@ export default function ExamCardPreview({ data }: Props) {
           </div>
 
           {/* Content Wrapper */}
-          <div className="relative z-10 p-6 md:p-8 print:p-0 print:pb-24 pb-24 w-full flex-1 flex flex-col">
+          <div className="relative z-10 p-6 md:p-8 print:p-0 print:pb-48 pb-48 w-full flex-1 flex flex-col">
             
             {/* Header */}
             <div className={`flex flex-col items-center justify-center border-b border-gray-800 ${headerPaddingClass}`}>
