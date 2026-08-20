@@ -35,7 +35,8 @@ const MyDocument = ({ data }: Props) => {
   // Dynamic values
   const tableFontSize = isVeryCompact ? 8 : isCompact ? 9 : 10;
   const tableHeaderFontSize = isVeryCompact ? 8 : 9;
-  const tablePadding = isVeryCompact ? '4 4' : isCompact ? '5 4' : '6 4';
+  const padV = isVeryCompact ? 4 : isCompact ? 5 : 6;
+  const padH = 4;
   const tableGapHeight = isVeryCompact ? 4 : isCompact ? 8 : 12;
   const headerMarginBottom = isVeryCompact ? 8 : isCompact ? 12 : 16;
   const infoMarginBottom = isVeryCompact ? 8 : isCompact ? 12 : 16;
@@ -121,45 +122,39 @@ const MyDocument = ({ data }: Props) => {
       borderBottom: '1pt solid #e5e7eb',
       paddingBottom: 2,
     },
-    infoValueBox: {
-      padding: '2 6',
-      backgroundColor: '#f3e8ff',
-      border: '1pt solid #e9d5ff',
-      color: '#4c1d95',
+    sectionTitle: {
+      fontSize: 10,
       fontWeight: 'bold',
-      fontFamily: 'Courier',
-      letterSpacing: 1,
+      color: '#111827',
+      textTransform: 'uppercase',
+      borderBottom: '1pt solid #1f2937',
+      paddingBottom: 4,
+      marginBottom: 8,
     },
-    serverContainer: {
-      width: 180,
-      borderLeft: '2pt solid #e9d5ff',
-      paddingLeft: 10,
-      marginRight: 15,
+    boxesRow: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      marginBottom: infoMarginBottom,
+    },
+    box: {
+      flex: 1,
+      border: '1pt solid #1f2937',
+      borderRadius: 4,
+      padding: 6,
+      alignItems: 'center',
       justifyContent: 'center',
+      marginHorizontal: 4,
     },
-    serverTitle: {
+    boxLabel: {
       fontSize: 8,
       color: '#6b7280',
-      fontWeight: 'bold',
       textTransform: 'uppercase',
       marginBottom: 4,
     },
-    serverBox: {
-      backgroundColor: '#f9fafb',
-      border: '1pt solid #e5e7eb',
-      padding: 6,
-      borderRadius: 2,
-    },
-    serverText: {
-      fontSize: 8,
-      color: '#4b5563',
-    },
-    serverLink: {
-      fontFamily: 'Courier',
-      color: '#6b21a8',
+    boxValue: {
+      fontSize: 12,
       fontWeight: 'bold',
-      fontSize: 9,
-      marginTop: 4,
+      color: '#111827',
     },
     photoContainer: {
       width: photoWidth,
@@ -186,7 +181,7 @@ const MyDocument = ({ data }: Props) => {
       marginTop: 2,
     },
     scheduleContainer: {
-      flex: 1, // Take remaining space
+      marginTop: 4,
     },
     scheduleTitle: {
       fontSize: 9,
@@ -212,7 +207,8 @@ const MyDocument = ({ data }: Props) => {
       borderBottom: '2pt solid #d8b4fe',
     },
     tableColHeader: {
-      padding: tablePadding,
+      paddingVertical: padV,
+      paddingHorizontal: padH,
       fontSize: tableHeaderFontSize,
       fontWeight: 'bold',
       color: '#4c1d95',
@@ -226,14 +222,16 @@ const MyDocument = ({ data }: Props) => {
     tableColRoom: { width: '15%', textAlign: 'center' },
     tableColSignature: { width: '15%', textAlign: 'center' },
     tableCell: {
-      padding: tablePadding,
+      paddingVertical: padV,
+      paddingHorizontal: padH,
       fontSize: tableFontSize,
       borderRight: '1pt solid #d1d5db',
       borderLeft: '1pt solid #d1d5db',
       justifyContent: 'center',
     },
     tableCellDate: {
-      padding: tablePadding,
+      paddingVertical: padV,
+      paddingHorizontal: padH,
       fontSize: tableFontSize,
       borderRight: '1pt solid #d1d5db',
       borderLeft: '1pt solid #d1d5db',
@@ -317,7 +315,7 @@ const MyDocument = ({ data }: Props) => {
           
           {/* Header Image */}
           <View style={styles.headerImageContainer}>
-            <Image src="/header_gds.png" />
+            <Image src="/header_gds.png" style={{ width: '100%', height: 'auto' }} />
           </View>
           
           {/* Title Block */}
@@ -330,55 +328,62 @@ const MyDocument = ({ data }: Props) => {
           {/* Content Body Wrapper */}
           <View style={styles.bodyContainer}>
             {/* Identity Section */}
+            <Text style={styles.sectionTitle}>DATA PESERTA</Text>
+            
             <View style={styles.body}>
-            <View style={styles.infoContainer}>
-              <View style={styles.infoRow}>
-                <Text style={styles.infoLabel}>Nama Peserta</Text>
-                <Text style={styles.infoColon}>:</Text>
-                <Text style={[styles.infoValue, { textTransform: 'uppercase' }]}>{data.student.full_name}</Text>
-              </View>
-              <View style={styles.infoRow}>
-                <Text style={styles.infoLabel}>NISN</Text>
-                <Text style={styles.infoColon}>:</Text>
-                <Text style={styles.infoValue}>{data.student.nisn}</Text>
-              </View>
-              <View style={styles.infoRow}>
-                <Text style={styles.infoLabel}>Kelas / Jurusan</Text>
-                <Text style={styles.infoColon}>:</Text>
-                <Text style={styles.infoValue}>{data.classInfo.class_name} - {data.classInfo.major}</Text>
-              </View>
-              <View style={styles.infoRow}>
-                <Text style={styles.infoLabel}>Nomor Kartu</Text>
-                <Text style={styles.infoColon}>:</Text>
-                <View style={styles.infoValueBox}>
-                  <Text>{data.examCard.card_number}</Text>
+              <View style={styles.infoContainer}>
+                <View style={styles.infoRow}>
+                  <Text style={styles.infoLabel}>NISN</Text>
+                  <Text style={styles.infoColon}>:</Text>
+                  <Text style={styles.infoValue}>{data.student.nisn}</Text>
                 </View>
+                <View style={styles.infoRow}>
+                  <Text style={styles.infoLabel}>Nama Lengkap</Text>
+                  <Text style={styles.infoColon}>:</Text>
+                  <Text style={[styles.infoValue, { textTransform: 'uppercase' }]}>{data.student.full_name}</Text>
+                </View>
+                <View style={styles.infoRow}>
+                  <Text style={styles.infoLabel}>TTL</Text>
+                  <Text style={styles.infoColon}>:</Text>
+                  <Text style={styles.infoValue}>
+                    {data.student.place_of_birth || '-'}, {data.student.date_of_birth ? new Date(data.student.date_of_birth).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' }) : '-'}
+                  </Text>
+                </View>
+                <View style={styles.infoRow}>
+                  <Text style={styles.infoLabel}>Kelas / Jurusan</Text>
+                  <Text style={styles.infoColon}>:</Text>
+                  <Text style={styles.infoValue}>{data.classInfo.class_name} / {data.classInfo.major}</Text>
+                </View>
+              </View>
+
+              {data.examSettings.show_photo && (
+                <View style={styles.photoContainer}>
+                  {data.student.photo_url ? (
+                    <Image src={data.student.photo_url} />
+                  ) : (
+                    <View style={styles.photoTextContainer}>
+                      <Text style={styles.photoText}>Pas Foto</Text>
+                      <Text style={styles.photoTextBold}>3 × 4</Text>
+                    </View>
+                  )}
+                </View>
+              )}
+            </View>
+
+            <View style={styles.boxesRow}>
+              <View style={styles.box}>
+                <Text style={styles.boxLabel}>Nomor Ujian</Text>
+                <Text style={styles.boxValue}>{data.examCard.card_number}</Text>
+              </View>
+              <View style={styles.box}>
+                <Text style={styles.boxLabel}>Ruang Ujian</Text>
+                <Text style={styles.boxValue}>{data.student.exam_room || '-'}</Text>
+              </View>
+              <View style={styles.box}>
+                <Text style={styles.boxLabel}>Password</Text>
+                <Text style={styles.boxValue}>{data.student.exam_password || '-'}</Text>
               </View>
             </View>
-            
-            {data.exam.server_url && (
-              <View style={styles.serverContainer}>
-                <Text style={styles.serverTitle}>Informasi Server Ujian:</Text>
-                <View style={styles.serverBox}>
-                  <Text style={styles.serverText}>Link Akses Ujian:</Text>
-                  <Text style={styles.serverLink}>{data.exam.server_url}</Text>
-                </View>
-              </View>
-            )}
-
-            {data.examSettings.show_photo && (
-              <View style={styles.photoContainer}>
-                {data.student.photo_url ? (
-                  <Image src={data.student.photo_url} />
-                ) : (
-                  <View style={styles.photoTextContainer}>
-                    <Text style={styles.photoText}>Pas Foto</Text>
-                    <Text style={styles.photoTextBold}>3 × 4</Text>
-                  </View>
-                )}
-              </View>
-            )}
-          </View>
 
           {/* Schedule Table */}
           {data.examSettings.show_schedule && (
