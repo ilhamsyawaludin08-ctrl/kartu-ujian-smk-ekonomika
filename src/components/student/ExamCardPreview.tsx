@@ -93,16 +93,13 @@ export default function ExamCardPreview({ data }: Props) {
         >
           
           {/* Header */}
-          <div className={`flex items-center justify-between gap-4 md:gap-6 border-b border-gray-800 ${headerPaddingClass}`}>
-            <div className="w-20 h-20 md:w-24 md:h-24 relative flex-shrink-0">
-              <img src="/logo.png" alt="Logo SMK Ekonomika" className="w-full h-full object-contain" />
+          <div className={`flex flex-col items-center justify-center border-b border-gray-800 ${headerPaddingClass}`}>
+            <div className="w-full mb-3">
+              <img src="/header_gds.png" alt="Header SMK Ekonomika" className="w-full h-auto object-contain" />
             </div>
             
-            <div className="flex-1 text-center pr-20 md:pr-24 print:pr-24"> 
-              <h1 className="text-xl md:text-2xl font-extrabold text-gray-900 tracking-wider">
-                {data.schoolProfile.school_name}
-              </h1>
-              <h2 className="text-lg md:text-xl font-bold text-gray-900 mt-1">
+            <div className="text-center w-full"> 
+              <h2 className="text-lg md:text-xl font-bold text-gray-900">
                 {data.examSettings.card_title || "KARTU PESERTA UJIAN"}
               </h2>
               <p className="text-xs md:text-sm text-gray-600 mt-1">
