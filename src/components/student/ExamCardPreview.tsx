@@ -106,14 +106,14 @@ export default function ExamCardPreview({ data }: Props) {
             <div className="w-full flex-1 flex flex-col">
               
               {/* Title Block */}
-              <div className="text-center w-full pb-4 pt-3 border-b-2 border-gray-800"> 
-                <h2 className="text-xl md:text-2xl font-extrabold text-gray-900 uppercase">
+              <div className="text-center w-full pb-2 pt-2 border-b-2 border-gray-800"> 
+                <h2 className="text-base md:text-lg font-extrabold text-gray-900 uppercase">
                   KARTU PESERTA
                 </h2>
-                <h3 className="text-lg md:text-xl font-bold text-gray-900 mt-1 uppercase">
+                <h3 className="text-sm md:text-base font-bold text-gray-900 mt-0.5 uppercase">
                   {data.exam.exam_name} ({data.exam.semester})
                 </h3>
-                <p className="text-base md:text-lg font-bold text-gray-900 mt-1 uppercase">
+                <p className="text-xs md:text-sm font-bold text-gray-900 mt-0.5 uppercase">
                   TAHUN PELAJARAN {data.exam.academic_year}
                 </p>
               </div>
