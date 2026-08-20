@@ -57,7 +57,7 @@ export default function ExamCardPreview({ data }: Props) {
         @media print {
           @page {
             size: A4 portrait;
-            margin: 0; /* Menghilangkan URL dan header/footer bawaan browser */
+            margin: 5mm; /* Beri sedikit margin aman di kertas */
           }
           body {
             -webkit-print-color-adjust: exact !important;
@@ -72,15 +72,13 @@ export default function ExamCardPreview({ data }: Props) {
             visibility: visible;
           }
           #print-container {
-            position: absolute;
-            left: 0;
-            top: 0;
-            width: 277mm !important; /* Force wide landscape layout */
-            height: auto;
-            margin: 10mm;
-            /* Di orientasi Portrait, container dengan lebar 277mm akan membuat 
-               Chrome otomatis melakukan "Shrink to Fit", menekan ukurannya 
-               sehingga selalu pas di 1 halaman tanpa perlu setting Pages per Sheet! */
+            position: absolute !important;
+            left: 0 !important;
+            top: 0 !important;
+            width: 280mm !important; /* Paksa ukuran lebar landscape */
+            max-width: 280mm !important;
+            height: auto !important;
+            margin: 0 !important; /* Jangan pakai margin yang mendorong elemen ke kanan */
           }
         }
       `}} />
