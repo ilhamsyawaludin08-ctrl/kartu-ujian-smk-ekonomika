@@ -33,17 +33,17 @@ const MyDocument = ({ data }: Props) => {
   const isVeryCompact = scheduleCount > 12;
 
   // Dynamic values
-  const tableFontSize = 7;
-  const tableHeaderFontSize = 7;
-  const padV = 3;
-  const padH = 4;
-  const tableGapHeight = 4;
-  const headerMarginBottom = 8;
-  const infoMarginBottom = 8;
-  const footerMarginTop = 8;
-  const photoWidth = 60;
-  const photoHeight = 80;
-  const sigLineMarginTop = 20;
+  const tableFontSize = 9;
+  const tableHeaderFontSize = 9;
+  const padV = 5;
+  const padH = 6;
+  const tableGapHeight = 6;
+  const headerMarginBottom = 16;
+  const infoMarginBottom = 16;
+  const footerMarginTop = 16;
+  const photoWidth = 70;
+  const photoHeight = 93;
+  const sigLineMarginTop = 40;
 
   const styles = StyleSheet.create({
     page: {
@@ -63,26 +63,26 @@ const MyDocument = ({ data }: Props) => {
     },
     titleBlock: {
       alignItems: 'center',
-      paddingBottom: 4,
+      paddingBottom: 6,
       paddingTop: 0,
       borderBottom: '2pt solid #1f2937',
     },
     titleText: {
-      fontSize: 12,
+      fontSize: 14,
       fontWeight: 'extrabold',
       color: '#111827',
       textTransform: 'uppercase',
-      marginBottom: 2,
+      marginBottom: 4,
     },
     subTitleMain: {
-      fontSize: 10,
+      fontSize: 12,
       fontWeight: 'bold',
       color: '#111827',
       textTransform: 'uppercase',
-      marginBottom: 2,
+      marginBottom: 4,
     },
     subTitle: {
-      fontSize: 8,
+      fontSize: 10,
       fontWeight: 'bold',
       color: '#111827',
       textTransform: 'uppercase',
@@ -105,15 +105,15 @@ const MyDocument = ({ data }: Props) => {
     infoRow: {
       flexDirection: 'row',
       marginBottom: 6,
-      fontSize: 10,
+      fontSize: 11,
       alignItems: 'center',
     },
     infoLabel: {
-      width: 75,
+      width: 85,
       color: '#4b5563',
     },
     infoColon: {
-      width: 8,
+      width: 10,
     },
     infoValue: {
       flex: 1,
@@ -122,12 +122,12 @@ const MyDocument = ({ data }: Props) => {
       paddingBottom: 2,
     },
     sectionTitle: {
-      fontSize: 11,
+      fontSize: 12,
       fontWeight: 'bold',
       color: '#111827',
       textTransform: 'uppercase',
       borderBottom: '1pt solid #1f2937',
-      paddingBottom: 2,
+      paddingBottom: 4,
       marginBottom: 6,
     },
     boxesRow: {
@@ -139,19 +139,19 @@ const MyDocument = ({ data }: Props) => {
       flex: 1,
       border: '1pt solid #1f2937',
       borderRadius: 4,
-      padding: 4,
+      padding: 8,
       alignItems: 'center',
       justifyContent: 'center',
       marginHorizontal: 4,
     },
     boxLabel: {
-      fontSize: 7,
+      fontSize: 9,
       color: '#6b7280',
       textTransform: 'uppercase',
-      marginBottom: 2,
+      marginBottom: 4,
     },
     boxValue: {
-      fontSize: 10,
+      fontSize: 12,
       fontWeight: 'bold',
       color: '#111827',
     },
@@ -183,12 +183,12 @@ const MyDocument = ({ data }: Props) => {
       marginTop: 4,
     },
     scheduleTitle: {
-      fontSize: 11,
+      fontSize: 12,
       fontWeight: 'bold',
       color: '#111827',
       textTransform: 'uppercase',
       borderBottom: '1pt solid #1f2937',
-      paddingBottom: 2,
+      paddingBottom: 4,
       marginBottom: 6,
     },
     table: {
@@ -257,36 +257,37 @@ const MyDocument = ({ data }: Props) => {
       paddingRight: 30,
     },
     notesBox: {
-      border: '1pt solid #e5e7eb',
-      backgroundColor: '#f9fafb',
-      padding: 4,
-      borderRadius: 2,
+      border: '1pt solid #bfdbfe',
+      backgroundColor: '#eff6ff',
+      padding: 8,
+      borderRadius: 4,
     },
     notesTitle: {
-      fontSize: 7,
+      fontSize: 10,
       fontWeight: 'bold',
-      textTransform: 'uppercase',
-      marginBottom: 2,
-      color: '#1f2937',
+      marginBottom: 4,
+      color: '#1e3a8a',
     },
     notesText: {
-      fontSize: 6,
-      color: '#374151',
+      fontSize: 8,
+      color: '#1e40af',
       lineHeight: 1.3,
     },
     signatureContainer: {
-      width: 120,
+      width: 140,
       alignItems: 'center',
     },
     signatureTitle: {
-      fontSize: 7,
+      fontSize: 9,
       color: '#1f2937',
       marginBottom: 2,
     },
     signatureRole: {
-      fontSize: 7,
+      fontSize: 9,
       fontWeight: 'bold',
       color: '#1f2937',
+      textTransform: 'uppercase',
+      letterSpacing: 1,
     },
     signatureLine: {
       borderBottom: '1pt solid #111827',
@@ -295,7 +296,7 @@ const MyDocument = ({ data }: Props) => {
       marginBottom: 2,
     },
     chairpersonName: {
-      fontSize: 7,
+      fontSize: 9,
       fontWeight: 'bold',
       textAlign: 'center',
       textTransform: 'uppercase',
@@ -304,7 +305,7 @@ const MyDocument = ({ data }: Props) => {
 
   return (
     <Document>
-      <Page size="A4" orientation="landscape" style={styles.page}>
+      <Page size="A4" orientation="portrait" style={styles.page}>
         <View style={styles.card}>
           
           {/* Header Image */}
