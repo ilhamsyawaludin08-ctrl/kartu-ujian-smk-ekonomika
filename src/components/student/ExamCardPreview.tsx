@@ -91,35 +91,35 @@ export default function ExamCardPreview({ data }: Props) {
           id="print-container"
           className="w-full max-w-[297mm] min-h-[210mm] print:min-h-0 bg-white border border-gray-300 print:border-0 shadow-xl print:shadow-none relative font-sans text-gray-900 mx-auto flex flex-col print:break-inside-avoid overflow-hidden"
         >
-          {/* Footer / Background Image Overlay */}
-          <div className="absolute inset-0 z-0 pointer-events-none flex flex-col justify-end">
-            <img src="/footer_gds.png" alt="Footer Background" className="w-full h-auto object-cover object-bottom" />
-          </div>
 
           {/* Content Wrapper */}
-          <div className="relative z-10 p-6 md:p-8 print:p-0 print:pb-48 pb-48 w-full flex-1 flex flex-col">
+          <div className="relative z-10 p-6 md:p-8 print:p-0 w-full flex-1 flex flex-col">
             
-            {/* Header */}
-            <div className={`flex flex-col items-center justify-center border-b border-gray-800 ${headerPaddingClass}`}>
-            <div className="w-full mb-3">
-              <img src="/header_gds.png" alt="Header SMK Ekonomika" className="w-full h-auto object-contain" />
+            {/* Header Image Only (Borderless) */}
+            <div className={`w-full flex flex-col items-center justify-center ${headerPaddingClass}`}>
+              <div className="w-full mb-3">
+                <img src="/header_gds.png" alt="Header SMK Ekonomika" className="w-full h-auto object-contain" />
+              </div>
             </div>
             
-            <div className="text-center w-full pb-2"> 
-              <h2 className="text-base md:text-lg font-extrabold text-gray-900 uppercase">
-                KARTU PESERTA
-              </h2>
-              <h3 className="text-sm md:text-base font-bold text-gray-900 mt-0.5 uppercase">
-                {data.exam.exam_name} ({data.exam.semester})
-              </h3>
-              <p className="text-xs md:text-sm font-bold text-gray-900 mt-0.5 uppercase">
-                TAHUN PELAJARAN {data.exam.academic_year}
-              </p>
-            </div>
-          </div>
+            {/* Boxed Content (Bordered on left, right, bottom) */}
+            <div className="w-full flex-1 flex flex-col print:border-x-2 print:border-b-2 print:border-gray-800">
+              
+              {/* Title Block */}
+              <div className="text-center w-full pb-2 pt-2 border-b-2 border-gray-800"> 
+                <h2 className="text-base md:text-lg font-extrabold text-gray-900 uppercase">
+                  KARTU PESERTA
+                </h2>
+                <h3 className="text-sm md:text-base font-bold text-gray-900 mt-0.5 uppercase">
+                  {data.exam.exam_name} ({data.exam.semester})
+                </h3>
+                <p className="text-xs md:text-sm font-bold text-gray-900 mt-0.5 uppercase">
+                  TAHUN PELAJARAN {data.exam.academic_year}
+                </p>
+              </div>
 
-          {/* Main Content Body (with padding to avoid purple bar on the right) */}
-          <div className="w-full flex-1 flex flex-col print:pr-28 print:pl-8 print:pt-4">
+              {/* Main Content Body */}
+              <div className="w-full flex-1 flex flex-col print:p-6 p-4">
 
           {/* Section 1: DATA PESERTA */}
           <h3 className="font-bold text-sm md:text-base uppercase text-gray-900 border-b border-gray-800 pb-2 mb-4">
@@ -296,6 +296,7 @@ export default function ExamCardPreview({ data }: Props) {
                 {data.examSettings.chairperson_name || '( .......................................... )'}
               </p>
             </div>
+          </div>
           </div>
           </div>
           </div>
