@@ -51,66 +51,46 @@ const MyDocument = ({ data }: Props) => {
       backgroundColor: '#ffffff',
     },
     card: {
-      padding: '15 25',
       width: '100%',
       height: '100%',
-      border: '1pt solid #ccc',
+      border: '2pt solid #1f2937',
       flexDirection: 'column',
     },
-    header: {
-      flexDirection: 'row',
-      borderBottom: '3pt solid #6b21a8',
-      paddingBottom: isVeryCompact ? 6 : 10,
-      marginBottom: headerMarginBottom,
-      alignItems: 'center',
+    headerImageContainer: {
+      width: '100%',
+      marginBottom: 0,
+      borderBottom: '0pt solid #1f2937', // No border line below header image per latest request
     },
-    logoContainer: {
-      width: 60,
-      height: 60,
-      marginRight: 15,
-      justifyContent: 'center',
+    titleBlock: {
       alignItems: 'center',
+      paddingVertical: 10,
+      borderBottom: '2pt solid #1f2937',
     },
-    headerTextContainer: {
-      flex: 1,
-      alignItems: 'center',
-      paddingRight: 75, // Balance logo
-    },
-    schoolName: {
+    titleText: {
       fontSize: 16,
       fontWeight: 'extrabold',
-      color: '#4c1d95',
+      color: '#111827',
       textTransform: 'uppercase',
-      letterSpacing: 1,
-    },
-    address: {
-      fontSize: 8,
-      color: '#4b5563',
-      marginTop: 2,
-      marginBottom: 6,
-      textAlign: 'center',
-    },
-    titleContainer: {
-      alignItems: 'center',
-    },
-    title: {
-      fontSize: 12,
-      fontWeight: 'bold',
-      textTransform: 'uppercase',
-      borderBottom: '1pt solid #111827',
-      paddingBottom: 2,
-      marginBottom: 2,
+      marginBottom: 4,
     },
     subTitleMain: {
-      fontSize: 10,
+      fontSize: 14,
       fontWeight: 'bold',
-      color: '#6b21a8',
+      color: '#111827',
       textTransform: 'uppercase',
+      marginBottom: 4,
     },
     subTitle: {
-      fontSize: 8,
-      color: '#4b5563',
-      marginTop: 2,
+      fontSize: 12,
+      fontWeight: 'bold',
+      color: '#111827',
+      textTransform: 'uppercase',
+    },
+    bodyContainer: {
+      flex: 1,
+      paddingHorizontal: 25,
+      paddingBottom: 25,
+      paddingTop: 15,
     },
     body: {
       flexDirection: 'row',
@@ -335,25 +315,22 @@ const MyDocument = ({ data }: Props) => {
       <Page size="A4" orientation="landscape" style={styles.page}>
         <View style={styles.card}>
           
-          {/* Header */}
-          <View style={styles.header}>
-            <View style={styles.logoContainer}>
-              <Image src="/logo.png" />
-            </View>
-            <View style={styles.headerTextContainer}>
-              <Text style={styles.schoolName}>{data.schoolProfile.school_name}</Text>
-              <Text style={styles.address}>{data.schoolProfile.address}</Text>
-              
-              <View style={styles.titleContainer}>
-                <Text style={styles.title}>KARTU PESERTA UJIAN</Text>
-                <Text style={styles.subTitleMain}>{data.examSettings.card_title || data.exam.exam_name}</Text>
-                <Text style={styles.subTitle}>Tahun Ajaran {data.exam.academic_year} — Semester {data.exam.semester}</Text>
-              </View>
-            </View>
+          {/* Header Image */}
+          <View style={styles.headerImageContainer}>
+            <Image src="/header_gds.png" />
+          </View>
+          
+          {/* Title Block */}
+          <View style={styles.titleBlock}>
+            <Text style={styles.titleText}>KARTU PESERTA</Text>
+            <Text style={styles.subTitleMain}>{data.exam.exam_name} ({data.exam.semester})</Text>
+            <Text style={styles.subTitle}>TAHUN PELAJARAN {data.exam.academic_year}</Text>
           </View>
 
-          {/* Identity Section */}
-          <View style={styles.body}>
+          {/* Content Body Wrapper */}
+          <View style={styles.bodyContainer}>
+            {/* Identity Section */}
+            <View style={styles.body}>
             <View style={styles.infoContainer}>
               <View style={styles.infoRow}>
                 <Text style={styles.infoLabel}>Nama Peserta</Text>
@@ -469,6 +446,7 @@ const MyDocument = ({ data }: Props) => {
               <View style={styles.signatureLine}></View>
               <Text style={styles.chairpersonName}>{data.examSettings.chairperson_name || '( .......................................... )'}</Text>
             </View>
+          </View>
           </View>
 
         </View>
