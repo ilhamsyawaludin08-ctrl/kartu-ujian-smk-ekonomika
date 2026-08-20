@@ -88,7 +88,7 @@ export default function ExamCardPreview({ data }: Props) {
         {/* The Card - A4 Landscape Dimensions */}
         <div 
           id="print-container"
-          className="w-full max-w-[297mm] min-h-[210mm] bg-white border border-gray-300 print:border-0 shadow-xl print:shadow-none p-6 md:p-8 print:p-0 relative font-sans text-gray-900 mx-auto flex flex-col"
+          className="w-full max-w-[297mm] min-h-[210mm] print:min-h-0 bg-white border border-gray-300 print:border-2 print:border-gray-800 shadow-xl print:shadow-none p-6 md:p-8 print:p-8 relative font-sans text-gray-900 mx-auto flex flex-col print:break-inside-avoid"
         >
           
           {/* Header */}
@@ -253,7 +253,7 @@ export default function ExamCardPreview({ data }: Props) {
           )}
 
           {/* Footer Notes & Signature */}
-          <div className="mt-4 md:mt-6 flex justify-between items-end text-xs md:text-sm pt-2">
+          <div className="mt-4 md:mt-6 flex justify-between items-end text-xs md:text-sm pt-2 print:break-inside-avoid">
             <div className="flex-1 pr-8 md:pr-12">
               {/* Box Ketentuan Ujian based on mockup */}
               <div className="bg-blue-50/50 border border-blue-200 p-3 md:p-4 rounded-lg max-w-xl">
@@ -269,11 +269,11 @@ export default function ExamCardPreview({ data }: Props) {
               </div>
             </div>
             
-            <div className="w-48 md:w-56 text-center flex flex-col items-center flex-shrink-0">
-              <p className="mb-1 text-gray-800 text-[10px] md:text-xs">Mengetahui,</p>
-              <p className="font-bold text-gray-900 mb-2 uppercase tracking-wide text-xs">Panitia Pelaksana</p>
+            <div className="w-56 md:w-64 text-center flex flex-col items-center flex-shrink-0">
+              <p className="mb-1 text-gray-800 text-xs md:text-sm">Mengetahui,</p>
+              <p className="font-bold text-gray-900 mb-2 uppercase tracking-wide text-sm md:text-base">Panitia Pelaksana</p>
               
-              <div className="h-16 flex items-center justify-center mb-1 w-full">
+              <div className="h-24 md:h-28 flex items-center justify-center mb-2 w-full">
                 {data.examSettings.signature_url ? (
                   <img src={data.examSettings.signature_url} alt="Tanda Tangan" className="max-h-full max-w-full object-contain" />
                 ) : (
@@ -281,7 +281,7 @@ export default function ExamCardPreview({ data }: Props) {
                 )}
               </div>
               
-              <p className="font-bold text-gray-900 border-b border-gray-800 w-full pb-1 uppercase text-[10px] md:text-xs truncate px-2">
+              <p className="font-bold text-gray-900 border-b border-gray-800 w-full pb-1 uppercase text-xs md:text-sm truncate px-2">
                 {data.examSettings.chairperson_name || '( .......................................... )'}
               </p>
             </div>
