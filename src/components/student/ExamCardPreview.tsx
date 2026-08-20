@@ -46,8 +46,8 @@ export default function ExamCardPreview({ data }: Props) {
   const tablePaddingClass = isVeryCompact ? 'px-2 py-1' : isCompact ? 'px-2 py-1.5' : 'px-3 py-2';
   const headerPaddingClass = isVeryCompact ? 'pb-2 mb-3' : isCompact ? 'pb-3 mb-4' : 'pb-4 mb-6';
   const gapClass = isVeryCompact ? 'h-1' : isCompact ? 'h-2' : 'h-3';
-  const infoTextClass = isVeryCompact ? 'text-[10px]' : 'text-xs md:text-sm';
-  const infoPaddingClass = isVeryCompact ? 'py-0.5' : 'py-1';
+  const infoTextClass = isVeryCompact ? 'text-xs' : 'text-sm md:text-base';
+  const infoPaddingClass = isVeryCompact ? 'py-1' : 'py-1.5';
 
   return (
     <div className="w-full flex flex-col items-center min-h-screen bg-gray-100 print:bg-white print:min-h-0">
@@ -122,7 +122,7 @@ export default function ExamCardPreview({ data }: Props) {
               <div className="w-full flex-1 flex flex-col print:p-6 p-4">
 
           {/* Section 1: DATA PESERTA */}
-          <h3 className="font-bold text-sm md:text-base uppercase text-gray-900 border-b border-gray-800 pb-2 mb-4">
+          <h3 className="font-bold text-base md:text-lg uppercase text-gray-900 border-b border-gray-800 pb-2 mb-4">
             DATA PESERTA
           </h3>
           

@@ -104,8 +104,8 @@ const MyDocument = ({ data }: Props) => {
     },
     infoRow: {
       flexDirection: 'row',
-      marginBottom: 4,
-      fontSize: 9,
+      marginBottom: 6,
+      fontSize: 10,
       alignItems: 'center',
     },
     infoLabel: {
@@ -122,7 +122,7 @@ const MyDocument = ({ data }: Props) => {
       paddingBottom: 2,
     },
     sectionTitle: {
-      fontSize: 9,
+      fontSize: 11,
       fontWeight: 'bold',
       color: '#111827',
       textTransform: 'uppercase',
