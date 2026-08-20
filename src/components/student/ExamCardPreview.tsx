@@ -108,7 +108,7 @@ export default function ExamCardPreview({ data }: Props) {
               {/* Title Block */}
               <div className="text-center w-full pb-2 pt-0 border-b-2 border-gray-800"> 
                 <h2 className="text-base md:text-lg font-extrabold text-gray-900 uppercase">
-                  KARTU PESERTA
+                  KARTU PESERTA UJIAN
                 </h2>
                 <h3 className="text-sm md:text-base font-bold text-gray-900 mt-0.5 uppercase">
                   {data.exam.exam_name} ({data.exam.semester})
