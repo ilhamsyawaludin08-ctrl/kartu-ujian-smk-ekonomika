@@ -209,10 +209,7 @@ export default function ExamCardPreview({ data }: Props) {
                         <th className={`border-x border-purple-200 ${tablePaddingClass} text-left w-1/4 font-bold uppercase tracking-wide`}>Hari / Tanggal</th>
                         <th className={`border-x border-purple-200 ${tablePaddingClass} text-center w-1/6 font-bold uppercase tracking-wide`}>Waktu</th>
                         <th className={`border-x border-purple-200 ${tablePaddingClass} text-left font-bold uppercase tracking-wide`}>Mata Pelajaran</th>
-                        {data.examSettings.show_room && (
-                          <th className={`border-x border-purple-200 ${tablePaddingClass} text-center w-1/6 font-bold uppercase tracking-wide`}>Ruangan</th>
-                        )}
-                        <th className={`border-x border-purple-200 ${tablePaddingClass} text-center w-1/6 font-bold uppercase tracking-wide`}>Paraf Pengawas</th>
+                        <th className={`border-x border-purple-200 ${tablePaddingClass} text-center w-1/5 font-bold uppercase tracking-wide`}>Paraf Pengawas</th>
                       </tr>
                     </thead>
                     <tbody className="bg-white">
@@ -234,11 +231,6 @@ export default function ExamCardPreview({ data }: Props) {
                               <td className={`border border-gray-300 ${tablePaddingClass} font-bold text-gray-900`}>
                                 {sch.subject}
                               </td>
-                              {data.examSettings.show_room && (
-                                <td className={`border border-gray-300 ${tablePaddingClass} text-center font-medium text-gray-700`}>
-                                  {data.student.exam_room || '-'}
-                                </td>
-                              )}
                               <td className={`border border-gray-300 ${tablePaddingClass} text-center relative`}>
                                 <div className="absolute inset-x-3 bottom-2 border-b border-dotted border-gray-400"></div>
                               </td>
@@ -247,7 +239,7 @@ export default function ExamCardPreview({ data }: Props) {
                           {/* Visual gap between dates */}
                           {dateIndex < Object.keys(groupedSchedules).length - 1 && (
                             <tr>
-                              <td colSpan={data.examSettings.show_room ? 5 : 4} className={`${gapClass} bg-gray-50/50 border-x border-gray-300 border-y-0`}></td>
+                              <td colSpan={4} className={`${gapClass} bg-gray-50/50 border-x border-gray-300 border-y-0`}></td>
                             </tr>
                           )}
                         </React.Fragment>

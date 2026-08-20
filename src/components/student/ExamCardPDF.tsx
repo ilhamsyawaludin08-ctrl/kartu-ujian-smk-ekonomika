@@ -216,9 +216,8 @@ const MyDocument = ({ data }: Props) => {
     },
     tableColDate: { width: '25%' },
     tableColTime: { width: '15%', textAlign: 'center' },
-    tableColSubject: { width: '30%' },
-    tableColRoom: { width: '15%', textAlign: 'center' },
-    tableColSignature: { width: '15%', textAlign: 'center' },
+    tableColSubject: { width: '40%' },
+    tableColSignature: { width: '20%', textAlign: 'center' },
     tableCell: {
       paddingVertical: padV,
       paddingHorizontal: padH,
@@ -392,7 +391,6 @@ const MyDocument = ({ data }: Props) => {
                     <Text style={[styles.tableColHeader, styles.tableColDate]}>Hari / Tanggal</Text>
                     <Text style={[styles.tableColHeader, styles.tableColTime]}>Waktu</Text>
                     <Text style={[styles.tableColHeader, styles.tableColSubject]}>Mata Pelajaran</Text>
-                    <Text style={[styles.tableColHeader, styles.tableColRoom]}>Ruangan</Text>
                     <Text style={[styles.tableColHeader, styles.tableColSignature]}>Paraf Pengawas</Text>
                   </View>
                   
@@ -408,9 +406,6 @@ const MyDocument = ({ data }: Props) => {
                           </View>
                           <View style={[styles.tableCell, styles.tableColSubject, { fontWeight: 'bold' }]}>
                             <Text>{sch.subject}</Text>
-                          </View>
-                          <View style={[styles.tableCell, styles.tableColRoom]}>
-                            <Text>{sch.room || '-'}</Text>
                           </View>
                           <View style={[styles.tableCell, styles.tableColSignature]}>
                             <View style={styles.signatureCellLine}></View>
