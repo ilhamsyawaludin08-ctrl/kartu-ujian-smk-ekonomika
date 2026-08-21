@@ -38,7 +38,7 @@ const MyDocument = ({ data }: Props) => {
   const padV = 5;
   const padH = 6;
   const tableGapHeight = 6;
-  const headerMarginBottom = 16;
+  const headerMarginBottom = 2; // Matches HTML
   const infoMarginBottom = 16;
   const footerMarginTop = 16;
   const photoWidth = 70;
@@ -118,8 +118,6 @@ const MyDocument = ({ data }: Props) => {
     infoValue: {
       flex: 1,
       fontWeight: 'bold',
-      borderBottom: '1pt solid #e5e7eb',
-      paddingBottom: 2,
     },
     sectionTitle: {
       fontSize: 12,
@@ -127,8 +125,8 @@ const MyDocument = ({ data }: Props) => {
       color: '#111827',
       textTransform: 'uppercase',
       borderBottom: '1pt solid #1f2937',
-      paddingBottom: 4,
-      marginBottom: 6,
+      paddingBottom: 6,
+      marginBottom: 12,
     },
     boxesRow: {
       flexDirection: 'row',
@@ -158,7 +156,7 @@ const MyDocument = ({ data }: Props) => {
     photoContainer: {
       width: photoWidth,
       height: photoHeight,
-      border: '2pt solid #6b21a8',
+      border: '2pt solid #1f2937',
       padding: 1,
       backgroundColor: '#f9fafb',
     },
@@ -188,8 +186,8 @@ const MyDocument = ({ data }: Props) => {
       color: '#111827',
       textTransform: 'uppercase',
       borderBottom: '1pt solid #1f2937',
-      paddingBottom: 4,
-      marginBottom: 6,
+      paddingBottom: 6,
+      marginBottom: 12,
     },
     table: {
       width: '100%',
@@ -306,17 +304,14 @@ const MyDocument = ({ data }: Props) => {
       textTransform: 'uppercase',
       letterSpacing: 1,
     },
-    signatureLine: {
-      borderBottom: '1pt solid #111827',
-      width: '100%',
-      marginTop: sigLineMarginTop,
-      marginBottom: 2,
-    },
     chairpersonName: {
       fontSize: 9,
       fontWeight: 'bold',
       textAlign: 'center',
       textTransform: 'uppercase',
+      borderBottom: '1pt solid #111827',
+      width: '100%',
+      paddingBottom: 2,
     }
   });
 
@@ -371,7 +366,7 @@ const MyDocument = ({ data }: Props) => {
               {data.examSettings.show_photo && (
                 <View style={styles.photoContainer}>
                   {data.student.photo_url ? (
-                    <Image src={data.student.photo_url} />
+                    <Image src={data.student.photo_url} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                   ) : (
                     <View style={styles.photoTextContainer}>
                       <Text style={styles.photoText}>Pas Foto</Text>
@@ -448,7 +443,7 @@ const MyDocument = ({ data }: Props) => {
             <View style={styles.notesContainer}>
               {data.examSettings.exam_notes && (
                 <View style={styles.notesBox}>
-                  <Text style={styles.notesTitle}>Ketentuan Ujian:</Text>
+                  <Text style={styles.notesTitle}>Ketentuan Ujian</Text>
                   <Text style={styles.notesText}>{data.examSettings.exam_notes}</Text>
                   
                   {data.exam.server_url && (
@@ -463,7 +458,13 @@ const MyDocument = ({ data }: Props) => {
             <View style={styles.signatureContainer}>
               <Text style={styles.signatureTitle}>Mengetahui,</Text>
               <Text style={styles.signatureRole}>Panitia Pelaksana</Text>
-              <View style={styles.signatureLine}></View>
+              
+              <View style={{ height: 60, width: '100%', alignItems: 'center', justifyContent: 'center' }}>
+                {data.examSettings.signature_url ? (
+                  <Image src={data.examSettings.signature_url} style={{ maxHeight: '100%', maxWidth: '100%', objectFit: 'contain' }} />
+                ) : null}
+              </View>
+              
               <Text style={styles.chairpersonName}>{data.examSettings.chairperson_name || '( .......................................... )'}</Text>
             </View>
           </View>
