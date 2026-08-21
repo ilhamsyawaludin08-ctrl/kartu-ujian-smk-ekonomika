@@ -212,8 +212,8 @@ const MyDocument = ({ data }: Props) => {
       borderLeft: '1pt solid #e9d5ff',
     },
     tableColDate: { width: '25%' },
-    tableColTime: { width: '15%', textAlign: 'center' },
-    tableColSubject: { width: '40%' },
+    tableColTime: { width: '18%', textAlign: 'center' },
+    tableColSubject: { width: '37%' },
     tableColSignature: { width: '20%', textAlign: 'center' },
     tableCell: {
       paddingVertical: padV,
@@ -408,25 +408,28 @@ const MyDocument = ({ data }: Props) => {
                   
                   {Object.entries(groupedSchedules).map(([date, schedules], dateIndex) => (
                     <React.Fragment key={date}>
-                      {schedules.map((sch, index) => (
+                      {schedules.map((sch, index) => {
+                        const isLastInGroup = index === schedules.length - 1;
+                        const dateCellBottom = isLastInGroup ? { borderBottom: '1pt solid #d1d5db' } : {};
+                        const innerBottomBorder = { borderBottom: '1pt solid #d1d5db' };
+                        
+                        return (
                         <View style={styles.tableRow} key={sch.id}>
-                          <View style={[styles.tableCellDate, styles.tableColDate]}>
+                          <View style={[styles.tableCellDate, styles.tableColDate, dateCellBottom]}>
                             <Text>{index === 0 ? new Date(date).toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) : ''}</Text>
                           </View>
-                          <View style={[styles.tableCell, styles.tableColTime]}>
+                          <View style={[styles.tableCell, styles.tableColTime, innerBottomBorder]}>
                             <Text style={{ fontFamily: 'Courier' }}>{sch.start_time.slice(0,5)} - {sch.end_time.slice(0,5)}</Text>
                           </View>
-                          <View style={[styles.tableCell, styles.tableColSubject, { fontWeight: 'bold' }]}>
+                          <View style={[styles.tableCell, styles.tableColSubject, innerBottomBorder, { fontWeight: 'bold' }]}>
                             <Text>{sch.subject}</Text>
                           </View>
-                          <View style={[styles.tableCell, styles.tableColSignature]}>
+                          <View style={[styles.tableCell, styles.tableColSignature, innerBottomBorder]}>
                             <View style={styles.signatureCellLine}></View>
                           </View>
                         </View>
-                      ))}
-                      {dateIndex < Object.keys(groupedSchedules).length - 1 && (
-                        <View style={styles.tableGap}></View>
-                      )}
+                        );
+                      })}
                     </React.Fragment>
                   ))}
                 </View>
