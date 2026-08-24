@@ -37,6 +37,8 @@ export async function createExam(formData: FormData) {
 
   if (is_active) {
     await deactivateOtherExams(supabase);
+    // Reset semua siswa menjadi Pending untuk ujian baru yang diaktifkan
+    await supabase.from('students').update({ approval_status: 'Pending' }).neq('approval_status', 'Pending');
   }
 
   // Insert Exam
@@ -91,16 +93,22 @@ export async function createExam(formData: FormData) {
   if (settingsError) return { success: false, error: settingsError.message };
   
   revalidatePath('/dashboard/exams');
+  revalidatePath('/dashboard/students');
   return { success: true };
 }
 
 export async function updateExam(id: number, formData: FormData) {
   const supabase = await createClient();
   
+  const { data: oldExam } = await supabase.from('exams').select('is_active').eq('id', id).single();
   const is_active = formData.get('is_active') === 'true';
 
   if (is_active) {
     await deactivateOtherExams(supabase, id);
+    // Jika ujian ini sebelumnya tidak aktif dan sekarang diaktifkan, reset status siswa
+    if (!oldExam?.is_active) {
+      await supabase.from('students').update({ approval_status: 'Pending' }).neq('approval_status', 'Pending');
+    }
   }
 
   // Update Exam
@@ -163,6 +171,7 @@ export async function updateExam(id: number, formData: FormData) {
   }
   
   revalidatePath('/dashboard/exams');
+  revalidatePath('/dashboard/students');
   return { success: true };
 }
 
@@ -173,6 +182,8 @@ export async function toggleExamStatus(id: number, currentStatus: boolean) {
   if (newStatus) {
     // If we are activating this exam, deactivate others and their schedules
     await deactivateOtherExams(supabase, id);
+    // Reset semua siswa menjadi Pending untuk ujian yang baru diaktifkan
+    await supabase.from('students').update({ approval_status: 'Pending' }).neq('approval_status', 'Pending');
   }
 
   const { error } = await supabase.from('exams').update({ is_active: newStatus }).eq('id', id);
@@ -182,6 +193,7 @@ export async function toggleExamStatus(id: number, currentStatus: boolean) {
   await supabase.from('schedules').update({ is_active: newStatus }).eq('exam_id', id);
 
   revalidatePath('/dashboard/exams');
+  revalidatePath('/dashboard/students');
   return { success: true };
 }
 
