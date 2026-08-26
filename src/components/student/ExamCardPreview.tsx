@@ -56,7 +56,7 @@ export default function ExamCardPreview({ data }: Props) {
       <style dangerouslySetInnerHTML={{__html: `
         @media print {
           @page {
-            size: A4 portrait;
+            size: A5 landscape;
             margin: 5mm; /* Beri sedikit margin aman di kertas */
           }
           body {
@@ -75,21 +75,21 @@ export default function ExamCardPreview({ data }: Props) {
             position: absolute !important;
             left: 0 !important;
             top: 0 !important;
-            width: 280mm !important; /* Paksa ukuran lebar landscape */
-            max-width: 280mm !important;
+            width: 200mm !important; /* Paksa ukuran lebar A5 landscape */
+            max-width: 200mm !important;
             height: auto !important;
             margin: 0 !important; /* Jangan pakai margin yang mendorong elemen ke kanan */
           }
         }
       `}} />
 
-      {/* Card Preview Container - A4 Landscape is 297mm x 210mm */}
+      {/* Card Preview Container - A5 Landscape is 210mm x 148mm */}
       <div className="p-4 md:p-8 print:p-0 w-full flex justify-center">
         
-        {/* The Card - A4 Landscape Dimensions */}
+        {/* The Card - A5 Landscape Dimensions */}
         <div 
           id="print-container"
-          className="w-full max-w-[297mm] min-h-[210mm] print:min-h-0 bg-white border border-gray-300 print:border-2 print:border-gray-800 shadow-xl print:shadow-none relative font-sans text-gray-900 mx-auto flex flex-col print:break-inside-avoid overflow-hidden"
+          className="w-full max-w-[210mm] min-h-[148mm] print:min-h-0 bg-white border border-gray-300 print:border-2 print:border-gray-800 shadow-xl print:shadow-none relative font-sans text-gray-900 mx-auto flex flex-col print:break-inside-avoid overflow-hidden"
         >
 
           {/* Content Wrapper */}

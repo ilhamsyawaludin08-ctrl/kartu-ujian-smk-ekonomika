@@ -317,7 +317,7 @@ const MyDocument = ({ data }: Props) => {
 
   return (
     <Document>
-      <Page size="A4" orientation="portrait" style={styles.page}>
+      <Page size="A5" orientation="landscape" style={styles.page}>
         <View style={styles.card}>
           
           {/* Header Image */}
