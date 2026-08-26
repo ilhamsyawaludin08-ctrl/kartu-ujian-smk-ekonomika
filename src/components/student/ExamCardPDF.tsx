@@ -32,9 +32,9 @@ const MyDocument = ({ data }: Props) => {
   const isCompact = scheduleCount > 7;
   const isVeryCompact = scheduleCount > 12;
 
-  // Dynamic values
-  const tableFontSize = 9;
-  const tableHeaderFontSize = 9;
+  // Dynamic values (Diperbesar sesuai permintaan)
+  const tableFontSize = 11;
+  const tableHeaderFontSize = 11;
   const padV = 5;
   const padH = 6;
   const tableGapHeight = 6;
@@ -289,23 +289,24 @@ const MyDocument = ({ data }: Props) => {
       fontFamily: 'Courier',
     },
     signatureContainer: {
-      width: 140,
+      width: 180,
       alignItems: 'center',
     },
     signatureTitle: {
-      fontSize: 9,
+      fontSize: 11,
       color: '#1f2937',
-      marginBottom: 2,
+      marginBottom: 3,
     },
     signatureRole: {
-      fontSize: 9,
+      fontSize: 11,
       fontWeight: 'bold',
       color: '#1f2937',
       textTransform: 'uppercase',
       letterSpacing: 1,
+      marginBottom: 5,
     },
     chairpersonName: {
-      fontSize: 9,
+      fontSize: 11,
       fontWeight: 'bold',
       textAlign: 'center',
       textTransform: 'uppercase',
@@ -462,7 +463,7 @@ const MyDocument = ({ data }: Props) => {
               <Text style={styles.signatureTitle}>Mengetahui,</Text>
               <Text style={styles.signatureRole}>Panitia Pelaksana</Text>
               
-              <View style={{ height: 60, width: '100%', alignItems: 'center', justifyContent: 'center' }}>
+              <View style={{ height: 80, width: '100%', alignItems: 'center', justifyContent: 'center' }}>
                 {data.examSettings.signature_url ? (
                   <Image src={data.examSettings.signature_url} style={{ maxHeight: '100%', maxWidth: '100%', objectFit: 'contain' }} />
                 ) : null}

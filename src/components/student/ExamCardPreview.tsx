@@ -41,11 +41,11 @@ export default function ExamCardPreview({ data }: Props) {
   const isCompact = scheduleCount > 7;
   const isVeryCompact = scheduleCount > 12;
 
-  // CSS variables for dynamic scaling
-  const tableTextClass = isVeryCompact ? 'text-[9px]' : isCompact ? 'text-[10px]' : 'text-xs';
-  const tablePaddingClass = isVeryCompact ? 'px-2 py-1' : isCompact ? 'px-2 py-1.5' : 'px-3 py-2';
-  const headerPaddingClass = isVeryCompact ? 'pb-2 mb-3' : isCompact ? 'pb-3 mb-4' : 'pb-4 mb-6';
-  const gapClass = isVeryCompact ? 'h-1' : isCompact ? 'h-2' : 'h-3';
+  // CSS variables for dynamic scaling - Ukuran teks diperbesar sesuai permintaan
+  const tableTextClass = isVeryCompact ? 'text-[11px] md:text-xs' : isCompact ? 'text-xs md:text-[13px]' : 'text-sm md:text-base';
+  const tablePaddingClass = isVeryCompact ? 'px-1.5 py-1' : isCompact ? 'px-2 py-1.5' : 'px-3 py-2';
+  const headerPaddingClass = isVeryCompact ? 'pb-1.5 mb-2' : isCompact ? 'pb-2 mb-3' : 'pb-3 mb-4';
+  const gapClass = isVeryCompact ? 'h-1' : isCompact ? 'h-1.5' : 'h-2';
   const infoTextClass = isVeryCompact ? 'text-xs' : 'text-sm md:text-base';
   const infoPaddingClass = isVeryCompact ? 'py-1' : 'py-1.5';
 
@@ -273,18 +273,18 @@ export default function ExamCardPreview({ data }: Props) {
             </div>
             
             <div className="w-56 md:w-64 text-center flex flex-col items-center flex-shrink-0">
-              <p className="mb-1 text-gray-800 text-xs md:text-sm">Mengetahui,</p>
-              <p className="font-bold text-gray-900 mb-2 uppercase tracking-wide text-sm md:text-base">Panitia Pelaksana</p>
+              <p className="mb-1 text-gray-800 text-sm md:text-base">Mengetahui,</p>
+              <p className="font-bold text-gray-900 mb-2 uppercase tracking-wide text-base md:text-lg">Panitia Pelaksana</p>
               
-              <div className="h-24 md:h-28 flex items-center justify-center mb-2 w-full">
+              <div className="h-28 md:h-32 flex items-center justify-center mb-2 w-full">
                 {data.examSettings.signature_url ? (
-                  <img src={data.examSettings.signature_url} alt="Tanda Tangan" className="max-h-full max-w-full object-contain" />
+                  <img src={data.examSettings.signature_url} alt="Tanda Tangan" className="max-h-full max-w-full object-contain scale-110" />
                 ) : (
                   <div className="h-full"></div>
                 )}
               </div>
               
-              <p className="font-bold text-gray-900 border-b border-gray-800 w-full pb-1 uppercase text-xs md:text-sm truncate px-2">
+              <p className="font-bold text-gray-900 border-b border-gray-800 w-full pb-1 uppercase text-sm md:text-base truncate px-2">
                 {data.examSettings.chairperson_name || '( .......................................... )'}
               </p>
             </div>
