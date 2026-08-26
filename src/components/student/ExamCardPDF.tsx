@@ -107,7 +107,8 @@ const MyDocument = ({ data }: Props) => {
     body: {
       flexDirection: 'row',
       justifyContent: 'space-between',
-      alignItems: 'stretch', // stretch agar body mengikuti tinggi photo (mencegah tabrakan dengan boxes)
+      alignItems: 'stretch',
+      minHeight: photoHeight, // force parent height to match photo to prevent Yoga overlap bug
       marginBottom: 6,
     },
     infoContainer: {
