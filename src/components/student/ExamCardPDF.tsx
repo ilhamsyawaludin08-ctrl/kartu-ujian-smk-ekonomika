@@ -102,6 +102,7 @@ const MyDocument = ({ data }: Props) => {
       paddingHorizontal: 20,
       paddingBottom: 8,
       paddingTop: 8,
+      flexGrow: 1,
     },
     body: {
       flexDirection: 'row',
@@ -198,6 +199,7 @@ const MyDocument = ({ data }: Props) => {
     },
     scheduleContainer: {
       marginTop: 4,
+      flexGrow: 1,
     },
     scheduleTitle: {
       fontSize: 18,
