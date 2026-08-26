@@ -330,7 +330,7 @@ const MyDocument = ({ data }: Props) => {
   return (
     <Document>
       <Page size="A5" orientation="landscape" style={styles.page}>
-        <View style={styles.scaledWrapper}>
+        <View wrap={false} style={styles.scaledWrapper}>
           <View style={styles.card}>
             
             {/* Header Image */}
