@@ -521,6 +521,12 @@ const MyDocument = ({ data }: Props) => {
                         </View>
                         );
                       })}
+                      {/* Visual gap between dates in PDF */}
+                      {dateIndex < Object.keys(groupedSchedules).length - 1 && (
+                        <View style={[styles.tableRow, { height: tableGapHeight }]} key={`gap-${dateIndex}`}>
+                          <View style={[styles.tableGap, { width: '100%', height: tableGapHeight }]} />
+                        </View>
+                      )}
                     </React.Fragment>
                   ))}
                 </View>
