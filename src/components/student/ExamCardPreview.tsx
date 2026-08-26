@@ -56,7 +56,7 @@ export default function ExamCardPreview({ data }: Props) {
       <style dangerouslySetInnerHTML={{__html: `
         @media print {
           @page {
-            size: A4 portrait; /* Paksa A4 HVS biasa di pengaturan browser, agar tidak kena potong/paginate otomatis oleh browser */
+            size: A5 landscape;
             margin: 5mm;
           }
           body {
