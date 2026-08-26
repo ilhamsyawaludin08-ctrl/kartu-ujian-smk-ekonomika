@@ -32,18 +32,18 @@ const MyDocument = ({ data }: Props) => {
   const isCompact = scheduleCount > 7;
   const isVeryCompact = scheduleCount > 12;
 
-  // Dynamic values (Kapasitas A3)
+  // Dynamic values (Kapasitas A3 - disesuaikan agar tidak overflow)
   const tableFontSize = 18;
   const tableHeaderFontSize = 18;
-  const padV = 8;
-  const padH = 10;
-  const tableGapHeight = 10;
-  const headerMarginBottom = 4;
-  const infoMarginBottom = 24;
-  const footerMarginTop = 24;
-  const photoWidth = 100;
-  const photoHeight = 133;
-  const sigLineMarginTop = 60;
+  const padV = 6;
+  const padH = 8;
+  const tableGapHeight = 6;
+  const headerMarginBottom = 3;
+  const infoMarginBottom = 12;
+  const footerMarginTop = 12;
+  const photoWidth = 85;
+  const photoHeight = 113;
+  const sigLineMarginTop = 40;
 
   const styles = StyleSheet.create({
     page: {
@@ -57,7 +57,7 @@ const MyDocument = ({ data }: Props) => {
       top: 0,
       width: '420mm',
       height: '297mm',
-      padding: '20mm 35mm', 
+      padding: '12mm 25mm', 
       transform: 'scale(0.5)',
       transformOrigin: '0 0',
     },
@@ -70,11 +70,11 @@ const MyDocument = ({ data }: Props) => {
     headerImageContainer: {
       width: '100%',
       marginBottom: 0,
-      borderBottom: '0pt solid #1f2937', // No border line below header image per latest request
+      borderBottom: '0pt solid #1f2937',
     },
     titleBlock: {
       alignItems: 'center',
-      paddingBottom: 6,
+      paddingBottom: 4,
       paddingTop: 0,
       borderBottom: '2pt solid #1f2937',
     },
@@ -83,14 +83,14 @@ const MyDocument = ({ data }: Props) => {
       fontWeight: 'extrabold',
       color: '#111827',
       textTransform: 'uppercase',
-      marginBottom: 6,
+      marginBottom: 4,
     },
     subTitleMain: {
       fontSize: 18,
       fontWeight: 'bold',
       color: '#111827',
       textTransform: 'uppercase',
-      marginBottom: 6,
+      marginBottom: 4,
     },
     subTitle: {
       fontSize: 16,
@@ -99,9 +99,9 @@ const MyDocument = ({ data }: Props) => {
       textTransform: 'uppercase',
     },
     bodyContainer: {
-      paddingHorizontal: 20,
-      paddingBottom: 15,
-      paddingTop: 10,
+      paddingHorizontal: 16,
+      paddingBottom: 8,
+      paddingTop: 8,
     },
     body: {
       flexDirection: 'row',
@@ -115,7 +115,7 @@ const MyDocument = ({ data }: Props) => {
     },
     infoRow: {
       flexDirection: 'row',
-      marginBottom: 10,
+      marginBottom: 6,
       fontSize: 18,
       alignItems: 'center',
     },
@@ -136,13 +136,13 @@ const MyDocument = ({ data }: Props) => {
       color: '#111827',
       textTransform: 'uppercase',
       borderBottom: '1pt solid #1f2937',
-      paddingBottom: 8,
-      marginBottom: 16,
+      paddingBottom: 4,
+      marginBottom: 8,
     },
     boxesRow: {
       flexDirection: 'row',
       justifyContent: 'space-between',
-      marginBottom: 10,
+      marginBottom: 8,
     },
     box: {
       flex: 1,
@@ -189,7 +189,7 @@ const MyDocument = ({ data }: Props) => {
       marginTop: 2,
     },
     scheduleContainer: {
-      marginTop: 8,
+      marginTop: 4,
     },
     scheduleTitle: {
       fontSize: 20,
@@ -197,8 +197,8 @@ const MyDocument = ({ data }: Props) => {
       color: '#111827',
       textTransform: 'uppercase',
       borderBottom: '1pt solid #1f2937',
-      paddingBottom: 6,
-      marginBottom: 12,
+      paddingBottom: 4,
+      marginBottom: 6,
     },
     table: {
       width: '100%',
@@ -475,7 +475,7 @@ const MyDocument = ({ data }: Props) => {
               <Text style={styles.signatureTitle}>Mengetahui,</Text>
               <Text style={styles.signatureRole}>Panitia Pelaksana</Text>
               
-              <View style={{ height: 120, width: '100%', alignItems: 'center', justifyContent: 'center' }}>
+              <View style={{ height: 80, width: '100%', alignItems: 'center', justifyContent: 'center' }}>
                 {data.examSettings.signature_url ? (
                   <Image src={data.examSettings.signature_url} style={{ maxHeight: '100%', maxWidth: '100%', objectFit: 'contain' }} />
                 ) : null}
