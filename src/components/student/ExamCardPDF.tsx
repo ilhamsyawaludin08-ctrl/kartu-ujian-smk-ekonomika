@@ -32,35 +32,27 @@ const MyDocument = ({ data }: Props) => {
   const isCompact = scheduleCount > 7;
   const isVeryCompact = scheduleCount > 12;
 
-  // Dynamic values - Shrunk significantly to fit perfectly into A5 Landscape
-  const tableFontSize = isVeryCompact ? 6 : isCompact ? 7 : 8;
-  const tableHeaderFontSize = isVeryCompact ? 6 : isCompact ? 7 : 8;
-  const padV = isVeryCompact ? 2 : isCompact ? 3 : 4;
-  const padH = 4;
-  const tableGapHeight = 2;
-  const headerMarginBottom = 1;
-  const infoMarginBottom = 6;
-  const footerMarginTop = 6;
-  const photoWidth = 50;
-  const photoHeight = 66;
-  const sigLineMarginTop = 20;
+  // Dynamic values
+  const tableFontSize = 9;
+  const tableHeaderFontSize = 9;
+  const padV = 5;
+  const padH = 6;
+  const tableGapHeight = 6;
+  const headerMarginBottom = 2; // Matches HTML
+  const infoMarginBottom = 16;
+  const footerMarginTop = 16;
+  const photoWidth = 70;
+  const photoHeight = 93;
+  const sigLineMarginTop = 40;
 
   const styles = StyleSheet.create({
     page: {
-      padding: 0,
+      padding: '15 25',
       fontFamily: 'Helvetica',
       backgroundColor: '#ffffff',
     },
-    scaledWrapper: {
-      width: '297mm', /* Ukuran maya A4 Landscape */
-      height: '210mm',
-      padding: '10mm 15mm',
-      transform: 'scale(0.707)', /* Perkecil persis ke A5 Landscape */
-      transformOrigin: '0 0',
-    },
     card: {
       width: '100%',
-      height: '100%',
       border: '2pt solid #1f2937',
       flexDirection: 'column',
     },
@@ -76,21 +68,21 @@ const MyDocument = ({ data }: Props) => {
       borderBottom: '2pt solid #1f2937',
     },
     titleText: {
-      fontSize: 11,
+      fontSize: 14,
       fontWeight: 'extrabold',
       color: '#111827',
       textTransform: 'uppercase',
-      marginBottom: 2,
+      marginBottom: 4,
     },
     subTitleMain: {
-      fontSize: 9,
+      fontSize: 12,
       fontWeight: 'bold',
       color: '#111827',
       textTransform: 'uppercase',
-      marginBottom: 2,
+      marginBottom: 4,
     },
     subTitle: {
-      fontSize: 8,
+      fontSize: 10,
       fontWeight: 'bold',
       color: '#111827',
       textTransform: 'uppercase',
@@ -99,13 +91,12 @@ const MyDocument = ({ data }: Props) => {
       paddingHorizontal: 20,
       paddingBottom: 15,
       paddingTop: 10,
-      flex: 1, // fill remaining space
     },
     body: {
       flexDirection: 'row',
       justifyContent: 'space-between',
       alignItems: 'flex-start',
-      marginBottom: 6,
+      marginBottom: 8,
     },
     infoContainer: {
       flex: 1,
@@ -113,12 +104,12 @@ const MyDocument = ({ data }: Props) => {
     },
     infoRow: {
       flexDirection: 'row',
-      marginBottom: 8, // Diperbesar lagi
-      fontSize: 10,
+      marginBottom: 6,
+      fontSize: 11,
       alignItems: 'center',
     },
     infoLabel: {
-      width: 85,
+      width: 95,
       color: '#4b5563',
     },
     infoColon: {
@@ -127,39 +118,38 @@ const MyDocument = ({ data }: Props) => {
     infoValue: {
       flex: 1,
       fontWeight: 'bold',
-      color: '#111827',
     },
     sectionTitle: {
-      fontSize: 11, // Diperbesar agar infoRow (10) tidak lebih besar
+      fontSize: 12,
       fontWeight: 'bold',
       color: '#111827',
       textTransform: 'uppercase',
       borderBottom: '1pt solid #1f2937',
-      paddingBottom: 2,
-      marginBottom: 6,
+      paddingBottom: 6,
+      marginBottom: 12,
     },
     boxesRow: {
       flexDirection: 'row',
       justifyContent: 'space-between',
-      marginBottom: 6,
+      marginBottom: 10,
     },
     box: {
       flex: 1,
       border: '1pt solid #1f2937',
       borderRadius: 4,
-      padding: 4,
+      padding: 8,
       alignItems: 'center',
       justifyContent: 'center',
       marginHorizontal: 4,
     },
     boxLabel: {
-      fontSize: 7,
+      fontSize: 9,
       color: '#6b7280',
       textTransform: 'uppercase',
-      marginBottom: 2,
+      marginBottom: 4,
     },
     boxValue: {
-      fontSize: 10,
+      fontSize: 12,
       fontWeight: 'bold',
       color: '#111827',
     },
@@ -169,14 +159,6 @@ const MyDocument = ({ data }: Props) => {
       border: '2pt solid #1f2937',
       padding: 1,
       backgroundColor: '#f9fafb',
-      alignItems: 'center',
-      justifyContent: 'center',
-      position: 'relative',
-    },
-    photoImage: {
-      width: '100%',
-      height: '100%',
-      objectFit: 'cover',
     },
     photoTextContainer: {
       width: '100%',
@@ -195,47 +177,29 @@ const MyDocument = ({ data }: Props) => {
       color: '#9ca3af',
       marginTop: 2,
     },
-    stampContainer: {
-      position: 'absolute',
-      bottom: -4,
-      left: -4,
-      width: 24,
-      height: 24,
-      borderRadius: 12,
-      border: '1pt solid rgba(31, 41, 55, 0.3)',
-      alignItems: 'center',
-      justifyContent: 'center',
-      opacity: 0.5,
-      transform: 'rotate(-12deg)',
-    },
-    stampText: {
-      fontSize: 6,
-      fontWeight: 'bold',
-      color: 'rgba(31, 41, 55, 0.5)',
-    },
     scheduleContainer: {
       marginTop: 4,
     },
     scheduleTitle: {
-      fontSize: 9,
+      fontSize: 12,
       fontWeight: 'bold',
       color: '#111827',
       textTransform: 'uppercase',
       borderBottom: '1pt solid #1f2937',
-      paddingBottom: 2,
-      marginBottom: 6,
+      paddingBottom: 6,
+      marginBottom: 12,
     },
     table: {
       width: '100%',
       borderTop: '2pt solid #6b21a8',
       borderBottom: '2pt solid #6b21a8',
     },
+    tableRow: {
+      flexDirection: 'row',
+    },
     tableHeader: {
       backgroundColor: '#f3e8ff',
       borderBottom: '2pt solid #d8b4fe',
-    },
-    tableRow: {
-      flexDirection: 'row',
     },
     tableColHeader: {
       paddingVertical: padV,
@@ -284,7 +248,6 @@ const MyDocument = ({ data }: Props) => {
     footer: {
       flexDirection: 'row',
       justifyContent: 'space-between',
-      alignItems: 'flex-end',
       marginTop: footerMarginTop,
     },
     notesContainer: {
@@ -294,55 +257,55 @@ const MyDocument = ({ data }: Props) => {
     notesBox: {
       border: '1pt solid #bfdbfe',
       backgroundColor: '#eff6ff',
-      padding: 4,
+      padding: 8,
       borderRadius: 4,
     },
     notesTitle: {
-      fontSize: 8,
+      fontSize: 10,
       fontWeight: 'bold',
-      marginBottom: 2,
+      marginBottom: 4,
       color: '#1e3a8a',
     },
     notesText: {
-      fontSize: 6,
+      fontSize: 8,
       color: '#1e40af',
       lineHeight: 1.3,
     },
     serverUrlContainer: {
-      marginTop: 4,
-      paddingTop: 4,
+      marginTop: 6,
+      paddingTop: 6,
       borderTop: '1pt solid #bfdbfe',
     },
     serverUrlLabel: {
-      fontSize: 6,
+      fontSize: 7,
       color: '#1d4ed8',
       fontWeight: 'bold',
-      marginBottom: 1,
+      marginBottom: 2,
     },
     serverUrlText: {
-      fontSize: 7,
+      fontSize: 9,
       color: '#1e3a8a',
       fontWeight: 'bold',
       fontFamily: 'Courier',
     },
     signatureContainer: {
-      width: 120,
+      width: 140,
       alignItems: 'center',
     },
     signatureTitle: {
-      fontSize: 7,
+      fontSize: 9,
       color: '#1f2937',
-      marginBottom: 1,
+      marginBottom: 2,
     },
     signatureRole: {
-      fontSize: 7,
+      fontSize: 9,
       fontWeight: 'bold',
       color: '#1f2937',
       textTransform: 'uppercase',
       letterSpacing: 1,
     },
     chairpersonName: {
-      fontSize: 7,
+      fontSize: 9,
       fontWeight: 'bold',
       textAlign: 'center',
       textTransform: 'uppercase',
@@ -354,11 +317,10 @@ const MyDocument = ({ data }: Props) => {
 
   return (
     <Document>
-      <Page size="A5" orientation="landscape" style={styles.page}>
-        <View style={styles.scaledWrapper}>
-          <View style={styles.card}>
-            
-            {/* Header Image */}
+      <Page size="A4" orientation="portrait" style={styles.page}>
+        <View style={styles.card}>
+          
+          {/* Header Image */}
           <View style={styles.headerImageContainer}>
             <Image src="/header_gds.png" style={{ width: '100%', height: 'auto' }} />
           </View>
@@ -510,7 +472,7 @@ const MyDocument = ({ data }: Props) => {
             </View>
           </View>
           </View>
-        </View>
+
         </View>
       </Page>
     </Document>

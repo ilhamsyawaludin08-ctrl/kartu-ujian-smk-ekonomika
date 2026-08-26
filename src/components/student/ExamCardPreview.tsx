@@ -41,15 +41,13 @@ export default function ExamCardPreview({ data }: Props) {
   const isCompact = scheduleCount > 7;
   const isVeryCompact = scheduleCount > 12;
 
-  // CSS variables for dynamic scaling - Diperbesar khusus Data Peserta agar tidak ada ruang kosong di bawah
-  const tableTextClass = isVeryCompact ? 'text-[7px] leading-[8px]' : isCompact ? 'text-[8px] leading-[10px]' : 'text-[9px] leading-[12px]';
-  const tablePaddingClass = isVeryCompact ? 'px-1 py-0.5' : isCompact ? 'px-1.5 py-1' : 'px-2 py-1';
-  const headerPaddingClass = isVeryCompact ? 'pb-1 mb-2' : isCompact ? 'pb-1.5 mb-2' : 'pb-2 mb-3';
-  const gapClass = isVeryCompact ? 'h-0.5' : isCompact ? 'h-1' : 'h-1.5';
-  
-  // Data Peserta diperbesar maksimal tanpa melebihi judul (text-sm = 14px)
-  const infoTextClass = 'text-[12px] md:text-[13px] leading-relaxed'; 
-  const infoPaddingClass = 'py-1.5 md:py-2';
+  // CSS variables for dynamic scaling
+  const tableTextClass = isVeryCompact ? 'text-[9px]' : isCompact ? 'text-[10px]' : 'text-xs';
+  const tablePaddingClass = isVeryCompact ? 'px-2 py-1' : isCompact ? 'px-2 py-1.5' : 'px-3 py-2';
+  const headerPaddingClass = isVeryCompact ? 'pb-2 mb-3' : isCompact ? 'pb-3 mb-4' : 'pb-4 mb-6';
+  const gapClass = isVeryCompact ? 'h-1' : isCompact ? 'h-2' : 'h-3';
+  const infoTextClass = isVeryCompact ? 'text-xs' : 'text-sm md:text-base';
+  const infoPaddingClass = isVeryCompact ? 'py-1' : 'py-1.5';
 
   return (
     <div className="w-full flex flex-col items-center min-h-screen bg-gray-100 print:bg-white print:min-h-0">
@@ -58,48 +56,41 @@ export default function ExamCardPreview({ data }: Props) {
       <style dangerouslySetInnerHTML={{__html: `
         @media print {
           @page {
-            size: A4 portrait; /* Paksa kertas print HVS A4 biasa agar browser tidak memotong halaman (paginate) */
-            margin: 5mm;
+            size: A4 portrait;
+            margin: 5mm; /* Beri sedikit margin aman di kertas */
           }
           body {
             -webkit-print-color-adjust: exact !important;
             print-color-adjust: exact !important;
             background-color: white !important;
           }
+          /* Hide everything outside print-container */
           body * {
             visibility: hidden;
           }
-          #print-wrapper, #print-wrapper * {
+          #print-container, #print-container * {
             visibility: visible;
           }
-          #print-wrapper {
+          #print-container {
             position: absolute !important;
             left: 0 !important;
             top: 0 !important;
-            width: 210mm !important; /* Batas fisik di kertas A4 adalah 210mm (ukuran A5 landscape) */
-            height: 148mm !important;
-            overflow: hidden !important;
-            margin: 0 !important;
-          }
-          #print-container {
-            width: 297mm !important; /* Konten aslinya sebesar A4 landscape biar lega */
-            height: 210mm !important; 
-            transform: scale(0.707) !important; /* Perkecil persis ke ukuran A5 landscape (1 / sqrt(2)) */
-            transform-origin: top left !important;
+            width: 280mm !important; /* Paksa ukuran lebar landscape */
+            max-width: 280mm !important;
+            height: auto !important;
+            margin: 0 !important; /* Jangan pakai margin yang mendorong elemen ke kanan */
           }
         }
       `}} />
 
-      <div className="p-4 md:p-8 print:p-0 w-full flex justify-center overflow-x-auto">
+      {/* Card Preview Container - A4 Landscape is 297mm x 210mm */}
+      <div className="p-4 md:p-8 print:p-0 w-full flex justify-center">
         
-        {/* Outer Wrapper untuk membatasi ukuran fisik saat di-print (A5 Landscape) */}
-        <div id="print-wrapper" className="print:w-[210mm] print:h-[148mm] print:overflow-hidden relative mx-auto shrink-0">
-          
-          {/* The Card - Di layar berukuran A4 Landscape, saat print akan di-scale jadi A5 Landscape */}
-          <div 
-            id="print-container"
-            className="w-[297mm] h-[210mm] bg-white border border-gray-300 print:border-2 print:border-gray-800 shadow-xl print:shadow-none relative font-sans text-gray-900 flex flex-col"
-          >
+        {/* The Card - A4 Landscape Dimensions */}
+        <div 
+          id="print-container"
+          className="w-full max-w-[297mm] min-h-[210mm] print:min-h-0 bg-white border border-gray-300 print:border-2 print:border-gray-800 shadow-xl print:shadow-none relative font-sans text-gray-900 mx-auto flex flex-col print:break-inside-avoid overflow-hidden"
+        >
 
           {/* Content Wrapper */}
           <div className="relative z-10 p-6 md:p-8 print:p-0 w-full flex-1 flex flex-col">
@@ -115,28 +106,28 @@ export default function ExamCardPreview({ data }: Props) {
             <div className="w-full flex-1 flex flex-col">
               
               {/* Title Block */}
-              <div className="text-center w-full pb-1 pt-0 border-b border-gray-800"> 
-                <h2 className="text-sm font-extrabold text-gray-900 uppercase">
+              <div className="text-center w-full pb-2 pt-0 border-b-2 border-gray-800"> 
+                <h2 className="text-base md:text-lg font-extrabold text-gray-900 uppercase">
                   KARTU PESERTA UJIAN
                 </h2>
-                <h3 className="text-xs font-bold text-gray-900 mt-0.5 uppercase">
+                <h3 className="text-sm md:text-base font-bold text-gray-900 mt-0.5 uppercase">
                   {data.exam.exam_name} ({data.exam.semester})
                 </h3>
-                <p className="text-[10px] font-bold text-gray-900 mt-0.5 uppercase">
+                <p className="text-xs md:text-sm font-bold text-gray-900 mt-0.5 uppercase">
                   TAHUN PELAJARAN {data.exam.academic_year}
                 </p>
               </div>
 
               {/* Main Content Body */}
-              <div className="w-full flex-1 flex flex-col p-4 md:p-6 print:p-2">
+              <div className="w-full flex-1 flex flex-col print:p-6 p-4">
 
           {/* Section 1: DATA PESERTA */}
-          <h3 className="text-sm font-extrabold text-gray-900 uppercase tracking-widest border-b border-gray-800 pb-1 mb-2">
+          <h3 className="font-bold text-base md:text-lg uppercase text-gray-900 border-b border-gray-800 pb-2 mb-4">
             DATA PESERTA
           </h3>
           
           {/* Identity & Exam Info Section */}
-          <div className="flex justify-between items-start mb-2 gap-3">
+          <div className="flex justify-between items-start mb-4 md:mb-6 gap-6">
             
             {/* Student Info */}
             <div className="flex-1">
@@ -188,27 +179,25 @@ export default function ExamCardPreview({ data }: Props) {
           </div>
 
           {/* Section 2: Kotak-kotak (Nomor Ujian, Ruang Ujian, Password) */}
-          <div className="grid grid-cols-3 gap-2 mb-2">
-            <div className="border border-gray-800 rounded-lg p-2 text-center flex flex-col justify-center min-h-[50px]">
-              <p className="text-[8px] text-gray-500 uppercase font-semibold mb-0.5">Nomor Ujian</p>
-              <p className="font-bold text-xs md:text-sm text-gray-900">{data.examCard.card_number}</p>
+          <div className="grid grid-cols-3 gap-4 mb-6">
+            <div className="border border-gray-800 rounded-lg p-3 text-center flex flex-col justify-center min-h-[80px]">
+              <p className="text-[10px] text-gray-500 uppercase font-semibold mb-1">Nomor Ujian</p>
+              <p className="font-bold text-lg text-gray-900">{data.examCard.card_number}</p>
             </div>
-            {data.examSettings.show_room && (
-              <div className="border border-gray-800 rounded-lg p-2 text-center flex flex-col justify-center min-h-[50px]">
-                <p className="text-[8px] text-gray-500 uppercase font-semibold mb-0.5">Ruang Ujian</p>
-                <p className="font-bold text-xs md:text-sm text-gray-900">{data.student.exam_room || '-'}</p>
-              </div>
-            )}
-            <div className="border border-gray-800 rounded-lg p-2 text-center flex flex-col justify-center min-h-[50px]">
-              <p className="text-[8px] text-gray-500 uppercase font-semibold mb-0.5">Password</p>
-              <p className="font-bold text-xs md:text-sm text-gray-900 tracking-wider">{data.student.exam_password || '-'}</p>
+            <div className="border border-gray-800 rounded-lg p-3 text-center flex flex-col justify-center min-h-[80px]">
+              <p className="text-[10px] text-gray-500 uppercase font-semibold mb-1">Ruang Ujian</p>
+              <p className="font-bold text-lg text-gray-900">{data.student.exam_room || '-'}</p>
+            </div>
+            <div className="border border-gray-800 rounded-lg p-3 text-center flex flex-col justify-center min-h-[80px]">
+              <p className="text-[10px] text-gray-500 uppercase font-semibold mb-1">Password</p>
+              <p className="font-bold text-lg text-gray-900">{data.student.exam_password || '-'}</p>
             </div>
           </div>
 
           {/* Schedule Table (Keep original purple design) */}
           {data.examSettings.show_schedule && (
             <div className="flex-1 flex flex-col">
-              <h4 className="text-sm font-extrabold text-gray-900 uppercase tracking-widest border-b border-gray-800 pb-1 mb-2">
+              <h4 className="font-bold text-base md:text-lg uppercase text-gray-900 border-b border-gray-800 pb-2 mb-4">
                 JADWAL UJIAN PESERTA
               </h4>
               
@@ -267,23 +256,23 @@ export default function ExamCardPreview({ data }: Props) {
           )}
 
           {/* Footer Notes & Signature */}
-          <div className="mt-2 flex justify-between items-end text-[9px] pt-1 print:break-inside-avoid">
-            <div className="flex-1 pr-4">
+          <div className="mt-4 md:mt-6 flex justify-between items-end text-xs md:text-sm pt-2 print:break-inside-avoid">
+            <div className="flex-1 pr-8 md:pr-12">
               {/* Box Ketentuan Ujian based on mockup */}
-              <div className="bg-blue-50/50 border border-blue-200 p-2 rounded-lg max-w-xl">
-                <p className="font-bold text-blue-900 text-[10px] mb-1">Ketentuan Ujian</p>
-                <p className="text-[8px] text-blue-800 whitespace-pre-wrap leading-relaxed">{data.examSettings.exam_notes || '-'}</p>
+              <div className="bg-blue-50/50 border border-blue-200 p-3 md:p-4 rounded-lg max-w-xl">
+                <p className="font-bold text-blue-900 text-sm mb-2">Ketentuan Ujian</p>
+                <p className="text-xs text-blue-800 whitespace-pre-wrap leading-relaxed">{data.examSettings.exam_notes || '-'}</p>
                 
                 {data.exam.server_url && (
-                  <div className="mt-1 pt-1 border-t border-blue-200/50">
-                    <p className="text-[8px] text-blue-700 font-semibold mb-0.5">Link Server Ujian:</p>
-                    <p className="font-mono text-[9px] font-bold text-blue-900 break-all">{data.exam.server_url}</p>
+                  <div className="mt-3 pt-3 border-t border-blue-200/50">
+                    <p className="text-[10px] text-blue-700 font-semibold mb-0.5">Link Server Ujian:</p>
+                    <p className="font-mono text-xs font-bold text-blue-900 break-all">{data.exam.server_url}</p>
                   </div>
                 )}
               </div>
             </div>
             
-            <div className="w-40 text-center flex flex-col items-center flex-shrink-0">
+            <div className="w-56 md:w-64 text-center flex flex-col items-center flex-shrink-0">
               <p className="mb-1 text-gray-800 text-xs md:text-sm">Mengetahui,</p>
               <p className="font-bold text-gray-900 mb-2 uppercase tracking-wide text-sm md:text-base">Panitia Pelaksana</p>
               
@@ -305,7 +294,6 @@ export default function ExamCardPreview({ data }: Props) {
           </div>
           {/* End Content Wrapper */}
 
-        </div>
         </div>
       </div>
     </div>
