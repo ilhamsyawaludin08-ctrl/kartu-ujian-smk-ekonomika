@@ -93,7 +93,7 @@ export default function ExamCardPreview({ data }: Props) {
             margin: 0 !important;
             padding: 0 !important;
             max-width: none !important;
-            border: none !important;
+            border: 4px solid #1f2937 !important;
           }
         }
       `}} />
