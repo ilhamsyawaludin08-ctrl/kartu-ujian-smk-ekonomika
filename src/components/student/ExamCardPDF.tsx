@@ -333,6 +333,7 @@ const MyDocument = ({ data }: Props) => {
       padding: 8, // reduced from 10
       paddingBottom: 16, // reduced from 20 but still generous enough
       borderRadius: 6,
+      maxWidth: 550, // limit the width to match max-w-xl in HTML!
     },
     notesTitle: {
       fontSize: 12, // reduced from 14
