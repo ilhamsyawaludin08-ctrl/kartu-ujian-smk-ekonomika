@@ -41,8 +41,8 @@ const MyDocument = ({ data }: Props) => {
   const headerMarginBottom = 2;
   const infoMarginBottom = 8;
   const footerMarginTop = 8;
-  const photoWidth = 90;
-  const photoHeight = 120;
+  const photoWidth = 130; // matched to HTML ~11% card width
+  const photoHeight = 173; // matched 3:4 aspect ratio
   const sigLineMarginTop = 30;
 
   const styles = StyleSheet.create({
@@ -57,7 +57,7 @@ const MyDocument = ({ data }: Props) => {
       top: 0,
       width: '420mm',
       height: '297mm',
-      padding: '8mm 5mm', // Rapatkan margin horizontal ke A5 agar selebar cetakan HTML
+      padding: '8mm 6mm', // Rapatkan margin horizontal ke A5 agar selebar cetakan HTML
       transform: 'scale(0.5)',
       transformOrigin: '0 0',
     },
@@ -152,22 +152,22 @@ const MyDocument = ({ data }: Props) => {
     },
     box: {
       flex: 1,
-      border: '1pt solid #1f2937',
+      border: '2pt solid #1f2937', // Tebalkan border kotak sesuai HTML
       borderRadius: 6,
-      padding: 6,
+      padding: 8, // padding dinaikkan sesuai HTML
       alignItems: 'center',
       justifyContent: 'center',
       marginHorizontal: 4,
     },
     boxLabel: {
-      fontSize: 12,
+      fontSize: 14, // perbesar font label
       fontFamily: 'Helvetica',
       color: '#6b7280',
       textTransform: 'uppercase',
       marginBottom: 4,
     },
     boxValue: {
-      fontSize: 22,
+      fontSize: 26, // perbesar font value
       fontFamily: 'Helvetica-Bold',
       color: '#111827',
     },
@@ -220,48 +220,64 @@ const MyDocument = ({ data }: Props) => {
       backgroundColor: '#f3e8ff',
       borderBottom: '2pt solid #d8b4fe',
     },
-    tableColHeader: {
+    tableHeaderCell: {
       paddingVertical: padV,
       paddingHorizontal: padH,
+      borderRight: '1pt solid #e9d5ff',
+      borderLeft: '1pt solid #e9d5ff',
+      justifyContent: 'center',
+    },
+    tableHeaderCellText: {
       fontSize: tableHeaderFontSize,
       fontFamily: 'Helvetica-Bold',
       color: '#4c1d95',
       textTransform: 'uppercase',
-      borderRight: '1pt solid #e9d5ff',
-      borderLeft: '1pt solid #e9d5ff',
+    },
+    tableHeaderCellTextCenter: {
+      fontSize: tableHeaderFontSize,
+      fontFamily: 'Helvetica-Bold',
+      color: '#4c1d95',
+      textTransform: 'uppercase',
+      textAlign: 'center',
+      width: '100%',
     },
     tableColDate: { width: '25%' },
-    tableColTime: { width: '18%', textAlign: 'center' },
+    tableColTime: { width: '18%' },
     tableColSubject: { width: '37%' },
-    tableColSignature: { width: '20%', textAlign: 'center' },
+    tableColSignature: { width: '20%' },
     tableCell: {
+      paddingVertical: padV,
+      paddingHorizontal: padH,
       borderRight: '1pt solid #d1d5db',
       borderLeft: '1pt solid #d1d5db',
       justifyContent: 'center',
     },
     tableCellDate: {
+      paddingVertical: padV,
+      paddingHorizontal: padH,
       borderRight: '1pt solid #d1d5db',
       borderLeft: '1pt solid #d1d5db',
       backgroundColor: '#f9fafb',
       justifyContent: 'center',
     },
     tableCellText: {
-      paddingVertical: padV,
-      paddingHorizontal: padH,
       fontSize: tableFontSize,
       fontFamily: 'Helvetica',
       color: '#1f2937',
     },
+    tableCellTextCenter: {
+      fontSize: tableFontSize,
+      fontFamily: 'Helvetica',
+      color: '#1f2937',
+      textAlign: 'center',
+      width: '100%',
+    },
     tableCellTextBold: {
-      paddingVertical: padV,
-      paddingHorizontal: padH,
       fontSize: tableFontSize,
       fontFamily: 'Helvetica-Bold',
       color: '#1f2937',
     },
     tableCellTextDate: {
-      paddingVertical: padV,
-      paddingHorizontal: padH,
       fontSize: tableFontSize,
       fontFamily: 'Helvetica-Bold',
       color: '#1f2937',
@@ -281,6 +297,7 @@ const MyDocument = ({ data }: Props) => {
     footer: {
       flexDirection: 'row',
       justifyContent: 'space-between',
+      alignItems: 'flex-end', // Aligment bottom persis seperti HTML items-end
       marginTop: footerMarginTop,
     },
     notesContainer: {
@@ -437,10 +454,18 @@ const MyDocument = ({ data }: Props) => {
               {hasSchedules ? (
                 <View style={styles.table}>
                   <View style={[styles.tableRow, styles.tableHeader]}>
-                    <Text style={[styles.tableColHeader, styles.tableColDate]}>Hari / Tanggal</Text>
-                    <Text style={[styles.tableColHeader, styles.tableColTime]}>Waktu</Text>
-                    <Text style={[styles.tableColHeader, styles.tableColSubject]}>Mata Pelajaran</Text>
-                    <Text style={[styles.tableColHeader, styles.tableColSignature]}>Paraf Pengawas</Text>
+                    <View style={[styles.tableHeaderCell, styles.tableColDate]}>
+                      <Text style={styles.tableHeaderCellText}>Hari / Tanggal</Text>
+                    </View>
+                    <View style={[styles.tableHeaderCell, styles.tableColTime]}>
+                      <Text style={styles.tableHeaderCellTextCenter}>Waktu</Text>
+                    </View>
+                    <View style={[styles.tableHeaderCell, styles.tableColSubject]}>
+                      <Text style={styles.tableHeaderCellText}>Mata Pelajaran</Text>
+                    </View>
+                    <View style={[styles.tableHeaderCell, styles.tableColSignature]}>
+                      <Text style={styles.tableHeaderCellTextCenter}>Paraf Pengawas</Text>
+                    </View>
                   </View>
                   
                   {Object.entries(groupedSchedules).map(([date, schedules], dateIndex) => (
@@ -456,7 +481,7 @@ const MyDocument = ({ data }: Props) => {
                             <Text style={styles.tableCellTextDate}>{index === 0 ? new Date(date).toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) : ''}</Text>
                           </View>
                           <View style={[styles.tableCell, styles.tableColTime, innerBottomBorder]}>
-                            <Text style={[styles.tableCellText, { fontFamily: 'Courier' }]}>{sch.start_time.slice(0,5)} - {sch.end_time.slice(0,5)}</Text>
+                            <Text style={[styles.tableCellTextCenter, { fontFamily: 'Courier' }]}>{sch.start_time.slice(0,5)} - {sch.end_time.slice(0,5)}</Text>
                           </View>
                           <View style={[styles.tableCell, styles.tableColSubject, innerBottomBorder]}>
                             <Text style={styles.tableCellTextBold}>{sch.subject}</Text>
