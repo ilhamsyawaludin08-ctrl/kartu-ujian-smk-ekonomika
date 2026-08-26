@@ -57,12 +57,14 @@ export default function ExamCardPreview({ data }: Props) {
         @media print {
           @page {
             size: A5 landscape;
-            margin: 5mm;
+            margin: 0 !important;
           }
           body {
             -webkit-print-color-adjust: exact !important;
             print-color-adjust: exact !important;
             background-color: white !important;
+            margin: 0 !important;
+            padding: 0 !important;
           }
           body * {
             visibility: hidden;
@@ -74,18 +76,24 @@ export default function ExamCardPreview({ data }: Props) {
             position: absolute !important;
             left: 0 !important;
             top: 0 !important;
-            width: 210mm !important; /* Ukuran presisi A5 Landscape (Lebar) */
-            height: 148mm !important; /* Ukuran presisi A5 Landscape (Tinggi) */
+            width: 210mm !important;
+            height: 148mm !important;
             overflow: hidden !important;
             margin: 0 !important;
+            padding: 0 !important;
           }
           #print-container {
-            width: 420mm !important; /* Kanvas A3 Landscape (sangat luas) */
+            position: absolute !important;
+            left: 0 !important;
+            top: 0 !important;
+            width: 420mm !important;
             height: 296mm !important;
-            transform: scale(0.5) !important; /* A3 Landscape di-scale 50% = EXACTLY A5 Landscape */
+            transform: scale(0.5) !important;
             transform-origin: top left !important;
             margin: 0 !important;
+            padding: 0 !important;
             max-width: none !important;
+            border: none !important;
           }
         }
       `}} />
