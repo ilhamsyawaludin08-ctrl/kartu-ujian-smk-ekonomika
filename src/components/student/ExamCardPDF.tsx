@@ -33,17 +33,17 @@ const MyDocument = ({ data }: Props) => {
   const isVeryCompact = scheduleCount > 12;
 
   // Dynamic values (Kapasitas A3 - disesuaikan agar pas 1 halaman A5 landscape tanpa kepotong)
-  const tableFontSize = 13;
-  const tableHeaderFontSize = 13;
-  const padV = 4;
+  const tableFontSize = 12;
+  const tableHeaderFontSize = 12;
+  const padV = 3;
   const padH = 8;
   const tableGapHeight = 2;
   const headerMarginBottom = 2;
   const infoMarginBottom = 4;
   const footerMarginTop = 4;
-  const photoWidth = 90; // optimized size
-  const photoHeight = 120; // 3:4 aspect ratio
-  const sigLineMarginTop = 20;
+  const photoWidth = 80; // optimized size
+  const photoHeight = 107; // 3:4 aspect ratio
+  const sigLineMarginTop = 15;
 
   const styles = StyleSheet.create({
     page: {
@@ -79,21 +79,21 @@ const MyDocument = ({ data }: Props) => {
       borderBottom: '2pt solid #1f2937',
     },
     titleText: {
-      fontSize: 20,
+      fontSize: 18, // reduced from 20
       fontFamily: 'Helvetica-Bold',
       color: '#111827',
       textTransform: 'uppercase',
       marginBottom: 2,
     },
     subTitleMain: {
-      fontSize: 16,
+      fontSize: 14, // reduced from 16
       fontFamily: 'Helvetica-Bold',
       color: '#111827',
       textTransform: 'uppercase',
       marginBottom: 2,
     },
     subTitle: {
-      fontSize: 14,
+      fontSize: 12, // reduced from 14
       fontFamily: 'Helvetica-Bold',
       color: '#111827',
       textTransform: 'uppercase',
@@ -122,30 +122,30 @@ const MyDocument = ({ data }: Props) => {
     },
     infoLabel: {
       width: 140,
-      fontSize: 16,
+      fontSize: 14, // reduced from 16
       fontFamily: 'Helvetica',
       color: '#4b5563',
     },
     infoColon: {
       width: 15,
-      fontSize: 16,
+      fontSize: 14, // reduced from 16
       fontFamily: 'Helvetica',
       color: '#4b5563',
     },
     infoValue: {
       flex: 1,
-      fontSize: 16,
+      fontSize: 14, // reduced from 16
       fontFamily: 'Helvetica-Bold',
       color: '#111827',
     },
     sectionTitle: {
-      fontSize: 18,
+      fontSize: 16, // reduced from 18
       fontFamily: 'Helvetica-Bold',
       color: '#111827',
       textTransform: 'uppercase',
       borderBottom: '1pt solid #1f2937',
-      paddingBottom: 4,
-      marginBottom: 6,
+      paddingBottom: 2,
+      marginBottom: 4,
     },
     boxesRow: {
       flexDirection: 'row',
@@ -156,20 +156,20 @@ const MyDocument = ({ data }: Props) => {
       flex: 1,
       border: '2pt solid #1f2937', // Tebalkan border kotak sesuai HTML
       borderRadius: 6,
-      padding: 5, // padding diturunkan agar tidak overflow vertikal
+      padding: 4, // padding diturunkan agar tidak overflow vertikal
       alignItems: 'center',
       justifyContent: 'center',
       marginHorizontal: 4,
     },
     boxLabel: {
-      fontSize: 14, // perbesar font label
+      fontSize: 12, // reduced from 14
       fontFamily: 'Helvetica',
       color: '#6b7280',
       textTransform: 'uppercase',
       marginBottom: 4,
     },
     boxValue: {
-      fontSize: 26, // perbesar font value
+      fontSize: 22, // reduced from 26
       fontFamily: 'Helvetica-Bold',
       color: '#111827',
     },
@@ -189,23 +189,23 @@ const MyDocument = ({ data }: Props) => {
       alignItems: 'center',
     },
     photoText: {
-      fontSize: 12,
+      fontSize: 10, // reduced from 12
       fontFamily: 'Helvetica',
       color: '#9ca3af',
     },
     photoTextBold: {
-      fontSize: 12,
+      fontSize: 10, // reduced from 12
       fontFamily: 'Helvetica-Bold',
       color: '#9ca3af',
       marginTop: 2,
     },
     stampPlaceholder: {
       position: 'absolute',
-      bottom: -20,
-      left: -20,
-      width: 80,
-      height: 80,
-      borderRadius: 40,
+      bottom: -15, // scaled down
+      left: -15, // scaled down
+      width: 70, // scaled down from 80
+      height: 70, // scaled down from 80
+      borderRadius: 35,
       border: '1pt solid #9ca3af',
       opacity: 0.3,
       justifyContent: 'center',
@@ -213,23 +213,23 @@ const MyDocument = ({ data }: Props) => {
       backgroundColor: 'transparent',
     },
     stampText: {
-      fontSize: 10,
+      fontSize: 8, // reduced from 10
       color: '#9ca3af',
       transform: 'rotate(-45)',
       fontFamily: 'Helvetica',
     },
     scheduleContainer: {
-      marginTop: 4,
+      marginTop: 2, // reduced from 4
       flexGrow: 1,
     },
     scheduleTitle: {
-      fontSize: 18,
+      fontSize: 16, // reduced from 18
       fontFamily: 'Helvetica-Bold',
       color: '#111827',
       textTransform: 'uppercase',
       borderBottom: '1pt solid #1f2937',
-      paddingBottom: 4,
-      marginBottom: 6,
+      paddingBottom: 2,
+      marginBottom: 4,
     },
     table: {
       width: '100%',
@@ -330,35 +330,35 @@ const MyDocument = ({ data }: Props) => {
     notesBox: {
       border: '1pt solid #bfdbfe',
       backgroundColor: '#eff6ff',
-      padding: 10,
-      paddingBottom: 20, // Berikan padding bawah longgar agar link server tidak meluber keluar garis
+      padding: 8, // reduced from 10
+      paddingBottom: 16, // reduced from 20 but still generous enough
       borderRadius: 6,
     },
     notesTitle: {
-      fontSize: 14,
+      fontSize: 12, // reduced from 14
       fontFamily: 'Helvetica-Bold',
       marginBottom: 4,
       color: '#1e3a8a',
     },
     notesText: {
-      fontSize: 12,
+      fontSize: 9, // reduced from 12 to save space and match HTML print note proportions
       fontFamily: 'Helvetica',
       color: '#1e40af',
       lineHeight: 1.3,
     },
     serverUrlContainer: {
-      marginTop: 6,
-      paddingTop: 6,
+      marginTop: 4, // reduced from 6
+      paddingTop: 4, // reduced from 6
       borderTop: '1pt solid #bfdbfe',
     },
     serverUrlLabel: {
-      fontSize: 10,
+      fontSize: 8, // reduced from 10
       fontFamily: 'Helvetica-Bold',
       color: '#1d4ed8',
       marginBottom: 2,
     },
     serverUrlText: {
-      fontSize: 14,
+      fontSize: 11, // reduced from 14
       fontFamily: 'Courier',
       fontWeight: 'bold',
       color: '#1e3a8a',
@@ -368,13 +368,13 @@ const MyDocument = ({ data }: Props) => {
       alignItems: 'center',
     },
     signatureTitle: {
-      fontSize: 14,
+      fontSize: 12, // reduced from 14
       fontFamily: 'Helvetica',
       color: '#1f2937',
       marginBottom: 4,
     },
     signatureRole: {
-      fontSize: 16,
+      fontSize: 13, // reduced from 16
       fontFamily: 'Helvetica-Bold',
       color: '#1f2937',
       textTransform: 'uppercase',
@@ -382,7 +382,7 @@ const MyDocument = ({ data }: Props) => {
       marginBottom: 6,
     },
     chairpersonName: {
-      fontSize: 14,
+      fontSize: 12, // reduced from 14
       fontFamily: 'Helvetica-Bold',
       textAlign: 'center',
       textTransform: 'uppercase',
@@ -552,9 +552,9 @@ const MyDocument = ({ data }: Props) => {
               <Text style={styles.signatureTitle}>Mengetahui,</Text>
               <Text style={styles.signatureRole}>Panitia Pelaksana</Text>
               
-              <View style={{ height: 60, width: '100%', alignItems: 'center', justifyContent: 'center' }}>
+              <View style={{ height: 45, width: '100%', alignItems: 'center', justifyContent: 'center' }}>
                 {data.examSettings.signature_url ? (
-                  <Image src={data.examSettings.signature_url} style={{ width: 120, height: 60, objectFit: 'contain' }} />
+                  <Image src={data.examSettings.signature_url} style={{ width: 90, height: 45, objectFit: 'contain' }} />
                 ) : null}
               </View>
               
