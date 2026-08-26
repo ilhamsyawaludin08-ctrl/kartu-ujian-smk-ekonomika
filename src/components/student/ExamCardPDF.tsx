@@ -178,6 +178,7 @@ const MyDocument = ({ data }: Props) => {
       border: '2pt solid #1f2937',
       padding: 1,
       backgroundColor: '#f9fafb',
+      position: 'relative', // so stampPlaceholder can absolute position inside it
     },
     photoTextContainer: {
       width: '100%',
@@ -196,6 +197,25 @@ const MyDocument = ({ data }: Props) => {
       fontFamily: 'Helvetica-Bold',
       color: '#9ca3af',
       marginTop: 2,
+    },
+    stampPlaceholder: {
+      position: 'absolute',
+      bottom: -20,
+      left: -20,
+      width: 80,
+      height: 80,
+      borderRadius: 40,
+      border: '1pt solid #9ca3af',
+      opacity: 0.3,
+      justifyContent: 'center',
+      alignItems: 'center',
+      backgroundColor: 'transparent',
+    },
+    stampText: {
+      fontSize: 10,
+      color: '#9ca3af',
+      transform: 'rotate(-45)',
+      fontFamily: 'Helvetica',
     },
     scheduleContainer: {
       marginTop: 4,
@@ -430,6 +450,10 @@ const MyDocument = ({ data }: Props) => {
                       <Text style={styles.photoTextBold}>3 × 4</Text>
                     </View>
                   )}
+                  {/* School Stamp Placeholder */}
+                  <View style={styles.stampPlaceholder}>
+                    <Text style={styles.stampText}>Cap/Stempel</Text>
+                  </View>
                 </View>
               )}
             </View>
