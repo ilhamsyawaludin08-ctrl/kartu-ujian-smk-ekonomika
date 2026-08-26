@@ -47,14 +47,16 @@ const MyDocument = ({ data }: Props) => {
 
   const styles = StyleSheet.create({
     page: {
-      padding: '10 15',
+      padding: '10 10',
       fontFamily: 'Helvetica',
       backgroundColor: '#ffffff',
     },
     card: {
-      width: '100%',
+      width: '190mm', // ~210mm total with some page padding
+      height: '148mm',
       border: '2pt solid #1f2937',
       flexDirection: 'column',
+      overflow: 'hidden', // to ensure it doesn't spill over the box
     },
     headerImageContainer: {
       width: '100%',
@@ -91,6 +93,7 @@ const MyDocument = ({ data }: Props) => {
       paddingHorizontal: 20,
       paddingBottom: 15,
       paddingTop: 10,
+      flex: 1, // fill remaining space
     },
     body: {
       flexDirection: 'row',
@@ -118,6 +121,7 @@ const MyDocument = ({ data }: Props) => {
     infoValue: {
       flex: 1,
       fontWeight: 'bold',
+      color: '#111827',
     },
     sectionTitle: {
       fontSize: 9,
@@ -159,23 +163,37 @@ const MyDocument = ({ data }: Props) => {
       border: '2pt solid #1f2937',
       padding: 1,
       backgroundColor: '#f9fafb',
+      alignItems: 'center',
+      justifyContent: 'center',
+      position: 'relative',
     },
-    photoTextContainer: {
+    photoImage: {
       width: '100%',
       height: '100%',
-      border: '1pt dashed #9ca3af',
-      justifyContent: 'center',
-      alignItems: 'center',
+      objectFit: 'cover',
     },
-    photoText: {
+    photoPlaceholderText: {
       fontSize: 8,
       color: '#9ca3af',
-    },
-    photoTextBold: {
-      fontSize: 9,
       fontWeight: 'bold',
-      color: '#9ca3af',
-      marginTop: 2,
+    },
+    stampContainer: {
+      position: 'absolute',
+      bottom: -4,
+      left: -4,
+      width: 24,
+      height: 24,
+      borderRadius: 12,
+      border: '1pt solid rgba(31, 41, 55, 0.3)',
+      alignItems: 'center',
+      justifyContent: 'center',
+      opacity: 0.5,
+      transform: 'rotate(-12deg)',
+    },
+    stampText: {
+      fontSize: 6,
+      fontWeight: 'bold',
+      color: 'rgba(31, 41, 55, 0.5)',
     },
     scheduleContainer: {
       marginTop: 4,
@@ -189,50 +207,45 @@ const MyDocument = ({ data }: Props) => {
       paddingBottom: 6,
       marginBottom: 12,
     },
-    table: {
+    tableWrapper: {
       width: '100%',
       borderTop: '2pt solid #6b21a8',
       borderBottom: '2pt solid #6b21a8',
     },
-    tableRow: {
+    tableHeaderRow: {
       flexDirection: 'row',
-    },
-    tableHeader: {
       backgroundColor: '#f3e8ff',
       borderBottom: '2pt solid #d8b4fe',
-    },
-    tableColHeader: {
       paddingVertical: padV,
       paddingHorizontal: padH,
+    },
+    tableHeaderCell: {
       fontSize: tableHeaderFontSize,
       fontWeight: 'bold',
-      color: '#4c1d95',
+      color: '#581c87',
       textTransform: 'uppercase',
-      borderRight: '1pt solid #e9d5ff',
-      borderLeft: '1pt solid #e9d5ff',
     },
-    tableColDate: { width: '25%' },
-    tableColTime: { width: '18%', textAlign: 'center' },
-    tableColSubject: { width: '37%' },
-    tableColSignature: { width: '20%', textAlign: 'center' },
+    tableRow: {
+      flexDirection: 'row',
+      borderBottom: '1pt solid #e5e7eb',
+    },
     tableCell: {
       paddingVertical: padV,
       paddingHorizontal: padH,
       fontSize: tableFontSize,
-      borderRight: '1pt solid #d1d5db',
-      borderLeft: '1pt solid #d1d5db',
+      color: '#374151',
       justifyContent: 'center',
     },
     tableCellDate: {
-      paddingVertical: padV,
-      paddingHorizontal: padH,
-      fontSize: tableFontSize,
-      borderRight: '1pt solid #d1d5db',
       borderLeft: '1pt solid #d1d5db',
       backgroundColor: '#f9fafb',
       fontWeight: 'bold',
       color: '#1f2937',
     },
+    tableColDate: { width: '25%' },
+    tableColTime: { width: '18%', textAlign: 'center' },
+    tableColSubject: { width: '37%' },
+    tableColSignature: { width: '20%', textAlign: 'center' },
     tableGap: {
       height: tableGapHeight,
       backgroundColor: '#f3f4f6',
@@ -248,6 +261,7 @@ const MyDocument = ({ data }: Props) => {
     footer: {
       flexDirection: 'row',
       justifyContent: 'space-between',
+      alignItems: 'flex-end',
       marginTop: footerMarginTop,
     },
     notesContainer: {
@@ -317,7 +331,7 @@ const MyDocument = ({ data }: Props) => {
 
   return (
     <Document>
-      <Page size="A5" orientation="landscape" style={styles.page}>
+      <Page size="A4" orientation="portrait" style={styles.page}>
         <View style={styles.card}>
           
           {/* Header Image */}
