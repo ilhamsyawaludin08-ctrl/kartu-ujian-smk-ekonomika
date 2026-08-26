@@ -47,12 +47,23 @@ const MyDocument = ({ data }: Props) => {
 
   const styles = StyleSheet.create({
     page: {
-      padding: '15 25',
+      padding: 0,
       fontFamily: 'Helvetica',
       backgroundColor: '#ffffff',
     },
+    scaledWrapper: {
+      position: 'absolute',
+      left: 0,
+      top: 0,
+      width: '297mm',
+      height: '210mm',
+      padding: '15mm 25mm', // margin of the page moved here
+      transform: 'scale(0.7071)',
+      transformOrigin: '0 0',
+    },
     card: {
       width: '100%',
+      height: '100%',
       border: '2pt solid #1f2937',
       flexDirection: 'column',
     },
@@ -318,10 +329,11 @@ const MyDocument = ({ data }: Props) => {
 
   return (
     <Document>
-      <Page size="A4" orientation="portrait" style={styles.page}>
-        <View style={styles.card}>
-          
-          {/* Header Image */}
+      <Page size="A5" orientation="landscape" style={styles.page}>
+        <View style={styles.scaledWrapper}>
+          <View style={styles.card}>
+            
+            {/* Header Image */}
           <View style={styles.headerImageContainer}>
             <Image src="/header_gds.png" style={{ width: '100%', height: 'auto' }} />
           </View>
@@ -474,6 +486,7 @@ const MyDocument = ({ data }: Props) => {
           </View>
           </View>
 
+        </View>
         </View>
       </Page>
     </Document>
