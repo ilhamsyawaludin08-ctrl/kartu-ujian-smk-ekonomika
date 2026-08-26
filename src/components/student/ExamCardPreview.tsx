@@ -47,9 +47,9 @@ export default function ExamCardPreview({ data }: Props) {
   const headerPaddingClass = isVeryCompact ? 'pb-1 mb-2' : isCompact ? 'pb-1.5 mb-2' : 'pb-2 mb-3';
   const gapClass = isVeryCompact ? 'h-0.5' : isCompact ? 'h-1' : 'h-1.5';
   
-  // Data Peserta diperbesar
-  const infoTextClass = 'text-[11px] md:text-xs leading-normal'; 
-  const infoPaddingClass = 'py-1 md:py-1.5';
+  // Data Peserta diperbesar maksimal tanpa melebihi judul (text-sm = 14px)
+  const infoTextClass = 'text-[12px] md:text-[13px] leading-relaxed'; 
+  const infoPaddingClass = 'py-1.5 md:py-2';
 
   return (
     <div className="w-full flex flex-col items-center min-h-screen bg-gray-100 print:bg-white print:min-h-0">

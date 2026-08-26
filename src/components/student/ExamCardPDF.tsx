@@ -106,12 +106,12 @@ const MyDocument = ({ data }: Props) => {
     },
     infoRow: {
       flexDirection: 'row',
-      marginBottom: 6, // Diperbesar agar mengisi ruang kosong
-      fontSize: 9,
+      marginBottom: 8, // Diperbesar lagi
+      fontSize: 10,
       alignItems: 'center',
     },
     infoLabel: {
-      width: 75,
+      width: 85,
       color: '#4b5563',
     },
     infoColon: {
@@ -123,7 +123,7 @@ const MyDocument = ({ data }: Props) => {
       color: '#111827',
     },
     sectionTitle: {
-      fontSize: 10, // Diperbesar agar infoRow (9) tidak lebih besar dari ini
+      fontSize: 11, // Diperbesar agar infoRow (10) tidak lebih besar
       fontWeight: 'bold',
       color: '#111827',
       textTransform: 'uppercase',
