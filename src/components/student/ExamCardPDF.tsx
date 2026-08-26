@@ -32,18 +32,18 @@ const MyDocument = ({ data }: Props) => {
   const isCompact = scheduleCount > 7;
   const isVeryCompact = scheduleCount > 12;
 
-  // Dynamic values (Kapasitas A3 - disesuaikan agar tidak overflow)
-  const tableFontSize = 18;
-  const tableHeaderFontSize = 18;
-  const padV = 8;
-  const padH = 10;
-  const tableGapHeight = 6;
-  const headerMarginBottom = 3;
-  const infoMarginBottom = 12;
-  const footerMarginTop = 12;
-  const photoWidth = 110;
-  const photoHeight = 146;
-  const sigLineMarginTop = 40;
+  // Dynamic values (Kapasitas A3 - disesuaikan agar pas 1 halaman A5 landscape tanpa kepotong)
+  const tableFontSize = 15;
+  const tableHeaderFontSize = 15;
+  const padV = 5;
+  const padH = 8;
+  const tableGapHeight = 4;
+  const headerMarginBottom = 2;
+  const infoMarginBottom = 8;
+  const footerMarginTop = 8;
+  const photoWidth = 90;
+  const photoHeight = 120;
+  const sigLineMarginTop = 30;
 
   const styles = StyleSheet.create({
     page: {
@@ -57,7 +57,7 @@ const MyDocument = ({ data }: Props) => {
       top: 0,
       width: '420mm',
       height: '297mm',
-      padding: '8mm 10mm', 
+      padding: '8mm 5mm', // Rapatkan margin horizontal ke A5 agar selebar cetakan HTML
       transform: 'scale(0.5)',
       transformOrigin: '0 0',
     },
@@ -79,35 +79,35 @@ const MyDocument = ({ data }: Props) => {
       borderBottom: '2pt solid #1f2937',
     },
     titleText: {
-      fontSize: 22,
+      fontSize: 20,
       fontFamily: 'Helvetica-Bold',
       color: '#111827',
       textTransform: 'uppercase',
-      marginBottom: 4,
+      marginBottom: 2,
     },
     subTitleMain: {
-      fontSize: 18,
+      fontSize: 16,
       fontFamily: 'Helvetica-Bold',
       color: '#111827',
       textTransform: 'uppercase',
-      marginBottom: 4,
+      marginBottom: 2,
     },
     subTitle: {
-      fontSize: 16,
+      fontSize: 14,
       fontFamily: 'Helvetica-Bold',
       color: '#111827',
       textTransform: 'uppercase',
     },
     bodyContainer: {
       paddingHorizontal: 20,
-      paddingBottom: 10,
-      paddingTop: 10,
+      paddingBottom: 8,
+      paddingTop: 8,
     },
     body: {
       flexDirection: 'row',
       justifyContent: 'space-between',
       alignItems: 'flex-start',
-      marginBottom: 10,
+      marginBottom: 8,
     },
     infoContainer: {
       flex: 1,
@@ -115,59 +115,59 @@ const MyDocument = ({ data }: Props) => {
     },
     infoRow: {
       flexDirection: 'row',
-      marginBottom: 6,
+      marginBottom: 5,
       alignItems: 'center',
     },
     infoLabel: {
       width: 140,
-      fontSize: 18,
+      fontSize: 16,
       fontFamily: 'Helvetica',
       color: '#4b5563',
     },
     infoColon: {
       width: 15,
-      fontSize: 18,
+      fontSize: 16,
       fontFamily: 'Helvetica',
       color: '#4b5563',
     },
     infoValue: {
       flex: 1,
-      fontSize: 18,
+      fontSize: 16,
       fontFamily: 'Helvetica-Bold',
       color: '#111827',
     },
     sectionTitle: {
-      fontSize: 20,
+      fontSize: 18,
       fontFamily: 'Helvetica-Bold',
       color: '#111827',
       textTransform: 'uppercase',
       borderBottom: '1pt solid #1f2937',
       paddingBottom: 4,
-      marginBottom: 8,
+      marginBottom: 6,
     },
     boxesRow: {
       flexDirection: 'row',
       justifyContent: 'space-between',
-      marginBottom: 10,
+      marginBottom: 8,
     },
     box: {
       flex: 1,
       border: '1pt solid #1f2937',
       borderRadius: 6,
-      padding: 8,
+      padding: 6,
       alignItems: 'center',
       justifyContent: 'center',
       marginHorizontal: 4,
     },
     boxLabel: {
-      fontSize: 14,
+      fontSize: 12,
       fontFamily: 'Helvetica',
       color: '#6b7280',
       textTransform: 'uppercase',
-      marginBottom: 6,
+      marginBottom: 4,
     },
     boxValue: {
-      fontSize: 26,
+      fontSize: 22,
       fontFamily: 'Helvetica-Bold',
       color: '#111827',
     },
@@ -186,12 +186,12 @@ const MyDocument = ({ data }: Props) => {
       alignItems: 'center',
     },
     photoText: {
-      fontSize: 14,
+      fontSize: 12,
       fontFamily: 'Helvetica',
       color: '#9ca3af',
     },
     photoTextBold: {
-      fontSize: 14,
+      fontSize: 12,
       fontFamily: 'Helvetica-Bold',
       color: '#9ca3af',
       marginTop: 2,
@@ -200,7 +200,7 @@ const MyDocument = ({ data }: Props) => {
       marginTop: 4,
     },
     scheduleTitle: {
-      fontSize: 20,
+      fontSize: 18,
       fontFamily: 'Helvetica-Bold',
       color: '#111827',
       textTransform: 'uppercase',
@@ -285,63 +285,63 @@ const MyDocument = ({ data }: Props) => {
     },
     notesContainer: {
       flex: 1,
-      paddingRight: 30,
+      paddingRight: 20,
     },
     notesBox: {
       border: '1pt solid #bfdbfe',
       backgroundColor: '#eff6ff',
-      padding: 12,
+      padding: 10,
       borderRadius: 6,
     },
     notesTitle: {
-      fontSize: 16,
+      fontSize: 14,
       fontFamily: 'Helvetica-Bold',
-      marginBottom: 6,
+      marginBottom: 4,
       color: '#1e3a8a',
     },
     notesText: {
-      fontSize: 14,
+      fontSize: 12,
       fontFamily: 'Helvetica',
       color: '#1e40af',
       lineHeight: 1.3,
     },
     serverUrlContainer: {
-      marginTop: 8,
-      paddingTop: 8,
+      marginTop: 6,
+      paddingTop: 6,
       borderTop: '1pt solid #bfdbfe',
     },
     serverUrlLabel: {
-      fontSize: 12,
+      fontSize: 10,
       fontFamily: 'Helvetica-Bold',
       color: '#1d4ed8',
-      marginBottom: 4,
+      marginBottom: 2,
     },
     serverUrlText: {
-      fontSize: 16,
+      fontSize: 14,
       fontFamily: 'Courier',
       fontWeight: 'bold',
       color: '#1e3a8a',
     },
     signatureContainer: {
-      width: 250,
+      width: 200,
       alignItems: 'center',
     },
     signatureTitle: {
-      fontSize: 16,
+      fontSize: 14,
       fontFamily: 'Helvetica',
       color: '#1f2937',
       marginBottom: 4,
     },
     signatureRole: {
-      fontSize: 18,
+      fontSize: 16,
       fontFamily: 'Helvetica-Bold',
       color: '#1f2937',
       textTransform: 'uppercase',
       letterSpacing: 1,
-      marginBottom: 8,
+      marginBottom: 6,
     },
     chairpersonName: {
-      fontSize: 16,
+      fontSize: 14,
       fontFamily: 'Helvetica-Bold',
       textAlign: 'center',
       textTransform: 'uppercase',
@@ -499,9 +499,9 @@ const MyDocument = ({ data }: Props) => {
               <Text style={styles.signatureTitle}>Mengetahui,</Text>
               <Text style={styles.signatureRole}>Panitia Pelaksana</Text>
               
-              <View style={{ height: 80, width: '100%', alignItems: 'center', justifyContent: 'center' }}>
+              <View style={{ height: 60, width: '100%', alignItems: 'center', justifyContent: 'center' }}>
                 {data.examSettings.signature_url ? (
-                  <Image src={data.examSettings.signature_url} style={{ maxHeight: '100%', maxWidth: '100%', objectFit: 'contain' }} />
+                  <Image src={data.examSettings.signature_url} style={{ width: 120, height: 60, objectFit: 'contain' }} />
                 ) : null}
               </View>
               
