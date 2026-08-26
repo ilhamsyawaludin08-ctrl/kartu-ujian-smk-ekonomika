@@ -33,16 +33,16 @@ const MyDocument = ({ data }: Props) => {
   const isVeryCompact = scheduleCount > 12;
 
   // Dynamic values (Kapasitas A3 - disesuaikan agar pas 1 halaman A5 landscape tanpa kepotong)
-  const tableFontSize = 15;
-  const tableHeaderFontSize = 15;
-  const padV = 5;
+  const tableFontSize = 13;
+  const tableHeaderFontSize = 13;
+  const padV = 4;
   const padH = 8;
   const tableGapHeight = 4;
   const headerMarginBottom = 2;
   const infoMarginBottom = 8;
   const footerMarginTop = 8;
-  const photoWidth = 130; // matched to HTML ~11% card width
-  const photoHeight = 173; // matched 3:4 aspect ratio
+  const photoWidth = 110; // optimized to match HTML aspect ratio
+  const photoHeight = 146; // 3:4 aspect ratio
   const sigLineMarginTop = 30;
 
   const styles = StyleSheet.create({
@@ -69,12 +69,13 @@ const MyDocument = ({ data }: Props) => {
     },
     headerImageContainer: {
       width: '100%',
+      height: 100,
       marginBottom: 0,
       borderBottom: '0pt solid #1f2937',
     },
     titleBlock: {
       alignItems: 'center',
-      paddingBottom: 4,
+      paddingBottom: 2,
       paddingTop: 0,
       borderBottom: '2pt solid #1f2937',
     },
@@ -155,7 +156,7 @@ const MyDocument = ({ data }: Props) => {
       flex: 1,
       border: '2pt solid #1f2937', // Tebalkan border kotak sesuai HTML
       borderRadius: 6,
-      padding: 8, // padding dinaikkan sesuai HTML
+      padding: 5, // padding diturunkan agar tidak overflow vertikal
       alignItems: 'center',
       justifyContent: 'center',
       marginHorizontal: 4,
@@ -378,7 +379,7 @@ const MyDocument = ({ data }: Props) => {
             
             {/* Header Image */}
           <View style={styles.headerImageContainer}>
-            <Image src="/header_gds.png" style={{ width: '100%', height: 'auto' }} />
+            <Image src="/header_gds.png" style={{ width: '100%', height: 100, objectFit: 'contain' }} />
           </View>
           
           {/* Title Block */}
