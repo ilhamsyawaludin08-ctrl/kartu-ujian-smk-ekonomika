@@ -79,21 +79,21 @@ const MyDocument = ({ data }: Props) => {
       borderBottom: '2pt solid #1f2937',
     },
     titleText: {
-      fontSize: 18, // reduced from 20
+      fontSize: 22, // enlarged
       fontFamily: 'Helvetica-Bold',
       color: '#111827',
       textTransform: 'uppercase',
       marginBottom: 2,
     },
     subTitleMain: {
-      fontSize: 14, // reduced from 16
+      fontSize: 18, // enlarged
       fontFamily: 'Helvetica-Bold',
       color: '#111827',
       textTransform: 'uppercase',
       marginBottom: 2,
     },
     subTitle: {
-      fontSize: 12, // reduced from 14
+      fontSize: 15, // enlarged
       fontFamily: 'Helvetica-Bold',
       color: '#111827',
       textTransform: 'uppercase',
@@ -365,17 +365,17 @@ const MyDocument = ({ data }: Props) => {
       color: '#1e3a8a',
     },
     signatureContainer: {
-      width: 200,
+      width: 220, // enlarged from 200
       alignItems: 'center',
     },
     signatureTitle: {
-      fontSize: 12, // reduced from 14
+      fontSize: 15, // enlarged
       fontFamily: 'Helvetica',
       color: '#1f2937',
       marginBottom: 4,
     },
     signatureRole: {
-      fontSize: 13, // reduced from 16
+      fontSize: 17, // enlarged
       fontFamily: 'Helvetica-Bold',
       color: '#1f2937',
       textTransform: 'uppercase',
@@ -383,7 +383,7 @@ const MyDocument = ({ data }: Props) => {
       marginBottom: 6,
     },
     chairpersonName: {
-      fontSize: 12, // reduced from 14
+      fontSize: 15, // enlarged
       fontFamily: 'Helvetica-Bold',
       textAlign: 'center',
       textTransform: 'uppercase',

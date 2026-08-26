@@ -117,13 +117,13 @@ export default function ExamCardPreview({ data }: Props) {
               
               {/* Title Block */}
               <div className="text-center w-full pb-2 pt-0 border-b-2 border-gray-800"> 
-                <h2 className="text-base md:text-[34px] font-extrabold text-gray-900 uppercase">
+                <h2 className="text-base md:text-[40px] font-extrabold text-gray-900 uppercase">
                   KARTU PESERTA UJIAN
                 </h2>
-                <h3 className="text-sm md:text-[30px] font-bold text-gray-900 mt-1 uppercase">
+                <h3 className="text-sm md:text-[34px] font-bold text-gray-900 mt-1 uppercase">
                   {data.exam.exam_name} ({data.exam.semester})
                 </h3>
-                <p className="text-xs md:text-[25px] font-bold text-gray-900 mt-1 uppercase">
+                <p className="text-xs md:text-[28px] font-bold text-gray-900 mt-1 uppercase">
                   TAHUN PELAJARAN {data.exam.academic_year}
                 </p>
               </div>
@@ -282,9 +282,9 @@ export default function ExamCardPreview({ data }: Props) {
               </div>
             </div>
             
-            <div className="w-56 md:w-72 text-center flex flex-col items-center flex-shrink-0">
-              <p className="mb-0.5 text-gray-800 text-sm md:text-[22px]">Mengetahui,</p>
-              <p className="font-bold text-gray-900 mb-1 uppercase tracking-wide text-base md:text-[26px]">Panitia Pelaksana</p>
+            <div className="w-56 md:w-80 text-center flex flex-col items-center flex-shrink-0">
+              <p className="mb-0.5 text-gray-800 text-sm md:text-[25px]">Mengetahui,</p>
+              <p className="font-bold text-gray-900 mb-1 uppercase tracking-wide text-base md:text-[30px]">Panitia Pelaksana</p>
               
               <div className="h-20 md:h-32 flex items-center justify-center mb-1 w-full">
                 {data.examSettings.signature_url ? (
@@ -294,7 +294,7 @@ export default function ExamCardPreview({ data }: Props) {
                 )}
               </div>
               
-              <p className="font-bold text-gray-900 border-b border-gray-800 w-full pb-0.5 uppercase text-sm md:text-[22px] truncate px-2">
+              <p className="font-bold text-gray-900 border-b border-gray-800 w-full pb-0.5 uppercase text-sm md:text-[25px] truncate px-2">
                 {data.examSettings.chairperson_name || '( .......................................... )'}
               </p>
             </div>
