@@ -58,7 +58,7 @@ export default function ExamCardPreview({ data }: Props) {
       <style dangerouslySetInnerHTML={{__html: `
         @media print {
           @page {
-            size: A4 portrait; /* Kertas fisik HVS/A4 */
+            size: A5 landscape; /* Kertas fisik A5 Landscape */
             margin: 5mm;
           }
           body {
@@ -66,7 +66,6 @@ export default function ExamCardPreview({ data }: Props) {
             print-color-adjust: exact !important;
             background-color: white !important;
           }
-          /* Hide everything outside print-container */
           body * {
             visibility: hidden;
           }
@@ -77,22 +76,23 @@ export default function ExamCardPreview({ data }: Props) {
             position: absolute !important;
             left: 0 !important;
             top: 0 !important;
-            width: 210mm !important; /* Lebar A5 */
-            max-width: 210mm !important;
-            min-height: 148mm !important; /* Minimal tinggi A5, bisa lebih kalau jadwal banyak */
-            height: auto !important;
+            width: 297mm !important; /* Gambar di kanvas A4 Landscape */
+            height: 210mm !important; 
             margin: 0 !important;
+            /* Perkecil 70% agar persis seukuran A5 Landscape (210x148) */
+            transform: scale(0.67) !important;
+            transform-origin: top left !important;
+            overflow: hidden !important; 
           }
         }
       `}} />
 
-      {/* Card Preview Container */}
-      <div className="p-4 md:p-8 print:p-0 w-full flex justify-center">
+      <div className="p-4 md:p-8 print:p-0 w-full flex justify-center overflow-x-auto">
         
-        {/* The Card - Lebar 210mm (A5 Landscape), Tinggi dinamis menyesuaikan isi tapi min 148mm */}
+        {/* The Card - Di layar berukuran A4 Landscape, saat print akan di-scale jadi A5 Landscape */}
         <div 
           id="print-container"
-          className="w-full max-w-[210mm] min-h-[148mm] bg-white border border-gray-300 print:border-2 print:border-gray-800 shadow-xl print:shadow-none relative font-sans text-gray-900 mx-auto flex flex-col print:break-inside-avoid"
+          className="w-[297mm] h-[210mm] bg-white border border-gray-300 print:border-2 print:border-gray-800 shadow-xl print:shadow-none relative font-sans text-gray-900 mx-auto flex flex-col shrink-0"
         >
 
           {/* Content Wrapper */}

@@ -52,8 +52,7 @@ const MyDocument = ({ data }: Props) => {
       backgroundColor: '#ffffff',
     },
     card: {
-      width: '190mm', // ~210mm total with some page padding
-      minHeight: '148mm',
+      width: '100%',
       border: '2pt solid #1f2937',
       flexDirection: 'column',
     },
@@ -347,7 +346,7 @@ const MyDocument = ({ data }: Props) => {
 
   return (
     <Document>
-      <Page size="A4" orientation="portrait" style={styles.page}>
+      <Page size="A5" orientation="landscape" style={styles.page}>
         <View style={styles.card}>
           
           {/* Header Image */}
