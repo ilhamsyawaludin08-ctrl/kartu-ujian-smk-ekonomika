@@ -93,7 +93,7 @@ export default function ExamCardPreview({ data }: Props) {
             margin: 0 !important;
             padding: 0 !important;
             max-width: none !important;
-            border: 4px solid #1f2937 !important;
+            border: none !important;
           }
         }
       `}} />
@@ -107,8 +107,10 @@ export default function ExamCardPreview({ data }: Props) {
           {/* The Card - Di layar berukuran A3 Landscape, saat print akan di-scale jadi A5 Landscape */}
           <div 
             id="print-container"
-            className="w-[420mm] h-[296mm] bg-white border border-gray-300 print:border-2 print:border-gray-800 shadow-xl print:shadow-none relative font-sans text-gray-900 flex flex-col shrink-0"
+            className="w-[420mm] h-[296mm] bg-white border border-gray-300 print:border-0 shadow-xl print:shadow-none relative font-sans text-gray-900 flex flex-col shrink-0"
           >
+            {/* Absolute Inset Border untuk Cetak agar tidak terpotong printer */}
+            <div className="absolute inset-2 md:inset-4 border-2 md:border-[6px] border-gray-900 pointer-events-none z-50 rounded-lg" />
 
           {/* Content Wrapper */}
           <div className="relative z-10 p-4 md:p-5 print:p-0 w-full flex-1 flex flex-col">
