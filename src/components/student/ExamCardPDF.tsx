@@ -553,9 +553,9 @@ const MyDocument = ({ data }: Props) => {
               <Text style={styles.signatureTitle}>Mengetahui,</Text>
               <Text style={styles.signatureRole}>Panitia Pelaksana</Text>
               
-              <View style={{ height: 45, width: '100%', alignItems: 'center', justifyContent: 'center' }}>
+              <View style={{ height: 70, width: '100%', alignItems: 'center', justifyContent: 'center' }}>
                 {data.examSettings.signature_url ? (
-                  <Image src={data.examSettings.signature_url} style={{ width: 90, height: 45, objectFit: 'contain' }} />
+                  <Image src={data.examSettings.signature_url} style={{ width: 140, height: 70, objectFit: 'contain' }} />
                 ) : null}
               </View>
               

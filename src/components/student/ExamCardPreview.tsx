@@ -286,7 +286,7 @@ export default function ExamCardPreview({ data }: Props) {
               <p className="mb-0.5 text-gray-800 text-sm md:text-[25px]">Mengetahui,</p>
               <p className="font-bold text-gray-900 mb-1 uppercase tracking-wide text-base md:text-[30px]">Panitia Pelaksana</p>
               
-              <div className="h-20 md:h-32 flex items-center justify-center mb-1 w-full">
+              <div className="h-20 md:h-38 flex items-center justify-center mb-1 w-full">
                 {data.examSettings.signature_url ? (
                   <img src={data.examSettings.signature_url} alt="Tanda Tangan" className="max-h-full max-w-full object-contain" />
                 ) : (
