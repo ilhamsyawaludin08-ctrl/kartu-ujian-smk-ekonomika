@@ -35,14 +35,14 @@ const MyDocument = ({ data }: Props) => {
   // Dynamic values (Kapasitas A3 - disesuaikan agar tidak overflow)
   const tableFontSize = 18;
   const tableHeaderFontSize = 18;
-  const padV = 6;
-  const padH = 8;
+  const padV = 8;
+  const padH = 10;
   const tableGapHeight = 6;
   const headerMarginBottom = 3;
   const infoMarginBottom = 12;
   const footerMarginTop = 12;
-  const photoWidth = 85;
-  const photoHeight = 113;
+  const photoWidth = 110;
+  const photoHeight = 146;
   const sigLineMarginTop = 40;
 
   const styles = StyleSheet.create({
@@ -57,7 +57,7 @@ const MyDocument = ({ data }: Props) => {
       top: 0,
       width: '420mm',
       height: '297mm',
-      padding: '12mm 25mm', 
+      padding: '8mm 10mm', 
       transform: 'scale(0.5)',
       transformOrigin: '0 0',
     },
@@ -80,59 +80,65 @@ const MyDocument = ({ data }: Props) => {
     },
     titleText: {
       fontSize: 22,
-      fontWeight: 'extrabold',
+      fontFamily: 'Helvetica-Bold',
       color: '#111827',
       textTransform: 'uppercase',
       marginBottom: 4,
     },
     subTitleMain: {
       fontSize: 18,
-      fontWeight: 'bold',
+      fontFamily: 'Helvetica-Bold',
       color: '#111827',
       textTransform: 'uppercase',
       marginBottom: 4,
     },
     subTitle: {
       fontSize: 16,
-      fontWeight: 'bold',
+      fontFamily: 'Helvetica-Bold',
       color: '#111827',
       textTransform: 'uppercase',
     },
     bodyContainer: {
-      paddingHorizontal: 16,
-      paddingBottom: 8,
-      paddingTop: 8,
+      paddingHorizontal: 20,
+      paddingBottom: 10,
+      paddingTop: 10,
     },
     body: {
       flexDirection: 'row',
       justifyContent: 'space-between',
       alignItems: 'flex-start',
-      marginBottom: 8,
+      marginBottom: 10,
     },
     infoContainer: {
       flex: 1,
-      paddingRight: 10,
+      paddingRight: 15,
     },
     infoRow: {
       flexDirection: 'row',
       marginBottom: 6,
-      fontSize: 18,
       alignItems: 'center',
     },
     infoLabel: {
       width: 140,
+      fontSize: 18,
+      fontFamily: 'Helvetica',
       color: '#4b5563',
     },
     infoColon: {
       width: 15,
+      fontSize: 18,
+      fontFamily: 'Helvetica',
+      color: '#4b5563',
     },
     infoValue: {
       flex: 1,
-      fontWeight: 'bold',
+      fontSize: 18,
+      fontFamily: 'Helvetica-Bold',
+      color: '#111827',
     },
     sectionTitle: {
       fontSize: 20,
-      fontWeight: 'bold',
+      fontFamily: 'Helvetica-Bold',
       color: '#111827',
       textTransform: 'uppercase',
       borderBottom: '1pt solid #1f2937',
@@ -142,12 +148,12 @@ const MyDocument = ({ data }: Props) => {
     boxesRow: {
       flexDirection: 'row',
       justifyContent: 'space-between',
-      marginBottom: 8,
+      marginBottom: 10,
     },
     box: {
       flex: 1,
       border: '1pt solid #1f2937',
-      borderRadius: 4,
+      borderRadius: 6,
       padding: 8,
       alignItems: 'center',
       justifyContent: 'center',
@@ -155,13 +161,14 @@ const MyDocument = ({ data }: Props) => {
     },
     boxLabel: {
       fontSize: 14,
+      fontFamily: 'Helvetica',
       color: '#6b7280',
       textTransform: 'uppercase',
       marginBottom: 6,
     },
     boxValue: {
-      fontSize: 20,
-      fontWeight: 'bold',
+      fontSize: 26,
+      fontFamily: 'Helvetica-Bold',
       color: '#111827',
     },
     photoContainer: {
@@ -180,11 +187,12 @@ const MyDocument = ({ data }: Props) => {
     },
     photoText: {
       fontSize: 14,
+      fontFamily: 'Helvetica',
       color: '#9ca3af',
     },
     photoTextBold: {
       fontSize: 14,
-      fontWeight: 'bold',
+      fontFamily: 'Helvetica-Bold',
       color: '#9ca3af',
       marginTop: 2,
     },
@@ -193,7 +201,7 @@ const MyDocument = ({ data }: Props) => {
     },
     scheduleTitle: {
       fontSize: 20,
-      fontWeight: 'bold',
+      fontFamily: 'Helvetica-Bold',
       color: '#111827',
       textTransform: 'uppercase',
       borderBottom: '1pt solid #1f2937',
@@ -216,7 +224,7 @@ const MyDocument = ({ data }: Props) => {
       paddingVertical: padV,
       paddingHorizontal: padH,
       fontSize: tableHeaderFontSize,
-      fontWeight: 'bold',
+      fontFamily: 'Helvetica-Bold',
       color: '#4c1d95',
       textTransform: 'uppercase',
       borderRight: '1pt solid #e9d5ff',
@@ -227,21 +235,35 @@ const MyDocument = ({ data }: Props) => {
     tableColSubject: { width: '37%' },
     tableColSignature: { width: '20%', textAlign: 'center' },
     tableCell: {
-      paddingVertical: padV,
-      paddingHorizontal: padH,
-      fontSize: tableFontSize,
       borderRight: '1pt solid #d1d5db',
       borderLeft: '1pt solid #d1d5db',
       justifyContent: 'center',
     },
     tableCellDate: {
-      paddingVertical: padV,
-      paddingHorizontal: padH,
-      fontSize: tableFontSize,
       borderRight: '1pt solid #d1d5db',
       borderLeft: '1pt solid #d1d5db',
       backgroundColor: '#f9fafb',
-      fontWeight: 'bold',
+      justifyContent: 'center',
+    },
+    tableCellText: {
+      paddingVertical: padV,
+      paddingHorizontal: padH,
+      fontSize: tableFontSize,
+      fontFamily: 'Helvetica',
+      color: '#1f2937',
+    },
+    tableCellTextBold: {
+      paddingVertical: padV,
+      paddingHorizontal: padH,
+      fontSize: tableFontSize,
+      fontFamily: 'Helvetica-Bold',
+      color: '#1f2937',
+    },
+    tableCellTextDate: {
+      paddingVertical: padV,
+      paddingHorizontal: padH,
+      fontSize: tableFontSize,
+      fontFamily: 'Helvetica-Bold',
       color: '#1f2937',
     },
     tableGap: {
@@ -273,12 +295,13 @@ const MyDocument = ({ data }: Props) => {
     },
     notesTitle: {
       fontSize: 16,
-      fontWeight: 'bold',
+      fontFamily: 'Helvetica-Bold',
       marginBottom: 6,
       color: '#1e3a8a',
     },
     notesText: {
       fontSize: 14,
+      fontFamily: 'Helvetica',
       color: '#1e40af',
       lineHeight: 1.3,
     },
@@ -289,15 +312,15 @@ const MyDocument = ({ data }: Props) => {
     },
     serverUrlLabel: {
       fontSize: 12,
+      fontFamily: 'Helvetica-Bold',
       color: '#1d4ed8',
-      fontWeight: 'bold',
       marginBottom: 4,
     },
     serverUrlText: {
       fontSize: 16,
-      color: '#1e3a8a',
-      fontWeight: 'bold',
       fontFamily: 'Courier',
+      fontWeight: 'bold',
+      color: '#1e3a8a',
     },
     signatureContainer: {
       width: 250,
@@ -305,12 +328,13 @@ const MyDocument = ({ data }: Props) => {
     },
     signatureTitle: {
       fontSize: 16,
+      fontFamily: 'Helvetica',
       color: '#1f2937',
       marginBottom: 4,
     },
     signatureRole: {
       fontSize: 18,
-      fontWeight: 'bold',
+      fontFamily: 'Helvetica-Bold',
       color: '#1f2937',
       textTransform: 'uppercase',
       letterSpacing: 1,
@@ -318,7 +342,7 @@ const MyDocument = ({ data }: Props) => {
     },
     chairpersonName: {
       fontSize: 16,
-      fontWeight: 'bold',
+      fontFamily: 'Helvetica-Bold',
       textAlign: 'center',
       textTransform: 'uppercase',
       borderBottom: '1pt solid #111827',
@@ -429,13 +453,13 @@ const MyDocument = ({ data }: Props) => {
                         return (
                         <View style={styles.tableRow} key={sch.id}>
                           <View style={[styles.tableCellDate, styles.tableColDate, dateCellBottom]}>
-                            <Text>{index === 0 ? new Date(date).toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) : ''}</Text>
+                            <Text style={styles.tableCellTextDate}>{index === 0 ? new Date(date).toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) : ''}</Text>
                           </View>
                           <View style={[styles.tableCell, styles.tableColTime, innerBottomBorder]}>
-                            <Text style={{ fontFamily: 'Courier' }}>{sch.start_time.slice(0,5)} - {sch.end_time.slice(0,5)}</Text>
+                            <Text style={[styles.tableCellText, { fontFamily: 'Courier' }]}>{sch.start_time.slice(0,5)} - {sch.end_time.slice(0,5)}</Text>
                           </View>
-                          <View style={[styles.tableCell, styles.tableColSubject, innerBottomBorder, { fontWeight: 'bold' }]}>
-                            <Text>{sch.subject}</Text>
+                          <View style={[styles.tableCell, styles.tableColSubject, innerBottomBorder]}>
+                            <Text style={styles.tableCellTextBold}>{sch.subject}</Text>
                           </View>
                           <View style={[styles.tableCell, styles.tableColSignature, innerBottomBorder]}>
                             <View style={styles.signatureCellLine}></View>
