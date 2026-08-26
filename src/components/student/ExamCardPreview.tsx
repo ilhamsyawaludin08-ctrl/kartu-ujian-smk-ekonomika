@@ -110,7 +110,7 @@ export default function ExamCardPreview({ data }: Props) {
             className="w-[420mm] h-[296mm] bg-white border border-gray-300 print:border-0 shadow-xl print:shadow-none relative font-sans text-gray-900 flex flex-col shrink-0"
           >
             {/* Absolute Inset Border untuk Cetak agar tidak terpotong printer */}
-            <div className="absolute inset-2 md:inset-4 border-2 md:border-[6px] border-gray-900 pointer-events-none z-50 rounded-lg" />
+            <div className="absolute inset-x-0 -inset-y-1 md:-inset-y-2 border-2 md:border-[6px] border-gray-900 pointer-events-none z-50 rounded-lg" />
 
           {/* Content Wrapper */}
           <div className="relative z-10 p-4 md:p-5 print:p-0 w-full flex-1 flex flex-col">
