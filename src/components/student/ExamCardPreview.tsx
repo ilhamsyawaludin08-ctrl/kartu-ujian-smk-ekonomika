@@ -94,12 +94,12 @@ export default function ExamCardPreview({ data }: Props) {
       <div className="p-4 md:p-8 print:p-0 w-full flex justify-center overflow-x-auto">
         
         {/* Outer Wrapper untuk membatasi ukuran fisik saat di-print (A5 Landscape) */}
-        <div id="print-wrapper" className="print:w-[210mm] print:h-[148mm] print:overflow-hidden relative mx-auto shrink-0">
+        <div id="print-wrapper" className="w-[210mm] h-[148mm] overflow-hidden relative mx-auto shrink-0">
           
           {/* The Card - Di layar berukuran A3 Landscape, saat print akan di-scale jadi A5 Landscape */}
           <div 
             id="print-container"
-            className="w-[420mm] h-[296mm] bg-white border border-gray-300 print:border-2 print:border-gray-800 shadow-xl print:shadow-none relative font-sans text-gray-900 flex flex-col shrink-0"
+            className="w-[420mm] h-[296mm] bg-white border border-gray-300 print:border-2 print:border-gray-800 shadow-xl print:shadow-none relative font-sans text-gray-900 flex flex-col shrink-0 transform scale-50 origin-top-left"
           >
 
           {/* Content Wrapper */}
