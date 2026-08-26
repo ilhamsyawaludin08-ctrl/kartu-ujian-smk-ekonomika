@@ -32,22 +32,22 @@ const MyDocument = ({ data }: Props) => {
   const isCompact = scheduleCount > 7;
   const isVeryCompact = scheduleCount > 12;
 
-  // Dynamic values
-  const tableFontSize = 9;
-  const tableHeaderFontSize = 9;
-  const padV = 5;
-  const padH = 6;
-  const tableGapHeight = 6;
-  const headerMarginBottom = 2; // Matches HTML
-  const infoMarginBottom = 16;
-  const footerMarginTop = 16;
-  const photoWidth = 70;
-  const photoHeight = 93;
-  const sigLineMarginTop = 40;
+  // Dynamic values - Shrunk significantly to fit perfectly into A5 Landscape
+  const tableFontSize = isVeryCompact ? 6 : isCompact ? 7 : 8;
+  const tableHeaderFontSize = isVeryCompact ? 6 : isCompact ? 7 : 8;
+  const padV = isVeryCompact ? 2 : isCompact ? 3 : 4;
+  const padH = 4;
+  const tableGapHeight = 2;
+  const headerMarginBottom = 1;
+  const infoMarginBottom = 6;
+  const footerMarginTop = 6;
+  const photoWidth = 50;
+  const photoHeight = 66;
+  const sigLineMarginTop = 20;
 
   const styles = StyleSheet.create({
     page: {
-      padding: '15 25',
+      padding: '10 15',
       fontFamily: 'Helvetica',
       backgroundColor: '#ffffff',
     },
@@ -68,21 +68,21 @@ const MyDocument = ({ data }: Props) => {
       borderBottom: '2pt solid #1f2937',
     },
     titleText: {
-      fontSize: 14,
+      fontSize: 11,
       fontWeight: 'extrabold',
       color: '#111827',
       textTransform: 'uppercase',
-      marginBottom: 4,
+      marginBottom: 2,
     },
     subTitleMain: {
-      fontSize: 12,
+      fontSize: 9,
       fontWeight: 'bold',
       color: '#111827',
       textTransform: 'uppercase',
-      marginBottom: 4,
+      marginBottom: 2,
     },
     subTitle: {
-      fontSize: 10,
+      fontSize: 8,
       fontWeight: 'bold',
       color: '#111827',
       textTransform: 'uppercase',
@@ -96,7 +96,7 @@ const MyDocument = ({ data }: Props) => {
       flexDirection: 'row',
       justifyContent: 'space-between',
       alignItems: 'flex-start',
-      marginBottom: 8,
+      marginBottom: 6,
     },
     infoContainer: {
       flex: 1,
@@ -104,12 +104,12 @@ const MyDocument = ({ data }: Props) => {
     },
     infoRow: {
       flexDirection: 'row',
-      marginBottom: 6,
-      fontSize: 11,
+      marginBottom: 3,
+      fontSize: 9,
       alignItems: 'center',
     },
     infoLabel: {
-      width: 95,
+      width: 75,
       color: '#4b5563',
     },
     infoColon: {
@@ -120,36 +120,36 @@ const MyDocument = ({ data }: Props) => {
       fontWeight: 'bold',
     },
     sectionTitle: {
-      fontSize: 12,
+      fontSize: 9,
       fontWeight: 'bold',
       color: '#111827',
       textTransform: 'uppercase',
       borderBottom: '1pt solid #1f2937',
-      paddingBottom: 6,
-      marginBottom: 12,
+      paddingBottom: 2,
+      marginBottom: 6,
     },
     boxesRow: {
       flexDirection: 'row',
       justifyContent: 'space-between',
-      marginBottom: 10,
+      marginBottom: 6,
     },
     box: {
       flex: 1,
       border: '1pt solid #1f2937',
       borderRadius: 4,
-      padding: 8,
+      padding: 4,
       alignItems: 'center',
       justifyContent: 'center',
       marginHorizontal: 4,
     },
     boxLabel: {
-      fontSize: 9,
+      fontSize: 7,
       color: '#6b7280',
       textTransform: 'uppercase',
-      marginBottom: 4,
+      marginBottom: 2,
     },
     boxValue: {
-      fontSize: 12,
+      fontSize: 10,
       fontWeight: 'bold',
       color: '#111827',
     },
@@ -257,55 +257,55 @@ const MyDocument = ({ data }: Props) => {
     notesBox: {
       border: '1pt solid #bfdbfe',
       backgroundColor: '#eff6ff',
-      padding: 8,
+      padding: 4,
       borderRadius: 4,
     },
     notesTitle: {
-      fontSize: 10,
+      fontSize: 8,
       fontWeight: 'bold',
-      marginBottom: 4,
+      marginBottom: 2,
       color: '#1e3a8a',
     },
     notesText: {
-      fontSize: 8,
+      fontSize: 6,
       color: '#1e40af',
       lineHeight: 1.3,
     },
     serverUrlContainer: {
-      marginTop: 6,
-      paddingTop: 6,
+      marginTop: 4,
+      paddingTop: 4,
       borderTop: '1pt solid #bfdbfe',
     },
     serverUrlLabel: {
-      fontSize: 7,
+      fontSize: 6,
       color: '#1d4ed8',
       fontWeight: 'bold',
-      marginBottom: 2,
+      marginBottom: 1,
     },
     serverUrlText: {
-      fontSize: 9,
+      fontSize: 7,
       color: '#1e3a8a',
       fontWeight: 'bold',
       fontFamily: 'Courier',
     },
     signatureContainer: {
-      width: 140,
+      width: 120,
       alignItems: 'center',
     },
     signatureTitle: {
-      fontSize: 9,
+      fontSize: 7,
       color: '#1f2937',
-      marginBottom: 2,
+      marginBottom: 1,
     },
     signatureRole: {
-      fontSize: 9,
+      fontSize: 7,
       fontWeight: 'bold',
       color: '#1f2937',
       textTransform: 'uppercase',
       letterSpacing: 1,
     },
     chairpersonName: {
-      fontSize: 9,
+      fontSize: 7,
       fontWeight: 'bold',
       textAlign: 'center',
       textTransform: 'uppercase',

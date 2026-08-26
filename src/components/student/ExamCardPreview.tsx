@@ -41,13 +41,13 @@ export default function ExamCardPreview({ data }: Props) {
   const isCompact = scheduleCount > 7;
   const isVeryCompact = scheduleCount > 12;
 
-  // CSS variables for dynamic scaling
-  const tableTextClass = isVeryCompact ? 'text-[9px]' : isCompact ? 'text-[10px]' : 'text-xs';
-  const tablePaddingClass = isVeryCompact ? 'px-2 py-1' : isCompact ? 'px-2 py-1.5' : 'px-3 py-2';
-  const headerPaddingClass = isVeryCompact ? 'pb-2 mb-3' : isCompact ? 'pb-3 mb-4' : 'pb-4 mb-6';
-  const gapClass = isVeryCompact ? 'h-1' : isCompact ? 'h-2' : 'h-3';
-  const infoTextClass = isVeryCompact ? 'text-xs' : 'text-sm md:text-base';
-  const infoPaddingClass = isVeryCompact ? 'py-1' : 'py-1.5';
+  // CSS variables for dynamic scaling - Diperkecil ekstrim untuk muat di A5 Landscape (148mm height)
+  const tableTextClass = isVeryCompact ? 'text-[7px] leading-[8px]' : isCompact ? 'text-[8px] leading-[10px]' : 'text-[9px] leading-[12px]';
+  const tablePaddingClass = isVeryCompact ? 'px-1 py-0.5' : isCompact ? 'px-1.5 py-1' : 'px-2 py-1';
+  const headerPaddingClass = isVeryCompact ? 'pb-1 mb-2' : isCompact ? 'pb-1.5 mb-2' : 'pb-2 mb-3';
+  const gapClass = isVeryCompact ? 'h-0.5' : isCompact ? 'h-1' : 'h-1.5';
+  const infoTextClass = isVeryCompact ? 'text-[8px] leading-tight' : isCompact ? 'text-[9px] leading-tight' : 'text-[10px] leading-tight';
+  const infoPaddingClass = isVeryCompact ? 'py-0.5' : 'py-1';
 
   return (
     <div className="w-full flex flex-col items-center min-h-screen bg-gray-100 print:bg-white print:min-h-0">
@@ -106,28 +106,28 @@ export default function ExamCardPreview({ data }: Props) {
             <div className="w-full flex-1 flex flex-col">
               
               {/* Title Block */}
-              <div className="text-center w-full pb-2 pt-0 border-b-2 border-gray-800"> 
-                <h2 className="text-base md:text-lg font-extrabold text-gray-900 uppercase">
+              <div className="text-center w-full pb-1 pt-0 border-b border-gray-800"> 
+                <h2 className="text-sm font-extrabold text-gray-900 uppercase">
                   KARTU PESERTA UJIAN
                 </h2>
-                <h3 className="text-sm md:text-base font-bold text-gray-900 mt-0.5 uppercase">
+                <h3 className="text-xs font-bold text-gray-900 mt-0.5 uppercase">
                   {data.exam.exam_name} ({data.exam.semester})
                 </h3>
-                <p className="text-xs md:text-sm font-bold text-gray-900 mt-0.5 uppercase">
+                <p className="text-[10px] font-bold text-gray-900 mt-0.5 uppercase">
                   TAHUN PELAJARAN {data.exam.academic_year}
                 </p>
               </div>
 
               {/* Main Content Body */}
-              <div className="w-full flex-1 flex flex-col print:p-6 p-4">
+              <div className="w-full flex-1 flex flex-col p-4 md:p-6 print:p-2">
 
           {/* Section 1: DATA PESERTA */}
-          <h3 className="font-bold text-base md:text-lg uppercase text-gray-900 border-b border-gray-800 pb-2 mb-4">
+          <h3 className="text-sm font-extrabold text-gray-900 uppercase tracking-widest border-b border-gray-800 pb-1 mb-2">
             DATA PESERTA
           </h3>
           
           {/* Identity & Exam Info Section */}
-          <div className="flex justify-between items-start mb-4 md:mb-6 gap-6">
+          <div className="flex justify-between items-start mb-2 gap-3">
             
             {/* Student Info */}
             <div className="flex-1">
@@ -179,25 +179,27 @@ export default function ExamCardPreview({ data }: Props) {
           </div>
 
           {/* Section 2: Kotak-kotak (Nomor Ujian, Ruang Ujian, Password) */}
-          <div className="grid grid-cols-3 gap-4 mb-6">
-            <div className="border border-gray-800 rounded-lg p-3 text-center flex flex-col justify-center min-h-[80px]">
-              <p className="text-[10px] text-gray-500 uppercase font-semibold mb-1">Nomor Ujian</p>
-              <p className="font-bold text-lg text-gray-900">{data.examCard.card_number}</p>
+          <div className="grid grid-cols-3 gap-2 mb-2">
+            <div className="border border-gray-800 rounded-lg p-2 text-center flex flex-col justify-center min-h-[50px]">
+              <p className="text-[8px] text-gray-500 uppercase font-semibold mb-0.5">Nomor Ujian</p>
+              <p className="font-bold text-xs md:text-sm text-gray-900">{data.examCard.card_number}</p>
             </div>
-            <div className="border border-gray-800 rounded-lg p-3 text-center flex flex-col justify-center min-h-[80px]">
-              <p className="text-[10px] text-gray-500 uppercase font-semibold mb-1">Ruang Ujian</p>
-              <p className="font-bold text-lg text-gray-900">{data.student.exam_room || '-'}</p>
-            </div>
-            <div className="border border-gray-800 rounded-lg p-3 text-center flex flex-col justify-center min-h-[80px]">
-              <p className="text-[10px] text-gray-500 uppercase font-semibold mb-1">Password</p>
-              <p className="font-bold text-lg text-gray-900">{data.student.exam_password || '-'}</p>
+            {data.examSettings.show_room && (
+              <div className="border border-gray-800 rounded-lg p-2 text-center flex flex-col justify-center min-h-[50px]">
+                <p className="text-[8px] text-gray-500 uppercase font-semibold mb-0.5">Ruang Ujian</p>
+                <p className="font-bold text-xs md:text-sm text-gray-900">{data.student.exam_room || '-'}</p>
+              </div>
+            )}
+            <div className="border border-gray-800 rounded-lg p-2 text-center flex flex-col justify-center min-h-[50px]">
+              <p className="text-[8px] text-gray-500 uppercase font-semibold mb-0.5">Password</p>
+              <p className="font-bold text-xs md:text-sm text-gray-900 tracking-wider">{data.student.exam_password || '-'}</p>
             </div>
           </div>
 
           {/* Schedule Table (Keep original purple design) */}
           {data.examSettings.show_schedule && (
             <div className="flex-1 flex flex-col">
-              <h4 className="font-bold text-base md:text-lg uppercase text-gray-900 border-b border-gray-800 pb-2 mb-4">
+              <h4 className="text-sm font-extrabold text-gray-900 uppercase tracking-widest border-b border-gray-800 pb-1 mb-2">
                 JADWAL UJIAN PESERTA
               </h4>
               
@@ -256,23 +258,23 @@ export default function ExamCardPreview({ data }: Props) {
           )}
 
           {/* Footer Notes & Signature */}
-          <div className="mt-4 md:mt-6 flex justify-between items-end text-xs md:text-sm pt-2 print:break-inside-avoid">
-            <div className="flex-1 pr-8 md:pr-12">
+          <div className="mt-2 flex justify-between items-end text-[9px] pt-1 print:break-inside-avoid">
+            <div className="flex-1 pr-4">
               {/* Box Ketentuan Ujian based on mockup */}
-              <div className="bg-blue-50/50 border border-blue-200 p-3 md:p-4 rounded-lg max-w-xl">
-                <p className="font-bold text-blue-900 text-sm mb-2">Ketentuan Ujian</p>
-                <p className="text-xs text-blue-800 whitespace-pre-wrap leading-relaxed">{data.examSettings.exam_notes || '-'}</p>
+              <div className="bg-blue-50/50 border border-blue-200 p-2 rounded-lg max-w-xl">
+                <p className="font-bold text-blue-900 text-[10px] mb-1">Ketentuan Ujian</p>
+                <p className="text-[8px] text-blue-800 whitespace-pre-wrap leading-relaxed">{data.examSettings.exam_notes || '-'}</p>
                 
                 {data.exam.server_url && (
-                  <div className="mt-3 pt-3 border-t border-blue-200/50">
-                    <p className="text-[10px] text-blue-700 font-semibold mb-0.5">Link Server Ujian:</p>
-                    <p className="font-mono text-xs font-bold text-blue-900 break-all">{data.exam.server_url}</p>
+                  <div className="mt-1 pt-1 border-t border-blue-200/50">
+                    <p className="text-[8px] text-blue-700 font-semibold mb-0.5">Link Server Ujian:</p>
+                    <p className="font-mono text-[9px] font-bold text-blue-900 break-all">{data.exam.server_url}</p>
                   </div>
                 )}
               </div>
             </div>
             
-            <div className="w-56 md:w-64 text-center flex flex-col items-center flex-shrink-0">
+            <div className="w-40 text-center flex flex-col items-center flex-shrink-0">
               <p className="mb-1 text-gray-800 text-xs md:text-sm">Mengetahui,</p>
               <p className="font-bold text-gray-900 mb-2 uppercase tracking-wide text-sm md:text-base">Panitia Pelaksana</p>
               
