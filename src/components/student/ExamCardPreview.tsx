@@ -42,11 +42,11 @@ export default function ExamCardPreview({ data }: Props) {
   const isVeryCompact = scheduleCount > 12;
 
   // CSS variables - teks diperbesar untuk kanvas A3, padding dikurangi agar tidak overflow
-  const tableTextClass = isVeryCompact ? 'text-[11px] md:text-[20px]' : isCompact ? 'text-xs md:text-[22px]' : 'text-sm md:text-[26px]';
+  const tableTextClass = isVeryCompact ? 'text-[11px] md:text-[22px]' : isCompact ? 'text-xs md:text-[25px]' : 'text-sm md:text-[28px]';
   const tablePaddingClass = isVeryCompact ? 'px-1.5 py-0.5 md:px-3 md:py-1.5' : isCompact ? 'px-2 py-1 md:px-4 md:py-2' : 'px-3 py-1.5 md:px-5 md:py-3';
   const headerPaddingClass = isVeryCompact ? 'pb-1 mb-1.5 md:pb-2 md:mb-3' : isCompact ? 'pb-1.5 mb-2 md:pb-3 md:mb-4' : 'pb-2 mb-3 md:pb-4 md:mb-6';
   const gapClass = isVeryCompact ? 'h-0.5 md:h-1' : isCompact ? 'h-1 md:h-1.5' : 'h-1.5 md:h-2';
-  const infoTextClass = isVeryCompact ? 'text-xs md:text-[20px]' : 'text-sm md:text-[24px]';
+  const infoTextClass = isVeryCompact ? 'text-xs md:text-[22px]' : 'text-sm md:text-[26px]';
   const infoPaddingClass = isVeryCompact ? 'py-0.5 md:py-1' : 'py-1 md:py-1.5';
 
   return (
@@ -117,13 +117,13 @@ export default function ExamCardPreview({ data }: Props) {
               
               {/* Title Block */}
               <div className="text-center w-full pb-2 pt-0 border-b-2 border-gray-800"> 
-                <h2 className="text-base md:text-[30px] font-extrabold text-gray-900 uppercase">
+                <h2 className="text-base md:text-[34px] font-extrabold text-gray-900 uppercase">
                   KARTU PESERTA UJIAN
                 </h2>
-                <h3 className="text-sm md:text-[26px] font-bold text-gray-900 mt-1 uppercase">
+                <h3 className="text-sm md:text-[30px] font-bold text-gray-900 mt-1 uppercase">
                   {data.exam.exam_name} ({data.exam.semester})
                 </h3>
-                <p className="text-xs md:text-[22px] font-bold text-gray-900 mt-1 uppercase">
+                <p className="text-xs md:text-[25px] font-bold text-gray-900 mt-1 uppercase">
                   TAHUN PELAJARAN {data.exam.academic_year}
                 </p>
               </div>
@@ -132,7 +132,7 @@ export default function ExamCardPreview({ data }: Props) {
               <div className="w-full flex-1 flex flex-col print:p-4 p-3">
 
           {/* Section 1: DATA PESERTA */}
-          <h3 className="font-bold text-base md:text-[28px] uppercase text-gray-900 border-b border-gray-800 pb-1 md:pb-2 mb-2 md:mb-3">
+          <h3 className="font-bold text-base md:text-[30px] uppercase text-gray-900 border-b border-gray-800 pb-1 md:pb-2 mb-2 md:mb-3">
             DATA PESERTA
           </h3>
           
@@ -191,23 +191,23 @@ export default function ExamCardPreview({ data }: Props) {
           {/* Section 2: Kotak-kotak (Nomor Ujian, Ruang Ujian, Password) */}
           <div className="grid grid-cols-3 gap-3 md:gap-6 mb-3 md:mb-5">
             <div className="border border-gray-800 rounded-lg p-2 md:p-4 text-center flex flex-col justify-center min-h-[60px] md:min-h-[90px]">
-              <p className="text-[10px] md:text-[18px] text-gray-500 uppercase font-semibold mb-1">Nomor Ujian</p>
-              <p className="font-bold text-lg md:text-[32px] text-gray-900">{data.examCard.card_number}</p>
+              <p className="text-[10px] md:text-[20px] text-gray-500 uppercase font-semibold mb-1">Nomor Ujian</p>
+              <p className="font-bold text-lg md:text-[36px] text-gray-900">{data.examCard.card_number}</p>
             </div>
             <div className="border border-gray-800 rounded-lg p-2 md:p-4 text-center flex flex-col justify-center min-h-[60px] md:min-h-[90px]">
-              <p className="text-[10px] md:text-[18px] text-gray-500 uppercase font-semibold mb-1">Ruang Ujian</p>
-              <p className="font-bold text-lg md:text-[32px] text-gray-900">{data.student.exam_room || '-'}</p>
+              <p className="text-[10px] md:text-[20px] text-gray-500 uppercase font-semibold mb-1">Ruang Ujian</p>
+              <p className="font-bold text-lg md:text-[36px] text-gray-900">{data.student.exam_room || '-'}</p>
             </div>
             <div className="border border-gray-800 rounded-lg p-2 md:p-4 text-center flex flex-col justify-center min-h-[60px] md:min-h-[90px]">
-              <p className="text-[10px] md:text-[18px] text-gray-500 uppercase font-semibold mb-1">Password</p>
-              <p className="font-bold text-lg md:text-[32px] text-gray-900">{data.student.exam_password || '-'}</p>
+              <p className="text-[10px] md:text-[20px] text-gray-500 uppercase font-semibold mb-1">Password</p>
+              <p className="font-bold text-lg md:text-[36px] text-gray-900">{data.student.exam_password || '-'}</p>
             </div>
           </div>
 
           {/* Schedule Table (Keep original purple design) */}
           {data.examSettings.show_schedule && (
             <div className="flex-1 flex flex-col">
-              <h4 className="font-bold text-base md:text-[28px] uppercase text-gray-900 border-b border-gray-800 pb-1 md:pb-2 mb-2 md:mb-3">
+              <h4 className="font-bold text-base md:text-[30px] uppercase text-gray-900 border-b border-gray-800 pb-1 md:pb-2 mb-2 md:mb-3">
                 JADWAL UJIAN PESERTA
               </h4>
               
@@ -270,21 +270,21 @@ export default function ExamCardPreview({ data }: Props) {
             <div className="flex-1 pr-6 md:pr-10">
               {/* Box Ketentuan Ujian based on mockup */}
               <div className="bg-blue-50/50 border border-blue-200 p-2 md:p-3 rounded-lg max-w-xl">
-                <p className="font-bold text-blue-900 text-sm md:text-[18px] mb-1 md:mb-2">Ketentuan Ujian</p>
-                <p className="text-xs md:text-[14px] text-blue-800 whitespace-pre-wrap leading-relaxed">{data.examSettings.exam_notes || '-'}</p>
+                <p className="font-bold text-blue-900 text-sm md:text-[20px] mb-1 md:mb-2">Ketentuan Ujian</p>
+                <p className="text-xs md:text-[16px] text-blue-800 whitespace-pre-wrap leading-relaxed">{data.examSettings.exam_notes || '-'}</p>
                 
                 {data.exam.server_url && (
                   <div className="mt-2 pt-2 border-t border-blue-200/50">
-                    <p className="text-[10px] md:text-[14px] text-blue-700 font-semibold mb-0.5">Link Server Ujian:</p>
-                    <p className="font-mono text-xs md:text-[16px] font-bold text-blue-900 break-all">{data.exam.server_url}</p>
+                    <p className="text-[10px] md:text-[16px] text-blue-700 font-semibold mb-0.5">Link Server Ujian:</p>
+                    <p className="font-mono text-xs md:text-[18px] font-bold text-blue-900 break-all">{data.exam.server_url}</p>
                   </div>
                 )}
               </div>
             </div>
             
             <div className="w-56 md:w-72 text-center flex flex-col items-center flex-shrink-0">
-              <p className="mb-0.5 text-gray-800 text-sm md:text-[20px]">Mengetahui,</p>
-              <p className="font-bold text-gray-900 mb-1 uppercase tracking-wide text-base md:text-[24px]">Panitia Pelaksana</p>
+              <p className="mb-0.5 text-gray-800 text-sm md:text-[22px]">Mengetahui,</p>
+              <p className="font-bold text-gray-900 mb-1 uppercase tracking-wide text-base md:text-[26px]">Panitia Pelaksana</p>
               
               <div className="h-20 md:h-32 flex items-center justify-center mb-1 w-full">
                 {data.examSettings.signature_url ? (
@@ -294,7 +294,7 @@ export default function ExamCardPreview({ data }: Props) {
                 )}
               </div>
               
-              <p className="font-bold text-gray-900 border-b border-gray-800 w-full pb-0.5 uppercase text-sm md:text-[20px] truncate px-2">
+              <p className="font-bold text-gray-900 border-b border-gray-800 w-full pb-0.5 uppercase text-sm md:text-[22px] truncate px-2">
                 {data.examSettings.chairperson_name || '( .......................................... )'}
               </p>
             </div>
