@@ -53,10 +53,9 @@ const MyDocument = ({ data }: Props) => {
     },
     card: {
       width: '190mm', // ~210mm total with some page padding
-      height: '148mm',
+      minHeight: '148mm',
       border: '2pt solid #1f2937',
       flexDirection: 'column',
-      overflow: 'hidden', // to ensure it doesn't spill over the box
     },
     headerImageContainer: {
       width: '100%',

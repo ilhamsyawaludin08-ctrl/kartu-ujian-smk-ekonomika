@@ -75,12 +75,11 @@ export default function ExamCardPreview({ data }: Props) {
             position: absolute !important;
             left: 0 !important;
             top: 0 !important;
-            width: 210mm !important; /* Ukuran Kartu: A5 Landscape */
+            width: 210mm !important; /* Lebar A5 */
             max-width: 210mm !important;
-            height: 148mm !important; /* Ukuran Kartu: A5 Landscape */
-            max-height: 148mm !important;
+            min-height: 148mm !important; /* Minimal tinggi A5, bisa lebih kalau jadwal banyak */
+            height: auto !important;
             margin: 0 !important;
-            overflow: hidden !important; /* Potong kalau kelebihan, biar nggak bikin halaman baru */
           }
         }
       `}} />
@@ -88,10 +87,10 @@ export default function ExamCardPreview({ data }: Props) {
       {/* Card Preview Container */}
       <div className="p-4 md:p-8 print:p-0 w-full flex justify-center">
         
-        {/* The Card - A5 Landscape Dimensions (210mm x 148mm) on screen */}
+        {/* The Card - Lebar 210mm (A5 Landscape), Tinggi dinamis menyesuaikan isi tapi min 148mm */}
         <div 
           id="print-container"
-          className="w-full max-w-[210mm] h-[148mm] bg-white border border-gray-300 print:border-2 print:border-gray-800 shadow-xl print:shadow-none relative font-sans text-gray-900 mx-auto flex flex-col print:break-inside-avoid overflow-hidden"
+          className="w-full max-w-[210mm] min-h-[148mm] bg-white border border-gray-300 print:border-2 print:border-gray-800 shadow-xl print:shadow-none relative font-sans text-gray-900 mx-auto flex flex-col print:break-inside-avoid"
         >
 
           {/* Content Wrapper */}
