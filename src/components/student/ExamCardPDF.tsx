@@ -47,12 +47,20 @@ const MyDocument = ({ data }: Props) => {
 
   const styles = StyleSheet.create({
     page: {
-      padding: '10 10',
+      padding: 0,
       fontFamily: 'Helvetica',
       backgroundColor: '#ffffff',
     },
+    scaledWrapper: {
+      width: '297mm', /* Ukuran maya A4 Landscape */
+      height: '210mm',
+      padding: '10mm 15mm',
+      transform: 'scale(0.707)', /* Perkecil persis ke A5 Landscape */
+      transformOrigin: '0 0',
+    },
     card: {
       width: '100%',
+      height: '100%',
       border: '2pt solid #1f2937',
       flexDirection: 'column',
     },
@@ -347,9 +355,10 @@ const MyDocument = ({ data }: Props) => {
   return (
     <Document>
       <Page size="A5" orientation="landscape" style={styles.page}>
-        <View style={styles.card}>
-          
-          {/* Header Image */}
+        <View style={styles.scaledWrapper}>
+          <View style={styles.card}>
+            
+            {/* Header Image */}
           <View style={styles.headerImageContainer}>
             <Image src="/header_gds.png" style={{ width: '100%', height: 'auto' }} />
           </View>
@@ -501,7 +510,7 @@ const MyDocument = ({ data }: Props) => {
             </View>
           </View>
           </View>
-
+        </View>
         </View>
       </Page>
     </Document>

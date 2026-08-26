@@ -58,7 +58,7 @@ export default function ExamCardPreview({ data }: Props) {
       <style dangerouslySetInnerHTML={{__html: `
         @media print {
           @page {
-            size: A5 landscape; /* Kertas fisik A5 Landscape */
+            size: A4 portrait; /* Paksa kertas print HVS A4 biasa agar browser tidak memotong halaman (paginate) */
             margin: 5mm;
           }
           body {
@@ -69,31 +69,37 @@ export default function ExamCardPreview({ data }: Props) {
           body * {
             visibility: hidden;
           }
-          #print-container, #print-container * {
+          #print-wrapper, #print-wrapper * {
             visibility: visible;
           }
-          #print-container {
+          #print-wrapper {
             position: absolute !important;
             left: 0 !important;
             top: 0 !important;
-            width: 297mm !important; /* Gambar di kanvas A4 Landscape */
-            height: 210mm !important; 
+            width: 210mm !important; /* Batas fisik di kertas A4 adalah 210mm (ukuran A5 landscape) */
+            height: 148mm !important;
+            overflow: hidden !important;
             margin: 0 !important;
-            /* Perkecil 70% agar persis seukuran A5 Landscape (210x148) */
-            transform: scale(0.67) !important;
+          }
+          #print-container {
+            width: 297mm !important; /* Konten aslinya sebesar A4 landscape biar lega */
+            height: 210mm !important; 
+            transform: scale(0.707) !important; /* Perkecil persis ke ukuran A5 landscape (1 / sqrt(2)) */
             transform-origin: top left !important;
-            overflow: hidden !important; 
           }
         }
       `}} />
 
       <div className="p-4 md:p-8 print:p-0 w-full flex justify-center overflow-x-auto">
         
-        {/* The Card - Di layar berukuran A4 Landscape, saat print akan di-scale jadi A5 Landscape */}
-        <div 
-          id="print-container"
-          className="w-[297mm] h-[210mm] bg-white border border-gray-300 print:border-2 print:border-gray-800 shadow-xl print:shadow-none relative font-sans text-gray-900 mx-auto flex flex-col shrink-0"
-        >
+        {/* Outer Wrapper untuk membatasi ukuran fisik saat di-print (A5 Landscape) */}
+        <div id="print-wrapper" className="print:w-[210mm] print:h-[148mm] print:overflow-hidden relative mx-auto shrink-0">
+          
+          {/* The Card - Di layar berukuran A4 Landscape, saat print akan di-scale jadi A5 Landscape */}
+          <div 
+            id="print-container"
+            className="w-[297mm] h-[210mm] bg-white border border-gray-300 print:border-2 print:border-gray-800 shadow-xl print:shadow-none relative font-sans text-gray-900 flex flex-col"
+          >
 
           {/* Content Wrapper */}
           <div className="relative z-10 p-6 md:p-8 print:p-0 w-full flex-1 flex flex-col">
@@ -299,6 +305,7 @@ export default function ExamCardPreview({ data }: Props) {
           </div>
           {/* End Content Wrapper */}
 
+        </div>
         </div>
       </div>
     </div>
