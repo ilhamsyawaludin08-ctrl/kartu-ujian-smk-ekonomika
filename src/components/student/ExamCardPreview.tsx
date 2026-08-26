@@ -74,10 +74,10 @@ export default function ExamCardPreview({ data }: Props) {
           }
           #print-wrapper {
             position: absolute !important;
-            left: 0 !important;
-            top: 0 !important;
-            width: 210mm !important;
-            height: 148mm !important;
+            left: 7.3mm !important;
+            top: 5.2mm !important;
+            width: 195.4mm !important;
+            height: 137.7mm !important;
             overflow: hidden !important;
             margin: 0 !important;
             padding: 0 !important;
@@ -88,7 +88,7 @@ export default function ExamCardPreview({ data }: Props) {
             top: 0 !important;
             width: 420mm !important;
             height: 296mm !important;
-            transform: scale(0.5) !important;
+            transform: scale(0.465) !important;
             transform-origin: top left !important;
             margin: 0 !important;
             padding: 0 !important;
