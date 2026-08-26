@@ -37,13 +37,13 @@ const MyDocument = ({ data }: Props) => {
   const tableHeaderFontSize = 13;
   const padV = 4;
   const padH = 8;
-  const tableGapHeight = 4;
+  const tableGapHeight = 2;
   const headerMarginBottom = 2;
-  const infoMarginBottom = 8;
-  const footerMarginTop = 8;
-  const photoWidth = 110; // optimized to match HTML aspect ratio
-  const photoHeight = 146; // 3:4 aspect ratio
-  const sigLineMarginTop = 30;
+  const infoMarginBottom = 4;
+  const footerMarginTop = 4;
+  const photoWidth = 90; // optimized size
+  const photoHeight = 120; // 3:4 aspect ratio
+  const sigLineMarginTop = 20;
 
   const styles = StyleSheet.create({
     page: {
@@ -57,7 +57,7 @@ const MyDocument = ({ data }: Props) => {
       top: 0,
       width: '420mm',
       height: '297mm',
-      padding: '8mm 6mm', // Rapatkan margin horizontal ke A5 agar selebar cetakan HTML
+      padding: '6mm 6mm', // Rapatkan margin horizontal/vertikal ke A5 agar selebar cetakan HTML
       transform: 'scale(0.5)',
       transformOrigin: '0 0',
     },
@@ -69,7 +69,6 @@ const MyDocument = ({ data }: Props) => {
     },
     headerImageContainer: {
       width: '100%',
-      height: 100,
       marginBottom: 0,
       borderBottom: '0pt solid #1f2937',
     },
@@ -101,15 +100,15 @@ const MyDocument = ({ data }: Props) => {
     },
     bodyContainer: {
       paddingHorizontal: 20,
-      paddingBottom: 8,
-      paddingTop: 8,
+      paddingBottom: 4,
+      paddingTop: 4,
       flexGrow: 1,
     },
     body: {
       flexDirection: 'row',
       justifyContent: 'space-between',
-      alignItems: 'flex-start',
-      marginBottom: 8,
+      alignItems: 'stretch', // stretch agar body mengikuti tinggi photo (mencegah tabrakan dengan boxes)
+      marginBottom: 6,
     },
     infoContainer: {
       flex: 1,
@@ -117,7 +116,7 @@ const MyDocument = ({ data }: Props) => {
     },
     infoRow: {
       flexDirection: 'row',
-      marginBottom: 5,
+      marginBottom: 4, // dirapatkan dari 5 ke 4
       alignItems: 'center',
     },
     infoLabel: {
@@ -311,6 +310,7 @@ const MyDocument = ({ data }: Props) => {
       border: '1pt solid #bfdbfe',
       backgroundColor: '#eff6ff',
       padding: 10,
+      paddingBottom: 20, // Berikan padding bawah longgar agar link server tidak meluber keluar garis
       borderRadius: 6,
     },
     notesTitle: {
@@ -379,7 +379,7 @@ const MyDocument = ({ data }: Props) => {
             
             {/* Header Image */}
           <View style={styles.headerImageContainer}>
-            <Image src="/header_gds.png" style={{ width: '100%', height: 100, objectFit: 'contain' }} />
+            <Image src="/header_gds.png" style={{ width: '100%' }} />
           </View>
           
           {/* Title Block */}
