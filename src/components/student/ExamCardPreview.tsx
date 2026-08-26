@@ -41,13 +41,15 @@ export default function ExamCardPreview({ data }: Props) {
   const isCompact = scheduleCount > 7;
   const isVeryCompact = scheduleCount > 12;
 
-  // CSS variables for dynamic scaling - Diperkecil ekstrim untuk muat di A5 Landscape (148mm height)
+  // CSS variables for dynamic scaling - Diperbesar khusus Data Peserta agar tidak ada ruang kosong di bawah
   const tableTextClass = isVeryCompact ? 'text-[7px] leading-[8px]' : isCompact ? 'text-[8px] leading-[10px]' : 'text-[9px] leading-[12px]';
   const tablePaddingClass = isVeryCompact ? 'px-1 py-0.5' : isCompact ? 'px-1.5 py-1' : 'px-2 py-1';
   const headerPaddingClass = isVeryCompact ? 'pb-1 mb-2' : isCompact ? 'pb-1.5 mb-2' : 'pb-2 mb-3';
   const gapClass = isVeryCompact ? 'h-0.5' : isCompact ? 'h-1' : 'h-1.5';
-  const infoTextClass = isVeryCompact ? 'text-[8px] leading-tight' : isCompact ? 'text-[9px] leading-tight' : 'text-[10px] leading-tight';
-  const infoPaddingClass = isVeryCompact ? 'py-0.5' : 'py-1';
+  
+  // Data Peserta diperbesar
+  const infoTextClass = 'text-[11px] md:text-xs leading-normal'; 
+  const infoPaddingClass = 'py-1 md:py-1.5';
 
   return (
     <div className="w-full flex flex-col items-center min-h-screen bg-gray-100 print:bg-white print:min-h-0">

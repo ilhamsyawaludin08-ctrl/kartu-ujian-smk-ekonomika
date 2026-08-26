@@ -106,7 +106,7 @@ const MyDocument = ({ data }: Props) => {
     },
     infoRow: {
       flexDirection: 'row',
-      marginBottom: 3,
+      marginBottom: 6, // Diperbesar agar mengisi ruang kosong
       fontSize: 9,
       alignItems: 'center',
     },
@@ -123,7 +123,7 @@ const MyDocument = ({ data }: Props) => {
       color: '#111827',
     },
     sectionTitle: {
-      fontSize: 9,
+      fontSize: 10, // Diperbesar agar infoRow (9) tidak lebih besar dari ini
       fontWeight: 'bold',
       color: '#111827',
       textTransform: 'uppercase',
