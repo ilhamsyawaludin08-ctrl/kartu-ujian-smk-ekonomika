@@ -40,7 +40,7 @@ const MyDocument = ({ data }: Props) => {
   const tableGapHeight = 2;
   const headerMarginBottom = 2;
   const infoMarginBottom = 4;
-  const footerMarginTop = 4;
+  const footerMarginTop = 14; // increased from 4 to add a clear vertical gap between table and blue box
   const photoWidth = 80; // optimized size
   const photoHeight = 107; // 3:4 aspect ratio
   const sigLineMarginTop = 15;
