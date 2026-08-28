@@ -29,21 +29,21 @@ const MyDocument = ({ data }: Props) => {
   
   // Adaptive scaling logic based on number of schedules to fit in 1 page A4 Landscape
   const scheduleCount = sortedSchedules.length;
-  const isCompact = scheduleCount > 7;
-  const isVeryCompact = scheduleCount > 12;
+  const isCompact = scheduleCount > 16;
+  const isVeryCompact = scheduleCount > 24;
 
   // Dynamic values
-  const tableFontSize = 6.5;
-  const tableHeaderFontSize = 6.5;
-  const padV = 3;
-  const padH = 4;
-  const tableGapHeight = 4;
+  const tableFontSize = isVeryCompact ? 6.5 : isCompact ? 8 : 9;
+  const tableHeaderFontSize = isVeryCompact ? 6.5 : isCompact ? 8 : 9;
+  const padV = isVeryCompact ? 3 : isCompact ? 4 : 5;
+  const padH = isVeryCompact ? 4 : isCompact ? 5 : 6;
+  const tableGapHeight = isVeryCompact ? 4 : isCompact ? 5 : 6;
   const headerMarginBottom = 2; // Matches HTML
-  const infoMarginBottom = 10;
-  const footerMarginTop = 10;
-  const photoWidth = 50;
-  const photoHeight = 66;
-  const sigLineMarginTop = 25;
+  const infoMarginBottom = isVeryCompact ? 10 : isCompact ? 12 : 16;
+  const footerMarginTop = isVeryCompact ? 10 : isCompact ? 12 : 16;
+  const photoWidth = isVeryCompact ? 50 : isCompact ? 60 : 70;
+  const photoHeight = isVeryCompact ? 66 : isCompact ? 80 : 93;
+  const sigLineMarginTop = isVeryCompact ? 25 : isCompact ? 30 : 40;
 
   const styles = StyleSheet.create({
     page: {
@@ -63,40 +63,40 @@ const MyDocument = ({ data }: Props) => {
     },
     titleBlock: {
       alignItems: 'center',
-      paddingBottom: 4,
+      paddingBottom: isVeryCompact ? 4 : isCompact ? 5 : 6,
       paddingTop: 0,
       borderBottom: '2pt solid #1f2937',
     },
     titleText: {
-      fontSize: 9,
+      fontSize: isVeryCompact ? 9 : isCompact ? 12 : 14,
       fontWeight: 'bold',
       color: '#111827',
       textTransform: 'uppercase',
       marginBottom: 2,
     },
     subTitleMain: {
-      fontSize: 8,
+      fontSize: isVeryCompact ? 8 : isCompact ? 10 : 12,
       fontWeight: 'bold',
       color: '#111827',
       textTransform: 'uppercase',
       marginBottom: 2,
     },
     subTitle: {
-      fontSize: 7,
+      fontSize: isVeryCompact ? 7 : isCompact ? 8 : 10,
       fontWeight: 'bold',
       color: '#111827',
       textTransform: 'uppercase',
     },
     bodyContainer: {
-      paddingHorizontal: 15,
-      paddingBottom: 10,
-      paddingTop: 8,
+      paddingHorizontal: isVeryCompact ? 15 : isCompact ? 18 : 20,
+      paddingBottom: isVeryCompact ? 10 : isCompact ? 12 : 15,
+      paddingTop: isVeryCompact ? 8 : isCompact ? 9 : 10,
     },
     body: {
       flexDirection: 'row',
       justifyContent: 'space-between',
       alignItems: 'flex-start',
-      marginBottom: 6,
+      marginBottom: isVeryCompact ? 6 : isCompact ? 7 : 8,
     },
     infoContainer: {
       flex: 1,
@@ -104,8 +104,8 @@ const MyDocument = ({ data }: Props) => {
     },
     infoRow: {
       flexDirection: 'row',
-      marginBottom: 4,
-      fontSize: 7.5,
+      marginBottom: isVeryCompact ? 4 : isCompact ? 5 : 6,
+      fontSize: isVeryCompact ? 7.5 : isCompact ? 9.5 : 11,
       alignItems: 'center',
     },
     infoLabel: {
@@ -120,36 +120,36 @@ const MyDocument = ({ data }: Props) => {
       fontWeight: 'bold',
     },
     sectionTitle: {
-      fontSize: 8,
+      fontSize: isVeryCompact ? 8 : isCompact ? 10 : 12,
       fontWeight: 'bold',
       color: '#111827',
       textTransform: 'uppercase',
       borderBottom: '1pt solid #1f2937',
-      paddingBottom: 4,
-      marginBottom: 8,
+      paddingBottom: isVeryCompact ? 4 : isCompact ? 5 : 6,
+      marginBottom: isVeryCompact ? 8 : isCompact ? 10 : 12,
     },
     boxesRow: {
       flexDirection: 'row',
       justifyContent: 'space-between',
-      marginBottom: 6,
+      marginBottom: isVeryCompact ? 6 : isCompact ? 8 : 10,
     },
     box: {
       flex: 1,
       border: '1pt solid #1f2937',
       borderRadius: 4,
-      padding: 5,
+      padding: isVeryCompact ? 5 : isCompact ? 6 : 8,
       alignItems: 'center',
       justifyContent: 'center',
       marginHorizontal: 4,
     },
     boxLabel: {
-      fontSize: 6,
+      fontSize: isVeryCompact ? 6 : isCompact ? 8 : 9,
       color: '#6b7280',
       textTransform: 'uppercase',
       marginBottom: 4,
     },
     boxValue: {
-      fontSize: 8,
+      fontSize: isVeryCompact ? 8 : isCompact ? 10 : 12,
       fontWeight: 'bold',
       color: '#111827',
     },
@@ -257,17 +257,17 @@ const MyDocument = ({ data }: Props) => {
     notesBox: {
       border: '1pt solid #bfdbfe',
       backgroundColor: '#eff6ff',
-      padding: 5,
+      padding: isVeryCompact ? 5 : isCompact ? 6 : 8,
       borderRadius: 4,
     },
     notesTitle: {
-      fontSize: 7,
+      fontSize: isVeryCompact ? 7 : isCompact ? 9 : 10,
       fontWeight: 'bold',
       marginBottom: 4,
       color: '#1e3a8a',
     },
     notesText: {
-      fontSize: 6.5,
+      fontSize: isVeryCompact ? 6.5 : isCompact ? 7.5 : 8,
       color: '#1e40af',
       lineHeight: 1.3,
     },
@@ -283,7 +283,7 @@ const MyDocument = ({ data }: Props) => {
       marginBottom: 2,
     },
     serverUrlText: {
-      fontSize: 6.5,
+      fontSize: isVeryCompact ? 6.5 : isCompact ? 8 : 9,
       color: '#1e3a8a',
       fontWeight: 'bold',
       fontFamily: 'Courier',
@@ -293,19 +293,19 @@ const MyDocument = ({ data }: Props) => {
       alignItems: 'center',
     },
     signatureTitle: {
-      fontSize: 6.5,
+      fontSize: isVeryCompact ? 6.5 : isCompact ? 8 : 9,
       color: '#1f2937',
       marginBottom: 2,
     },
     signatureRole: {
-      fontSize: 6.5,
+      fontSize: isVeryCompact ? 6.5 : isCompact ? 8 : 9,
       fontWeight: 'bold',
       color: '#1f2937',
       textTransform: 'uppercase',
       letterSpacing: 1,
     },
     chairpersonName: {
-      fontSize: 6.5,
+      fontSize: isVeryCompact ? 6.5 : isCompact ? 8 : 9,
       fontWeight: 'bold',
       textAlign: 'center',
       textTransform: 'uppercase',

@@ -38,8 +38,8 @@ export default function ExamCardPreview({ data }: Props) {
   
   // Adaptive styling based on number of schedules to fit in 1 page A4 Landscape
   const scheduleCount = sortedSchedules.length;
-  const isCompact = scheduleCount > 7;
-  const isVeryCompact = scheduleCount > 12;
+  const isCompact = scheduleCount > 16;
+  const isVeryCompact = scheduleCount > 24;
 
   // CSS variables for dynamic scaling
   const tableTextClass = isVeryCompact ? 'text-[9px]' : isCompact ? 'text-[10px]' : 'text-xs';
