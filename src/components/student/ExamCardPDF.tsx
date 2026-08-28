@@ -33,17 +33,17 @@ const MyDocument = ({ data }: Props) => {
   const isVeryCompact = scheduleCount > 12;
 
   // Dynamic values
-  const tableFontSize = 9;
-  const tableHeaderFontSize = 9;
-  const padV = 5;
-  const padH = 6;
-  const tableGapHeight = 6;
+  const tableFontSize = 6.5;
+  const tableHeaderFontSize = 6.5;
+  const padV = 3;
+  const padH = 4;
+  const tableGapHeight = 4;
   const headerMarginBottom = 2; // Matches HTML
-  const infoMarginBottom = 16;
-  const footerMarginTop = 16;
-  const photoWidth = 70;
-  const photoHeight = 93;
-  const sigLineMarginTop = 40;
+  const infoMarginBottom = 10;
+  const footerMarginTop = 10;
+  const photoWidth = 50;
+  const photoHeight = 66;
+  const sigLineMarginTop = 25;
 
   const styles = StyleSheet.create({
     page: {
@@ -63,40 +63,40 @@ const MyDocument = ({ data }: Props) => {
     },
     titleBlock: {
       alignItems: 'center',
-      paddingBottom: 6,
+      paddingBottom: 4,
       paddingTop: 0,
       borderBottom: '2pt solid #1f2937',
     },
     titleText: {
-      fontSize: 14,
-      fontWeight: 'extrabold',
-      color: '#111827',
-      textTransform: 'uppercase',
-      marginBottom: 4,
-    },
-    subTitleMain: {
-      fontSize: 12,
+      fontSize: 9,
       fontWeight: 'bold',
       color: '#111827',
       textTransform: 'uppercase',
-      marginBottom: 4,
+      marginBottom: 2,
+    },
+    subTitleMain: {
+      fontSize: 8,
+      fontWeight: 'bold',
+      color: '#111827',
+      textTransform: 'uppercase',
+      marginBottom: 2,
     },
     subTitle: {
-      fontSize: 10,
+      fontSize: 7,
       fontWeight: 'bold',
       color: '#111827',
       textTransform: 'uppercase',
     },
     bodyContainer: {
-      paddingHorizontal: 20,
-      paddingBottom: 15,
-      paddingTop: 10,
+      paddingHorizontal: 15,
+      paddingBottom: 10,
+      paddingTop: 8,
     },
     body: {
       flexDirection: 'row',
       justifyContent: 'space-between',
       alignItems: 'flex-start',
-      marginBottom: 8,
+      marginBottom: 6,
     },
     infoContainer: {
       flex: 1,
@@ -104,8 +104,8 @@ const MyDocument = ({ data }: Props) => {
     },
     infoRow: {
       flexDirection: 'row',
-      marginBottom: 6,
-      fontSize: 11,
+      marginBottom: 4,
+      fontSize: 7.5,
       alignItems: 'center',
     },
     infoLabel: {
@@ -120,36 +120,36 @@ const MyDocument = ({ data }: Props) => {
       fontWeight: 'bold',
     },
     sectionTitle: {
-      fontSize: 12,
+      fontSize: 8,
       fontWeight: 'bold',
       color: '#111827',
       textTransform: 'uppercase',
       borderBottom: '1pt solid #1f2937',
-      paddingBottom: 6,
-      marginBottom: 12,
+      paddingBottom: 4,
+      marginBottom: 8,
     },
     boxesRow: {
       flexDirection: 'row',
       justifyContent: 'space-between',
-      marginBottom: 10,
+      marginBottom: 6,
     },
     box: {
       flex: 1,
       border: '1pt solid #1f2937',
       borderRadius: 4,
-      padding: 8,
+      padding: 5,
       alignItems: 'center',
       justifyContent: 'center',
       marginHorizontal: 4,
     },
     boxLabel: {
-      fontSize: 9,
+      fontSize: 6,
       color: '#6b7280',
       textTransform: 'uppercase',
       marginBottom: 4,
     },
     boxValue: {
-      fontSize: 12,
+      fontSize: 8,
       fontWeight: 'bold',
       color: '#111827',
     },
@@ -257,17 +257,17 @@ const MyDocument = ({ data }: Props) => {
     notesBox: {
       border: '1pt solid #bfdbfe',
       backgroundColor: '#eff6ff',
-      padding: 8,
+      padding: 5,
       borderRadius: 4,
     },
     notesTitle: {
-      fontSize: 10,
+      fontSize: 7,
       fontWeight: 'bold',
       marginBottom: 4,
       color: '#1e3a8a',
     },
     notesText: {
-      fontSize: 8,
+      fontSize: 6.5,
       color: '#1e40af',
       lineHeight: 1.3,
     },
@@ -283,7 +283,7 @@ const MyDocument = ({ data }: Props) => {
       marginBottom: 2,
     },
     serverUrlText: {
-      fontSize: 9,
+      fontSize: 6.5,
       color: '#1e3a8a',
       fontWeight: 'bold',
       fontFamily: 'Courier',
@@ -293,19 +293,19 @@ const MyDocument = ({ data }: Props) => {
       alignItems: 'center',
     },
     signatureTitle: {
-      fontSize: 9,
+      fontSize: 6.5,
       color: '#1f2937',
       marginBottom: 2,
     },
     signatureRole: {
-      fontSize: 9,
+      fontSize: 6.5,
       fontWeight: 'bold',
       color: '#1f2937',
       textTransform: 'uppercase',
       letterSpacing: 1,
     },
     chairpersonName: {
-      fontSize: 9,
+      fontSize: 6.5,
       fontWeight: 'bold',
       textAlign: 'center',
       textTransform: 'uppercase',
