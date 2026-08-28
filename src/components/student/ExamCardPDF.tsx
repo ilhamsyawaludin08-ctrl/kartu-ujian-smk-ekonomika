@@ -32,18 +32,18 @@ const MyDocument = ({ data }: Props) => {
   const isCompact = scheduleCount > 7;
   const isVeryCompact = scheduleCount > 12;
 
-  // Dynamic values (Kapasitas A3 - disesuaikan agar pas 1 halaman A5 landscape tanpa kepotong)
-  const tableFontSize = 12;
-  const tableHeaderFontSize = 12;
-  const padV = 3;
-  const padH = 8;
-  const tableGapHeight = 2;
-  const headerMarginBottom = 2;
-  const infoMarginBottom = 4;
-  const footerMarginTop = 14; // increased from 4 to add a clear vertical gap between table and blue box
-  const photoWidth = 80; // optimized size
-  const photoHeight = 107; // 3:4 aspect ratio
-  const sigLineMarginTop = 15;
+  // Dynamic values (Diperbesar sesuai permintaan)
+  const tableFontSize = 11;
+  const tableHeaderFontSize = 11;
+  const padV = 5;
+  const padH = 6;
+  const tableGapHeight = 6;
+  const headerMarginBottom = 2; // Matches HTML
+  const infoMarginBottom = 16;
+  const footerMarginTop = 16;
+  const photoWidth = 70;
+  const photoHeight = 93;
+  const sigLineMarginTop = 40;
 
   const styles = StyleSheet.create({
     page: {
@@ -55,10 +55,10 @@ const MyDocument = ({ data }: Props) => {
       position: 'absolute',
       left: 0,
       top: 0,
-      width: '420mm',
-      height: '297mm',
-      padding: '6mm 6mm', // Rapatkan margin horizontal/vertikal ke A5 agar selebar cetakan HTML
-      transform: 'scale(0.5)',
+      width: '297mm',
+      height: '210mm',
+      padding: '15mm 25mm', // margin of the page moved here
+      transform: 'scale(0.7071)',
       transformOrigin: '0 0',
     },
     card: {
@@ -70,107 +70,98 @@ const MyDocument = ({ data }: Props) => {
     headerImageContainer: {
       width: '100%',
       marginBottom: 0,
-      borderBottom: '0pt solid #1f2937',
+      borderBottom: '0pt solid #1f2937', // No border line below header image per latest request
     },
     titleBlock: {
       alignItems: 'center',
-      paddingBottom: 2,
+      paddingBottom: 6,
       paddingTop: 0,
       borderBottom: '2pt solid #1f2937',
     },
     titleText: {
-      fontSize: 22, // enlarged
-      fontFamily: 'Helvetica-Bold',
+      fontSize: 14,
+      fontWeight: 'extrabold',
       color: '#111827',
       textTransform: 'uppercase',
-      marginBottom: 2,
+      marginBottom: 4,
     },
     subTitleMain: {
-      fontSize: 18, // enlarged
-      fontFamily: 'Helvetica-Bold',
+      fontSize: 12,
+      fontWeight: 'bold',
       color: '#111827',
       textTransform: 'uppercase',
-      marginBottom: 2,
+      marginBottom: 4,
     },
     subTitle: {
-      fontSize: 15, // enlarged
-      fontFamily: 'Helvetica-Bold',
+      fontSize: 10,
+      fontWeight: 'bold',
       color: '#111827',
       textTransform: 'uppercase',
     },
     bodyContainer: {
       paddingHorizontal: 20,
-      paddingBottom: 4,
-      paddingTop: 4,
-      flexGrow: 1,
+      paddingBottom: 15,
+      paddingTop: 10,
     },
     body: {
       flexDirection: 'row',
       justifyContent: 'space-between',
-      alignItems: 'stretch',
-      minHeight: photoHeight, // force parent height to match photo to prevent Yoga overlap bug
-      marginBottom: 6,
+      alignItems: 'flex-start',
+      marginBottom: 8,
     },
     infoContainer: {
       flex: 1,
-      paddingRight: 15,
+      paddingRight: 10,
     },
     infoRow: {
       flexDirection: 'row',
-      marginBottom: 4, // dirapatkan dari 5 ke 4
+      marginBottom: 6,
+      fontSize: 11,
       alignItems: 'center',
     },
     infoLabel: {
-      width: 140,
-      fontSize: 14, // reduced from 16
-      fontFamily: 'Helvetica',
+      width: 95,
       color: '#4b5563',
     },
     infoColon: {
-      width: 15,
-      fontSize: 14, // reduced from 16
-      fontFamily: 'Helvetica',
-      color: '#4b5563',
+      width: 10,
     },
     infoValue: {
       flex: 1,
-      fontSize: 14, // reduced from 16
-      fontFamily: 'Helvetica-Bold',
-      color: '#111827',
+      fontWeight: 'bold',
     },
     sectionTitle: {
-      fontSize: 16, // reduced from 18
-      fontFamily: 'Helvetica-Bold',
+      fontSize: 12,
+      fontWeight: 'bold',
       color: '#111827',
       textTransform: 'uppercase',
       borderBottom: '1pt solid #1f2937',
-      paddingBottom: 2,
-      marginBottom: 4,
+      paddingBottom: 6,
+      marginBottom: 12,
     },
     boxesRow: {
       flexDirection: 'row',
       justifyContent: 'space-between',
-      marginBottom: 8,
+      marginBottom: 10,
     },
     box: {
       flex: 1,
-      border: '2pt solid #1f2937', // Tebalkan border kotak sesuai HTML
-      borderRadius: 6,
-      padding: 4, // padding diturunkan agar tidak overflow vertikal
+      border: '1pt solid #1f2937',
+      borderRadius: 4,
+      padding: 8,
       alignItems: 'center',
       justifyContent: 'center',
       marginHorizontal: 4,
     },
     boxLabel: {
-      fontSize: 12, // reduced from 14
-      fontFamily: 'Helvetica',
+      fontSize: 9,
       color: '#6b7280',
       textTransform: 'uppercase',
       marginBottom: 4,
     },
     boxValue: {
-      fontSize: 22, // reduced from 26
-      fontFamily: 'Helvetica-Bold',
+      fontSize: 12,
+      fontWeight: 'bold',
       color: '#111827',
     },
     photoContainer: {
@@ -179,7 +170,6 @@ const MyDocument = ({ data }: Props) => {
       border: '2pt solid #1f2937',
       padding: 1,
       backgroundColor: '#f9fafb',
-      position: 'relative', // so stampPlaceholder can absolute position inside it
     },
     photoTextContainer: {
       width: '100%',
@@ -189,47 +179,26 @@ const MyDocument = ({ data }: Props) => {
       alignItems: 'center',
     },
     photoText: {
-      fontSize: 10, // reduced from 12
-      fontFamily: 'Helvetica',
+      fontSize: 8,
       color: '#9ca3af',
     },
     photoTextBold: {
-      fontSize: 10, // reduced from 12
-      fontFamily: 'Helvetica-Bold',
+      fontSize: 9,
+      fontWeight: 'bold',
       color: '#9ca3af',
       marginTop: 2,
     },
-    stampPlaceholder: {
-      position: 'absolute',
-      bottom: -15, // scaled down
-      left: -15, // scaled down
-      width: 70, // scaled down from 80
-      height: 70, // scaled down from 80
-      borderRadius: 35,
-      border: '1pt solid #9ca3af',
-      opacity: 0.3,
-      justifyContent: 'center',
-      alignItems: 'center',
-      backgroundColor: 'transparent',
-    },
-    stampText: {
-      fontSize: 8, // reduced from 10
-      color: '#9ca3af',
-      transform: 'rotate(-45)',
-      fontFamily: 'Helvetica',
-    },
     scheduleContainer: {
-      marginTop: 2, // reduced from 4
-      flexGrow: 1,
+      marginTop: 4,
     },
     scheduleTitle: {
-      fontSize: 16, // reduced from 18
-      fontFamily: 'Helvetica-Bold',
+      fontSize: 12,
+      fontWeight: 'bold',
       color: '#111827',
       textTransform: 'uppercase',
       borderBottom: '1pt solid #1f2937',
-      paddingBottom: 2,
-      marginBottom: 4,
+      paddingBottom: 6,
+      marginBottom: 12,
     },
     table: {
       width: '100%',
@@ -243,34 +212,24 @@ const MyDocument = ({ data }: Props) => {
       backgroundColor: '#f3e8ff',
       borderBottom: '2pt solid #d8b4fe',
     },
-    tableHeaderCell: {
+    tableColHeader: {
       paddingVertical: padV,
       paddingHorizontal: padH,
+      fontSize: tableHeaderFontSize,
+      fontWeight: 'bold',
+      color: '#4c1d95',
+      textTransform: 'uppercase',
       borderRight: '1pt solid #e9d5ff',
       borderLeft: '1pt solid #e9d5ff',
-      justifyContent: 'center',
-    },
-    tableHeaderCellText: {
-      fontSize: tableHeaderFontSize,
-      fontFamily: 'Helvetica-Bold',
-      color: '#4c1d95',
-      textTransform: 'uppercase',
-    },
-    tableHeaderCellTextCenter: {
-      fontSize: tableHeaderFontSize,
-      fontFamily: 'Helvetica-Bold',
-      color: '#4c1d95',
-      textTransform: 'uppercase',
-      textAlign: 'center',
-      width: '100%',
     },
     tableColDate: { width: '25%' },
-    tableColTime: { width: '18%' },
+    tableColTime: { width: '18%', textAlign: 'center' },
     tableColSubject: { width: '37%' },
-    tableColSignature: { width: '20%' },
+    tableColSignature: { width: '20%', textAlign: 'center' },
     tableCell: {
       paddingVertical: padV,
       paddingHorizontal: padH,
+      fontSize: tableFontSize,
       borderRight: '1pt solid #d1d5db',
       borderLeft: '1pt solid #d1d5db',
       justifyContent: 'center',
@@ -278,31 +237,11 @@ const MyDocument = ({ data }: Props) => {
     tableCellDate: {
       paddingVertical: padV,
       paddingHorizontal: padH,
+      fontSize: tableFontSize,
       borderRight: '1pt solid #d1d5db',
       borderLeft: '1pt solid #d1d5db',
       backgroundColor: '#f9fafb',
-      justifyContent: 'center',
-    },
-    tableCellText: {
-      fontSize: tableFontSize,
-      fontFamily: 'Helvetica',
-      color: '#1f2937',
-    },
-    tableCellTextCenter: {
-      fontSize: tableFontSize,
-      fontFamily: 'Helvetica',
-      color: '#1f2937',
-      textAlign: 'center',
-      width: '100%',
-    },
-    tableCellTextBold: {
-      fontSize: tableFontSize,
-      fontFamily: 'Helvetica-Bold',
-      color: '#1f2937',
-    },
-    tableCellTextDate: {
-      fontSize: tableFontSize,
-      fontFamily: 'Helvetica-Bold',
+      fontWeight: 'bold',
       color: '#1f2937',
     },
     tableGap: {
@@ -320,88 +259,83 @@ const MyDocument = ({ data }: Props) => {
     footer: {
       flexDirection: 'row',
       justifyContent: 'space-between',
-      alignItems: 'flex-end', // Aligment bottom persis seperti HTML items-end
       marginTop: footerMarginTop,
     },
     notesContainer: {
       flex: 1,
-      paddingRight: 20,
+      paddingRight: 30,
     },
     notesBox: {
       border: '1pt solid #bfdbfe',
       backgroundColor: '#eff6ff',
-      padding: 8, // reduced from 10
-      paddingBottom: 16, // reduced from 20 but still generous enough
-      borderRadius: 6,
-      maxWidth: 550, // limit the width to match max-w-xl in HTML!
+      padding: 8,
+      borderRadius: 4,
     },
     notesTitle: {
-      fontSize: 12, // reduced from 14
-      fontFamily: 'Helvetica-Bold',
+      fontSize: 10,
+      fontWeight: 'bold',
       marginBottom: 4,
       color: '#1e3a8a',
     },
     notesText: {
-      fontSize: 9, // reduced from 12 to save space and match HTML print note proportions
-      fontFamily: 'Helvetica',
+      fontSize: 8,
       color: '#1e40af',
       lineHeight: 1.3,
     },
     serverUrlContainer: {
-      marginTop: 4, // reduced from 6
-      paddingTop: 4, // reduced from 6
+      marginTop: 6,
+      paddingTop: 6,
       borderTop: '1pt solid #bfdbfe',
     },
     serverUrlLabel: {
-      fontSize: 8, // reduced from 10
-      fontFamily: 'Helvetica-Bold',
+      fontSize: 7,
       color: '#1d4ed8',
+      fontWeight: 'bold',
       marginBottom: 2,
     },
     serverUrlText: {
-      fontSize: 11, // reduced from 14
-      fontFamily: 'Courier',
-      fontWeight: 'bold',
+      fontSize: 9,
       color: '#1e3a8a',
+      fontWeight: 'bold',
+      fontFamily: 'Courier',
     },
     signatureContainer: {
-      width: 220, // enlarged from 200
+      width: 180,
       alignItems: 'center',
     },
     signatureTitle: {
-      fontSize: 15, // enlarged
-      fontFamily: 'Helvetica',
+      fontSize: 11,
       color: '#1f2937',
-      marginBottom: 4,
+      marginBottom: 3,
     },
     signatureRole: {
-      fontSize: 17, // enlarged
-      fontFamily: 'Helvetica-Bold',
+      fontSize: 11,
+      fontWeight: 'bold',
       color: '#1f2937',
       textTransform: 'uppercase',
       letterSpacing: 1,
-      marginBottom: 6,
+      marginBottom: 5,
     },
     chairpersonName: {
-      fontSize: 15, // enlarged
-      fontFamily: 'Helvetica-Bold',
+      fontSize: 11,
+      fontWeight: 'bold',
       textAlign: 'center',
       textTransform: 'uppercase',
       borderBottom: '1pt solid #111827',
       width: '100%',
-      paddingBottom: 4,
+      paddingBottom: 2,
     }
   });
 
   return (
     <Document>
       <Page size="A5" orientation="landscape" style={styles.page}>
-        <View wrap={false} style={styles.scaledWrapper}>
+        <View style={styles.scaledWrapper}>
           <View style={styles.card}>
             
             {/* Header Image */}
           <View style={styles.headerImageContainer}>
-            <Image src="/header_gds.png" style={{ width: '100%' }} />
+            <Image src="/header_gds.png" style={{ width: '100%', height: 'auto' }} />
           </View>
           
           {/* Title Block */}
@@ -452,10 +386,6 @@ const MyDocument = ({ data }: Props) => {
                       <Text style={styles.photoTextBold}>3 × 4</Text>
                     </View>
                   )}
-                  {/* School Stamp Placeholder */}
-                  <View style={styles.stampPlaceholder}>
-                    <Text style={styles.stampText}>Cap/Stempel</Text>
-                  </View>
                 </View>
               )}
             </View>
@@ -483,18 +413,10 @@ const MyDocument = ({ data }: Props) => {
               {hasSchedules ? (
                 <View style={styles.table}>
                   <View style={[styles.tableRow, styles.tableHeader]}>
-                    <View style={[styles.tableHeaderCell, styles.tableColDate]}>
-                      <Text style={styles.tableHeaderCellText}>Hari / Tanggal</Text>
-                    </View>
-                    <View style={[styles.tableHeaderCell, styles.tableColTime]}>
-                      <Text style={styles.tableHeaderCellTextCenter}>Waktu</Text>
-                    </View>
-                    <View style={[styles.tableHeaderCell, styles.tableColSubject]}>
-                      <Text style={styles.tableHeaderCellText}>Mata Pelajaran</Text>
-                    </View>
-                    <View style={[styles.tableHeaderCell, styles.tableColSignature]}>
-                      <Text style={styles.tableHeaderCellTextCenter}>Paraf Pengawas</Text>
-                    </View>
+                    <Text style={[styles.tableColHeader, styles.tableColDate]}>Hari / Tanggal</Text>
+                    <Text style={[styles.tableColHeader, styles.tableColTime]}>Waktu</Text>
+                    <Text style={[styles.tableColHeader, styles.tableColSubject]}>Mata Pelajaran</Text>
+                    <Text style={[styles.tableColHeader, styles.tableColSignature]}>Paraf Pengawas</Text>
                   </View>
                   
                   {Object.entries(groupedSchedules).map(([date, schedules], dateIndex) => (
@@ -507,13 +429,13 @@ const MyDocument = ({ data }: Props) => {
                         return (
                         <View style={styles.tableRow} key={sch.id}>
                           <View style={[styles.tableCellDate, styles.tableColDate, dateCellBottom]}>
-                            <Text style={styles.tableCellTextDate}>{index === 0 ? new Date(date).toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) : ''}</Text>
+                            <Text>{index === 0 ? new Date(date).toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) : ''}</Text>
                           </View>
                           <View style={[styles.tableCell, styles.tableColTime, innerBottomBorder]}>
-                            <Text style={[styles.tableCellTextCenter, { fontFamily: 'Courier' }]}>{sch.start_time.slice(0,5)} - {sch.end_time.slice(0,5)}</Text>
+                            <Text style={{ fontFamily: 'Courier' }}>{sch.start_time.slice(0,5)} - {sch.end_time.slice(0,5)}</Text>
                           </View>
-                          <View style={[styles.tableCell, styles.tableColSubject, innerBottomBorder]}>
-                            <Text style={styles.tableCellTextBold}>{sch.subject}</Text>
+                          <View style={[styles.tableCell, styles.tableColSubject, innerBottomBorder, { fontWeight: 'bold' }]}>
+                            <Text>{sch.subject}</Text>
                           </View>
                           <View style={[styles.tableCell, styles.tableColSignature, innerBottomBorder]}>
                             <View style={styles.signatureCellLine}></View>
@@ -521,12 +443,6 @@ const MyDocument = ({ data }: Props) => {
                         </View>
                         );
                       })}
-                      {/* Visual gap between dates in PDF */}
-                      {dateIndex < Object.keys(groupedSchedules).length - 1 && (
-                        <View style={[styles.tableRow, { height: tableGapHeight }]} key={`gap-${dateIndex}`}>
-                          <View style={[styles.tableGap, { width: '100%', height: tableGapHeight }]} />
-                        </View>
-                      )}
                     </React.Fragment>
                   ))}
                 </View>
@@ -559,9 +475,9 @@ const MyDocument = ({ data }: Props) => {
               <Text style={styles.signatureTitle}>Mengetahui,</Text>
               <Text style={styles.signatureRole}>Panitia Pelaksana</Text>
               
-              <View style={{ height: 70, width: '100%', alignItems: 'center', justifyContent: 'center' }}>
+              <View style={{ height: 80, width: '100%', alignItems: 'center', justifyContent: 'center' }}>
                 {data.examSettings.signature_url ? (
-                  <Image src={data.examSettings.signature_url} style={{ width: 140, height: 70, objectFit: 'contain' }} />
+                  <Image src={data.examSettings.signature_url} style={{ maxHeight: '100%', maxWidth: '100%', objectFit: 'contain' }} />
                 ) : null}
               </View>
               
