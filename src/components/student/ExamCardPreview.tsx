@@ -41,11 +41,11 @@ export default function ExamCardPreview({ data }: Props) {
   const isCompact = scheduleCount > 7;
   const isVeryCompact = scheduleCount > 12;
 
-  // CSS variables for dynamic scaling - Ukuran teks diperbesar sesuai permintaan
-  const tableTextClass = isVeryCompact ? 'text-[11px] md:text-xs' : isCompact ? 'text-xs md:text-[13px]' : 'text-sm md:text-base';
-  const tablePaddingClass = isVeryCompact ? 'px-1.5 py-1' : isCompact ? 'px-2 py-1.5' : 'px-3 py-2';
-  const headerPaddingClass = isVeryCompact ? 'pb-1.5 mb-2' : isCompact ? 'pb-2 mb-3' : 'pb-3 mb-4';
-  const gapClass = isVeryCompact ? 'h-1' : isCompact ? 'h-1.5' : 'h-2';
+  // CSS variables for dynamic scaling
+  const tableTextClass = isVeryCompact ? 'text-[9px]' : isCompact ? 'text-[10px]' : 'text-xs';
+  const tablePaddingClass = isVeryCompact ? 'px-2 py-1' : isCompact ? 'px-2 py-1.5' : 'px-3 py-2';
+  const headerPaddingClass = isVeryCompact ? 'pb-2 mb-3' : isCompact ? 'pb-3 mb-4' : 'pb-4 mb-6';
+  const gapClass = isVeryCompact ? 'h-1' : isCompact ? 'h-2' : 'h-3';
   const infoTextClass = isVeryCompact ? 'text-xs' : 'text-sm md:text-base';
   const infoPaddingClass = isVeryCompact ? 'py-1' : 'py-1.5';
 
@@ -56,51 +56,41 @@ export default function ExamCardPreview({ data }: Props) {
       <style dangerouslySetInnerHTML={{__html: `
         @media print {
           @page {
-            size: A4 portrait; /* Paksa A4 HVS biasa di pengaturan browser, agar tidak kena potong/paginate otomatis oleh browser */
-            margin: 5mm;
+            size: A4 portrait;
+            margin: 5mm; /* Beri sedikit margin aman di kertas */
           }
           body {
             -webkit-print-color-adjust: exact !important;
             print-color-adjust: exact !important;
             background-color: white !important;
           }
+          /* Hide everything outside print-container */
           body * {
             visibility: hidden;
           }
-          #print-wrapper, #print-wrapper * {
+          #print-container, #print-container * {
             visibility: visible;
           }
-          #print-wrapper {
+          #print-container {
             position: absolute !important;
             left: 0 !important;
             top: 0 !important;
-            width: 210mm !important; /* Ukuran presisi A5 Landscape (Lebar) */
-            height: 148mm !important; /* Ukuran presisi A5 Landscape (Tinggi) */
-            overflow: hidden !important;
-            margin: 0 !important;
-          }
-          #print-container {
-            width: 297mm !important; /* Kanvas A4 Landscape */
-            height: 210mm !important;
-            transform: scale(0.707) !important; /* A4 Landscape di-scale 70.7% = EXACTLY A5 Landscape */
-            transform-origin: top left !important;
-            margin: 0 !important;
-            max-width: none !important;
+            width: 280mm !important; /* Paksa ukuran lebar landscape */
+            max-width: 280mm !important;
+            height: auto !important;
+            margin: 0 !important; /* Jangan pakai margin yang mendorong elemen ke kanan */
           }
         }
       `}} />
 
-      {/* Card Preview Container */}
-      <div className="p-4 md:p-8 print:p-0 w-full flex justify-center overflow-x-auto">
+      {/* Card Preview Container - A4 Landscape is 297mm x 210mm */}
+      <div className="p-4 md:p-8 print:p-0 w-full flex justify-center">
         
-        {/* Outer Wrapper untuk membatasi ukuran fisik saat di-print (A5 Landscape) */}
-        <div id="print-wrapper" className="print:w-[210mm] print:h-[148mm] print:overflow-hidden relative mx-auto shrink-0">
-          
-          {/* The Card - Di layar berukuran A4 Landscape, saat print akan di-scale jadi A5 Landscape */}
-          <div 
-            id="print-container"
-            className="w-[297mm] h-[210mm] bg-white border border-gray-300 print:border-2 print:border-gray-800 shadow-xl print:shadow-none relative font-sans text-gray-900 flex flex-col shrink-0"
-          >
+        {/* The Card - A4 Landscape Dimensions */}
+        <div 
+          id="print-container"
+          className="w-full max-w-[297mm] min-h-[210mm] print:min-h-0 bg-white border border-gray-300 print:border-2 print:border-gray-800 shadow-xl print:shadow-none relative font-sans text-gray-900 mx-auto flex flex-col print:break-inside-avoid overflow-hidden"
+        >
 
           {/* Content Wrapper */}
           <div className="relative z-10 p-6 md:p-8 print:p-0 w-full flex-1 flex flex-col">
@@ -283,18 +273,18 @@ export default function ExamCardPreview({ data }: Props) {
             </div>
             
             <div className="w-56 md:w-64 text-center flex flex-col items-center flex-shrink-0">
-              <p className="mb-1 text-gray-800 text-sm md:text-base">Mengetahui,</p>
-              <p className="font-bold text-gray-900 mb-2 uppercase tracking-wide text-base md:text-lg">Panitia Pelaksana</p>
+              <p className="mb-1 text-gray-800 text-xs md:text-sm">Mengetahui,</p>
+              <p className="font-bold text-gray-900 mb-2 uppercase tracking-wide text-sm md:text-base">Panitia Pelaksana</p>
               
-              <div className="h-28 md:h-32 flex items-center justify-center mb-2 w-full">
+              <div className="h-24 md:h-28 flex items-center justify-center mb-2 w-full">
                 {data.examSettings.signature_url ? (
-                  <img src={data.examSettings.signature_url} alt="Tanda Tangan" className="max-h-full max-w-full object-contain scale-110" />
+                  <img src={data.examSettings.signature_url} alt="Tanda Tangan" className="max-h-full max-w-full object-contain" />
                 ) : (
                   <div className="h-full"></div>
                 )}
               </div>
               
-              <p className="font-bold text-gray-900 border-b border-gray-800 w-full pb-1 uppercase text-sm md:text-base truncate px-2">
+              <p className="font-bold text-gray-900 border-b border-gray-800 w-full pb-1 uppercase text-xs md:text-sm truncate px-2">
                 {data.examSettings.chairperson_name || '( .......................................... )'}
               </p>
             </div>
@@ -304,7 +294,6 @@ export default function ExamCardPreview({ data }: Props) {
           </div>
           {/* End Content Wrapper */}
 
-        </div>
         </div>
       </div>
     </div>

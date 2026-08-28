@@ -32,9 +32,9 @@ const MyDocument = ({ data }: Props) => {
   const isCompact = scheduleCount > 7;
   const isVeryCompact = scheduleCount > 12;
 
-  // Dynamic values (Diperbesar sesuai permintaan)
-  const tableFontSize = 11;
-  const tableHeaderFontSize = 11;
+  // Dynamic values
+  const tableFontSize = 9;
+  const tableHeaderFontSize = 9;
   const padV = 5;
   const padH = 6;
   const tableGapHeight = 6;
@@ -47,23 +47,12 @@ const MyDocument = ({ data }: Props) => {
 
   const styles = StyleSheet.create({
     page: {
-      padding: 0,
+      padding: '15 25',
       fontFamily: 'Helvetica',
       backgroundColor: '#ffffff',
     },
-    scaledWrapper: {
-      position: 'absolute',
-      left: 0,
-      top: 0,
-      width: '297mm',
-      height: '210mm',
-      padding: '15mm 25mm', // margin of the page moved here
-      transform: 'scale(0.7071)',
-      transformOrigin: '0 0',
-    },
     card: {
       width: '100%',
-      height: '100%',
       border: '2pt solid #1f2937',
       flexDirection: 'column',
     },
@@ -300,24 +289,23 @@ const MyDocument = ({ data }: Props) => {
       fontFamily: 'Courier',
     },
     signatureContainer: {
-      width: 180,
+      width: 140,
       alignItems: 'center',
     },
     signatureTitle: {
-      fontSize: 11,
+      fontSize: 9,
       color: '#1f2937',
-      marginBottom: 3,
+      marginBottom: 2,
     },
     signatureRole: {
-      fontSize: 11,
+      fontSize: 9,
       fontWeight: 'bold',
       color: '#1f2937',
       textTransform: 'uppercase',
       letterSpacing: 1,
-      marginBottom: 5,
     },
     chairpersonName: {
-      fontSize: 11,
+      fontSize: 9,
       fontWeight: 'bold',
       textAlign: 'center',
       textTransform: 'uppercase',
@@ -329,11 +317,10 @@ const MyDocument = ({ data }: Props) => {
 
   return (
     <Document>
-      <Page size="A5" orientation="landscape" style={styles.page}>
-        <View style={styles.scaledWrapper}>
-          <View style={styles.card}>
-            
-            {/* Header Image */}
+      <Page size="A4" orientation="portrait" style={styles.page}>
+        <View style={styles.card}>
+          
+          {/* Header Image */}
           <View style={styles.headerImageContainer}>
             <Image src="/header_gds.png" style={{ width: '100%', height: 'auto' }} />
           </View>
@@ -475,7 +462,7 @@ const MyDocument = ({ data }: Props) => {
               <Text style={styles.signatureTitle}>Mengetahui,</Text>
               <Text style={styles.signatureRole}>Panitia Pelaksana</Text>
               
-              <View style={{ height: 80, width: '100%', alignItems: 'center', justifyContent: 'center' }}>
+              <View style={{ height: 60, width: '100%', alignItems: 'center', justifyContent: 'center' }}>
                 {data.examSettings.signature_url ? (
                   <Image src={data.examSettings.signature_url} style={{ maxHeight: '100%', maxWidth: '100%', objectFit: 'contain' }} />
                 ) : null}
@@ -486,7 +473,6 @@ const MyDocument = ({ data }: Props) => {
           </View>
           </View>
 
-        </View>
         </View>
       </Page>
     </Document>
