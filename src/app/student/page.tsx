@@ -4,7 +4,8 @@ import { useState } from 'react';
 import { fetchStudentCardData, CardActionResponse, BasicStudentData } from './actions';
 import { StudentExamCardData } from '@/types/student';
 import ExamCardPreview from '@/components/student/ExamCardPreview';
-import { Loader2, Search, CheckCircle2, AlertTriangle, Printer, UserCircle, Info } from 'lucide-react';
+import PrintGuideModal from '@/components/student/PrintGuideModal';
+import { Loader2, Search, CheckCircle2, AlertTriangle, Printer, UserCircle, Info, HelpCircle } from 'lucide-react';
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -18,6 +19,7 @@ export default function StudentPortal() {
   const [nisn, setNisn] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  const [isGuideOpen, setIsGuideOpen] = useState(false);
   
   const [studentData, setStudentData] = useState<BasicStudentData | null>(null);
   const [cardData, setCardData] = useState<StudentExamCardData | null>(null);
@@ -190,9 +192,19 @@ export default function StudentPortal() {
                 </button>
               </form>
               
-              <div className="mt-8 flex items-center justify-center gap-2 text-xs font-medium text-gray-600">
-                <Info className="w-4 h-4" />
-                <span>Pastikan NISN yang dimasukkan sudah benar.</span>
+              <div className="mt-8 pt-6 border-t border-gray-100 flex flex-col items-center gap-3">
+                <button
+                  type="button"
+                  onClick={() => setIsGuideOpen(true)}
+                  className="inline-flex items-center gap-2 px-4 py-2.5 bg-purple-50 hover:bg-purple-100 text-[#6a1b9a] rounded-xl font-bold text-xs md:text-sm border border-purple-200 transition-all cursor-pointer shadow-2xs"
+                >
+                  <HelpCircle className="w-4 h-4 text-[#6a1b9a]" />
+                  Cara Cetak Kartu di Fotokopi / Rumah
+                </button>
+                <div className="flex items-center justify-center gap-1.5 text-xs font-medium text-gray-500">
+                  <Info className="w-3.5 h-3.5" />
+                  <span>Pastikan NISN yang dimasukkan sudah benar.</span>
+                </div>
               </div>
             </div>
           </div>
@@ -268,11 +280,19 @@ export default function StudentPortal() {
                   <h2 className="text-xl font-bold text-gray-900 w-full md:w-auto text-left mr-auto md:mr-8">
                     Preview Kartu Ujian
                   </h2>
-                  <div className="flex gap-3 w-full md:w-auto justify-end">
+                  <div className="flex flex-wrap gap-2.5 w-full md:w-auto justify-end">
+                    <button
+                      type="button"
+                      onClick={() => setIsGuideOpen(true)}
+                      className="flex items-center gap-1.5 px-3.5 py-2 bg-amber-50 text-amber-900 border border-amber-300 rounded-xl hover:bg-amber-100 transition-colors font-bold text-sm shadow-sm cursor-pointer"
+                    >
+                      <HelpCircle className="w-4 h-4 text-amber-600" />
+                      <span>Panduan Cetak</span>
+                    </button>
                     {cardData.examSettings.allow_print && (
                       <button
                         onClick={handlePrint}
-                        className="flex items-center gap-2 px-4 py-2 bg-purple-50 text-[#6a1b9a] border border-[#6a1b9a] rounded-xl hover:bg-purple-100 transition-colors font-bold text-sm shadow-sm"
+                        className="flex items-center gap-2 px-4 py-2 bg-purple-50 text-[#6a1b9a] border border-[#6a1b9a] rounded-xl hover:bg-purple-100 transition-colors font-bold text-sm shadow-sm cursor-pointer"
                       >
                         <Printer className="w-4 h-4" />
                         Cetak
@@ -300,7 +320,7 @@ export default function StudentPortal() {
                 </p>
                 <button
                   onClick={handleBackToSearch}
-                  className="px-10 py-3 bg-[#6a1b9a] hover:bg-[#5c2b90] text-white font-bold rounded-xl transition-all shadow-md"
+                  className="px-10 py-3 bg-[#6a1b9a] hover:bg-[#5c2b90] text-white font-bold rounded-xl transition-all shadow-md cursor-pointer"
                 >
                   Kembali Ke Beranda
                 </button>
@@ -312,6 +332,12 @@ export default function StudentPortal() {
       </main>
 
       {renderFooter()}
+
+      {/* Pop-up Modal Panduan Cetak */}
+      <PrintGuideModal 
+        isOpen={isGuideOpen} 
+        onClose={() => setIsGuideOpen(false)} 
+      />
     </div>
   );
 }
