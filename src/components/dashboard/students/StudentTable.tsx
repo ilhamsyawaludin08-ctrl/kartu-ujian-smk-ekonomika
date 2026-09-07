@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { Search, Plus, Filter, MoreVertical, Edit2, Trash2, CheckCircle, FileSpreadsheet, XCircle, Image as ImageIcon } from 'lucide-react';
 import StudentFormModal from './StudentFormModal';
 import ExcelImportModal from './ExcelImportModal';
@@ -13,6 +14,7 @@ interface StudentTableProps {
 }
 
 export default function StudentTable({ students: initialStudents, classes }: StudentTableProps) {
+  const router = useRouter();
   const [search, setSearch] = useState('');
   const [statusFilter, setStatusFilter] = useState('All');
   const [classFilter, setClassFilter] = useState('All');
@@ -33,7 +35,12 @@ export default function StudentTable({ students: initialStudents, classes }: Stu
 
   const handleDelete = async (id: number) => {
     if (confirm('Apakah Anda yakin ingin menghapus data siswa ini? Semua kartu ujian yang terkait mungkin ikut terhapus.')) {
-      await deleteStudent(id);
+      const res = await deleteStudent(id);
+      if (res && !res.success) {
+        alert('Gagal menghapus data siswa: ' + (res.error || 'Terjadi kesalahan.'));
+      } else {
+        router.refresh();
+      }
     }
   };
 
@@ -42,6 +49,7 @@ export default function StudentTable({ students: initialStudents, classes }: Stu
       const res = await approveStudent(id);
       if (res.error) alert(res.error);
       if (res.warning) alert(res.warning);
+      router.refresh();
     }
   };
 
@@ -49,6 +57,7 @@ export default function StudentTable({ students: initialStudents, classes }: Stu
     if (confirm('Kembalikan status siswa menjadi Pending? Kartu ujiannya akan dinonaktifkan.')) {
       const res = await setPendingStudent(id);
       if (res.error) alert(res.error);
+      router.refresh();
     }
   };
 

@@ -111,11 +111,39 @@ export async function updateStudent(id: number, formData: FormData) {
 export async function deleteStudent(id: number) {
   const supabase = await createClient();
   
+  // 1. Ambil info foto terlebih dahulu jika ada
+  const { data: student } = await supabase
+    .from('students')
+    .select('photo_url')
+    .eq('id', id)
+    .single();
+
+  if (student?.photo_url) {
+    try {
+      const urlParts = student.photo_url.split('/');
+      const fileName = urlParts[urlParts.length - 1];
+      if (fileName) {
+        await supabase.storage.from('student-photos').remove([fileName]);
+      }
+    } catch (e) {
+      console.error('Error removing student photo:', e);
+    }
+  }
+
+  // 2. Hapus kartu ujian yang terkait terlebih dahulu (safety ganda)
+  await supabase.from('exam_cards').delete().eq('student_id', id);
+
+  // 3. Hapus data siswa
   const { error } = await supabase.from('students').delete().eq('id', id);
 
-  if (error) return { success: false, error: error.message };
+  if (error) {
+    console.error('Error deleting student:', error);
+    return { success: false, error: error.message };
+  }
   
   revalidatePath('/dashboard/students');
+  revalidatePath('/dashboard/exam-cards');
+  revalidatePath('/dashboard');
   return { success: true };
 }
 
