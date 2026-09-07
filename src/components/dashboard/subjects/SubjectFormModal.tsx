@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 
 import { useState } from 'react';
 import { updateSubject, createSubject } from '@/app/dashboard/subjects/actions';
@@ -66,17 +66,6 @@ export default function SubjectFormModal({ isOpen, onClose, subject }: SubjectFo
               required 
               defaultValue={subject?.name || ''}
               placeholder="Contoh: Matematika"
-              className="w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary focus:border-primary outline-none"
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Nama Guru Pengajar (Opsional)</label>
-            <input 
-              name="teacher_name" 
-              type="text" 
-              defaultValue={subject?.teacher_name || ''}
-              placeholder="Contoh: Budi Santoso, S.Pd"
               className="w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary focus:border-primary outline-none"
             />
           </div>

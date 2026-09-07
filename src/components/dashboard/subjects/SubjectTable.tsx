@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 
 import { useState } from 'react';
 import { Plus, Search, FileSpreadsheet } from 'lucide-react';
@@ -12,8 +12,7 @@ export default function SubjectTable({ initialData }: { initialData: any[] }) {
   const [isImportOpen, setIsImportOpen] = useState(false);
 
   const filteredData = initialData.filter(d => 
-    d.name.toLowerCase().includes(search.toLowerCase()) ||
-    (d.teacher_name && d.teacher_name.toLowerCase().includes(search.toLowerCase()))
+    d.name.toLowerCase().includes(search.toLowerCase())
   );
 
   return (
@@ -23,7 +22,7 @@ export default function SubjectTable({ initialData }: { initialData: any[] }) {
           <Search className="w-5 h-5 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2" />
           <input 
             type="text" 
-            placeholder="Cari mata pelajaran atau nama guru..." 
+            placeholder="Cari mata pelajaran..." 
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             className="w-full pl-10 pr-4 py-2 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all text-sm"
@@ -53,7 +52,6 @@ export default function SubjectTable({ initialData }: { initialData: any[] }) {
             <tr className="bg-gray-50/50">
               <th className="px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider w-12 text-center">No</th>
               <th className="px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Mata Pelajaran</th>
-              <th className="px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Guru Pengajar</th>
               <th className="px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider text-right">Aksi</th>
             </tr>
           </thead>
@@ -64,7 +62,7 @@ export default function SubjectTable({ initialData }: { initialData: any[] }) {
               ))
             ) : (
               <tr>
-                <td colSpan={4} className="px-6 py-12 text-center text-gray-500">
+                <td colSpan={3} className="px-6 py-12 text-center text-gray-500">
                   <div className="flex flex-col items-center justify-center">
                     <div className="w-16 h-16 bg-gray-50 rounded-full flex items-center justify-center mb-3">
                       <Search className="w-6 h-6 text-gray-400" />

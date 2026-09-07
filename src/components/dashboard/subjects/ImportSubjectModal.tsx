@@ -20,10 +20,12 @@ export default function ImportSubjectModal({ isOpen, onClose }: ImportSubjectMod
 
   const handleDownloadTemplate = () => {
     const ws = XLSX.utils.json_to_sheet([
-      {
-        name: 'Matematika',
-        teacher_name: 'Budi Santoso, S.Pd'
-      }
+      { 'Mata Pelajaran': 'Pendidikan Agama Islam' },
+      { 'Mata Pelajaran': 'Pendidikan Pancasila' },
+      { 'Mata Pelajaran': 'Bahasa Indonesia' },
+      { 'Mata Pelajaran': 'Matematika' },
+      { 'Mata Pelajaran': 'Bahasa Inggris' },
+      { 'Mata Pelajaran': 'Informatika' }
     ]);
     const wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, 'Data Mapel');
@@ -54,10 +56,10 @@ export default function ImportSubjectModal({ isOpen, onClose }: ImportSubjectMod
       const worksheet = workbook.Sheets[workbook.SheetNames[0]];
       const jsonData = XLSX.utils.sheet_to_json(worksheet);
 
-      // Map keys to expected format (name, teacher_name) in case they use Indonesian headers
+      // Map keys to expected format (hanya nama mata pelajaran)
       const mappedData = jsonData.map((row: any) => ({
-        name: row['Mata Pelajaran'] || row.name || row['MataPelajaran'] || '',
-        teacher_name: row['Nama Guru'] || row.teacher_name || row['NamaGuru'] || ''
+        name: row['Mata Pelajaran'] || row.name || row['MataPelajaran'] || row['Nama Mapel'] || row['Mapel'] || '',
+        teacher_name: ''
       }));
 
       // JSON.parse(JSON.stringify) is REQUIRED by Next.js to pass plain objects to Server Actions
@@ -112,8 +114,7 @@ export default function ImportSubjectModal({ isOpen, onClose }: ImportSubjectMod
               File Excel harus memiliki header kolom berikut pada baris pertama:
             </p>
             <ul className="list-disc list-inside text-sm text-blue-700 mb-4 ml-1 space-y-1">
-              <li><strong>name</strong> (Wajib)</li>
-              <li><strong>teacher_name</strong> (Opsional)</li>
+              <li><strong>Mata Pelajaran</strong> atau <strong>name</strong> (Wajib)</li>
             </ul>
             <button 
               type="button"

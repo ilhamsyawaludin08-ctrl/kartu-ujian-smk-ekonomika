@@ -1,4 +1,4 @@
-﻿import { getSubjects } from './actions';
+import { getSubjects } from './actions';
 import SubjectTable from '@/components/dashboard/subjects/SubjectTable';
 import { AlertCircle } from 'lucide-react';
 
@@ -22,7 +22,7 @@ export default async function SubjectsPage() {
       <div>
         <h1 className="text-2xl font-bold text-gray-900">Data Mata Pelajaran</h1>
         <p className="text-sm text-gray-500 mt-1">
-          Kelola daftar mata pelajaran dan guru pengajar untuk keperluan jadwal ujian.
+          Kelola daftar mata pelajaran untuk keperluan jadwal ujian.
         </p>
       </div>
       <SubjectTable initialData={data || []} />

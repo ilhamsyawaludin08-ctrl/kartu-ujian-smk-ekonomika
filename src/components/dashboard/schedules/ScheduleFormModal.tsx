@@ -206,8 +206,8 @@ export default function ScheduleFormModal({ isOpen, onClose, scheduleData, exams
                       className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none text-sm font-medium bg-white"
                     >
                       <option value="" disabled>-- Pilih Mapel --</option>
-                      {subjects.map(s => (
-                        <option key={s.id} value={s.name}>{s.name} {s.teacher_name ? `(${s.teacher_name})` : ''}</option>
+                      {Array.from(new Set(subjects.map(s => s.name?.trim()).filter(Boolean))).map((subjectName) => (
+                        <option key={subjectName} value={subjectName}>{subjectName}</option>
                       ))}
                     </select>
                   </div>

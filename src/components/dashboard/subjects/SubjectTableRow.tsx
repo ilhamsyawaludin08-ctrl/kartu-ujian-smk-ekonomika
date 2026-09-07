@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 
 import { useState } from 'react';
 import { Edit2, Trash2 } from 'lucide-react';
@@ -29,9 +29,6 @@ export default function SubjectTableRow({ subject, index }: { subject: any, inde
         </td>
         <td className="px-6 py-4">
           <div className="font-bold text-gray-900">{subject.name}</div>
-        </td>
-        <td className="px-6 py-4">
-          <div className="text-sm text-gray-600">{subject.teacher_name || '-'}</div>
         </td>
         <td className="px-6 py-4">
           <div className="flex items-center justify-end gap-2">
