@@ -243,6 +243,31 @@ export async function setPendingStudent(studentId: number) {
   return { success: true };
 }
 
+function parseExcelDate(val: any): string | null {
+  if (!val) return null;
+  if (val instanceof Date) {
+    return isNaN(val.getTime()) ? null : val.toISOString().split('T')[0];
+  }
+  if (typeof val === 'number') {
+    // Excel serial number (days since Dec 30, 1899)
+    const excelEpoch = new Date(Date.UTC(1899, 11, 30));
+    const jsDate = new Date(excelEpoch.getTime() + val * 86400000);
+    return isNaN(jsDate.getTime()) ? null : jsDate.toISOString().split('T')[0];
+  }
+  const str = val.toString().trim();
+  if (str.includes('/')) {
+    const parts = str.split('/');
+    if (parts.length === 3) {
+      const day = parts[0].padStart(2, '0');
+      const month = parts[1].padStart(2, '0');
+      const year = parts[2];
+      return `${year}-${month}-${day}`;
+    }
+  }
+  const parsed = new Date(str);
+  return isNaN(parsed.getTime()) ? null : parsed.toISOString().split('T')[0];
+}
+
 export async function bulkImportStudents(data: any[]) {
   const supabase = await createClient();
 
@@ -285,7 +310,7 @@ export async function bulkImportStudents(data: any[]) {
     nisn: r.nisn.toString().trim(),
     name: r.name.toString().trim(),
     place_of_birth: r.place_of_birth ? r.place_of_birth.toString().trim() : null,
-    date_of_birth: r.date_of_birth ? new Date(r.date_of_birth).toISOString() : null,
+    date_of_birth: parseExcelDate(r.date_of_birth),
     exam_room: r.exam_room ? r.exam_room.toString().trim() : null,
     exam_password: r.exam_password ? r.exam_password.toString().trim() : null,
     exam_number: r.exam_number ? r.exam_number.toString().trim() : null,

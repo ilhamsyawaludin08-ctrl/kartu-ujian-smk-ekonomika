@@ -54,16 +54,36 @@ export default function ExcelImportModal({ isOpen, onClose }: ExcelImportModalPr
         // Auto map basic fields if matched
         const autoMappings: Record<string, string> = {};
         fileHeaders.forEach(h => {
-          const lower = h.toLowerCase();
-          if (lower.includes('nisn')) autoMappings[h] = 'nisn';
-          else if (lower.includes('nama') || lower.includes('name')) autoMappings[h] = 'name';
-          else if (lower.includes('kelas') || lower.includes('class')) autoMappings[h] = 'class_id';
-          else if (lower.includes('tempat') || lower.includes('lahir') && !lower.includes('tanggal')) autoMappings[h] = 'place_of_birth';
-          else if (lower.includes('tanggal') || lower.includes('tgl') || lower.includes('dob')) autoMappings[h] = 'date_of_birth';
-          else if (lower.includes('nomor ujian') || lower.includes('no ujian')) autoMappings[h] = 'exam_number';
-          else if (lower.includes('ruang') || lower.includes('room')) autoMappings[h] = 'exam_room';
-          else if (lower.includes('password') || lower.includes('pass') || lower.includes('sandi')) autoMappings[h] = 'exam_password';
-          else autoMappings[h] = 'unknown'; // default untuk field tak dikenal
+          const lower = h.toLowerCase().trim();
+          if (lower.includes('nisn')) {
+            autoMappings[h] = 'nisn';
+          } else if (lower.includes('kelas') || lower.includes('rombel') || lower.includes('class')) {
+            autoMappings[h] = 'class_id';
+          } else if (lower.includes('jurusan') || lower.includes('prodi') || lower.includes('major') || lower.includes('keahlian')) {
+            // Kolom nama jurusan jangan pernah dijadikan nama siswa
+            autoMappings[h] = 'ignore';
+          } else if (lower.includes('nama lengkap') || lower.includes('nama siswa') || lower.includes('nama murid') || lower.includes('nama peserta')) {
+            autoMappings[h] = 'name';
+          } else if (lower.includes('nama') || lower.includes('name')) {
+            // Hanya jadikan name jika belum ada kolom name yang terdeteksi
+            if (!Object.values(autoMappings).includes('name')) {
+              autoMappings[h] = 'name';
+            } else {
+              autoMappings[h] = 'ignore';
+            }
+          } else if (lower.includes('tempat') || (lower.includes('lahir') && !lower.includes('tanggal') && !lower.includes('tgl'))) {
+            autoMappings[h] = 'place_of_birth';
+          } else if (lower.includes('tanggal') || lower.includes('tgl') || lower.includes('dob') || lower.includes('birth')) {
+            autoMappings[h] = 'date_of_birth';
+          } else if (lower.includes('nomor ujian') || lower.includes('no ujian') || lower.includes('no_peserta') || lower.includes('nopes')) {
+            autoMappings[h] = 'exam_number';
+          } else if (lower.includes('ruang') || lower.includes('room')) {
+            autoMappings[h] = 'exam_room';
+          } else if (lower.includes('password') || lower.includes('pass') || lower.includes('sandi')) {
+            autoMappings[h] = 'exam_password';
+          } else {
+            autoMappings[h] = 'unknown'; // default untuk field tak dikenal
+          }
         });
         
         setMappings(autoMappings);
