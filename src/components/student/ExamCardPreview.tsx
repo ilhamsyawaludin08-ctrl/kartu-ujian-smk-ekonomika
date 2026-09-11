@@ -57,7 +57,7 @@ export default function ExamCardPreview({ data }: Props) {
         @media print {
           @page {
             size: A4 portrait;
-            margin: 6mm 8mm;
+            margin: 8mm 10mm;
           }
           html, body {
             -webkit-print-color-adjust: exact !important;
@@ -83,6 +83,20 @@ export default function ExamCardPreview({ data }: Props) {
             page-break-inside: avoid !important;
             break-inside: avoid !important;
             overflow: visible !important;
+            zoom: 0.78 !important;
+          }
+          #print-container table th,
+          #print-container table td {
+            padding-top: 2.5px !important;
+            padding-bottom: 2.5px !important;
+          }
+          #print-container .grid.grid-cols-3 > div {
+            min-height: 0 !important;
+            padding-top: 4px !important;
+            padding-bottom: 4px !important;
+          }
+          #print-container .print-sig-container {
+            height: 48px !important;
           }
         }
       `}} />
@@ -280,7 +294,7 @@ export default function ExamCardPreview({ data }: Props) {
               <p className="mb-1 print:mb-0.5 text-gray-800 text-xs md:text-sm">Mengetahui,</p>
               <p className="font-bold text-gray-900 mb-2 print:mb-1 uppercase tracking-wide text-sm md:text-base">Panitia Pelaksana</p>
               
-              <div className="h-24 md:h-28 print:h-14 flex items-center justify-center mb-2 print:mb-1 w-full">
+              <div className="h-24 md:h-28 print:h-14 print-sig-container flex items-center justify-center mb-2 print:mb-1 w-full">
                 {data.examSettings.signature_url ? (
                   <img src={data.examSettings.signature_url} alt="Tanda Tangan" className="max-h-full max-w-full object-contain" />
                 ) : (
