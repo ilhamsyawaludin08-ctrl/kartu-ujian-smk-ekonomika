@@ -136,8 +136,8 @@ export default function StudentPortal() {
   };
 
   return (
-    <div className="min-h-screen bg-[#f3e8ff] flex flex-col font-sans">
-      <main className="flex-1 flex flex-col items-center justify-center p-4 md:p-8 print:p-0 print:bg-white">
+    <div className="min-h-screen bg-[#f3e8ff] flex flex-col font-sans print:min-h-0 print:h-auto print:bg-white">
+      <main className="flex-1 flex flex-col items-center justify-center p-4 md:p-8 print:p-0 print:bg-white print:justify-start print:min-h-0 print:h-auto">
         
         {uiState === 'SEARCH' && (
           <div className="w-full max-w-xl bg-white rounded-3xl shadow-xl overflow-hidden print:hidden border border-purple-100 relative">
@@ -309,7 +309,7 @@ export default function StudentPortal() {
               </div>
 
               {/* The Actual Card */}
-              <div className="w-full print:w-full flex justify-center border-t border-b md:border border-gray-200 py-6 md:p-6 bg-gray-50 md:rounded-xl print:p-0 print:border-none print:bg-transparent">
+              <div className="w-full print:w-full flex justify-center border-t border-b md:border border-gray-200 py-6 md:p-6 bg-gray-50 md:rounded-xl print:p-0 print:border-none print:bg-transparent print:block">
                 <ExamCardPreview data={cardData} />
               </div>
 

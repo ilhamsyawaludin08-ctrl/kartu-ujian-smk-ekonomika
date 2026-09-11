@@ -50,14 +50,14 @@ export default function ExamCardPreview({ data }: Props) {
   const infoPaddingClass = isVeryCompact ? 'py-1' : 'py-1.5 print:py-0.5';
 
   return (
-    <div className="w-full flex flex-col items-center min-h-screen bg-gray-100 print:bg-white print:min-h-0">
+    <div className="w-full flex flex-col items-center min-h-screen bg-gray-100 print:bg-white print:min-h-0 print:h-auto print:justify-start">
       
       {/* Global Print Styles */}
       <style dangerouslySetInnerHTML={{__html: `
         @media print {
           @page {
             size: A4 portrait;
-            margin: 8mm 10mm;
+            margin: 6mm 10mm 10mm 10mm;
           }
           html, body {
             -webkit-print-color-adjust: exact !important;
@@ -65,6 +65,13 @@ export default function ExamCardPreview({ data }: Props) {
             background-color: white !important;
             margin: 0 !important;
             padding: 0 !important;
+            height: auto !important;
+            min-height: 0 !important;
+          }
+          /* Reset min-height and flex centering so card starts directly at top */
+          body, main, div {
+            min-height: 0 !important;
+            justify-content: flex-start !important;
           }
           nav, header, footer, button, .no-print {
             display: none !important;
@@ -72,7 +79,7 @@ export default function ExamCardPreview({ data }: Props) {
           #print-container {
             position: relative !important;
             left: auto !important;
-            top: auto !important;
+            top: 0 !important;
             width: 100% !important;
             max-width: 100% !important;
             min-height: 0 !important;
@@ -102,7 +109,7 @@ export default function ExamCardPreview({ data }: Props) {
       `}} />
 
       {/* Card Preview Container - A4 Portrait is 210mm x 297mm */}
-      <div className="p-4 md:p-8 print:p-0 w-full flex justify-center">
+      <div className="p-4 md:p-8 print:p-0 w-full flex justify-center print:block">
         
         {/* The Card - A4 Portrait Dimensions (matching PDF) */}
         <div 
