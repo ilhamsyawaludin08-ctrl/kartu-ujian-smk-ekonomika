@@ -87,13 +87,13 @@ export default function ExamCardPreview({ data }: Props) {
         }
       `}} />
 
-      {/* Card Preview Container - A4 Landscape is 297mm x 210mm */}
+      {/* Card Preview Container - A4 Portrait is 210mm x 297mm */}
       <div className="p-4 md:p-8 print:p-0 w-full flex justify-center">
         
-        {/* The Card - A4 Landscape Dimensions */}
+        {/* The Card - A4 Portrait Dimensions (matching PDF) */}
         <div 
           id="print-container"
-          className="w-full max-w-[297mm] min-h-[210mm] print:min-h-0 bg-white border border-gray-300 print:border-2 print:border-gray-800 shadow-xl print:shadow-none relative font-sans text-gray-900 mx-auto flex flex-col print:break-inside-avoid overflow-hidden"
+          className="w-full max-w-[210mm] print:max-w-full min-h-0 bg-white border border-gray-300 print:border-2 print:border-gray-800 shadow-xl print:shadow-none relative font-sans text-gray-900 mx-auto flex flex-col print:break-inside-avoid overflow-hidden"
         >
 
           {/* Content Wrapper */}
