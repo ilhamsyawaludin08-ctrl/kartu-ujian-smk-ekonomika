@@ -327,7 +327,7 @@ const MyDocument = ({ data }: Props) => {
           
           {/* Title Block */}
           <View style={styles.titleBlock}>
-            <Text style={styles.titleText}>KARTU PESERTA UJIAN</Text>
+            <Text style={styles.titleText}>{data.examSettings.card_title || 'KARTU PESERTA UJIAN'}</Text>
             <Text style={styles.subTitleMain}>{data.exam.exam_name} ({data.exam.semester})</Text>
             <Text style={styles.subTitle}>TAHUN PELAJARAN {data.exam.academic_year}</Text>
           </View>
