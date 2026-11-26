@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { Search, Loader2, User, ChevronRight, AlertCircle } from 'lucide-react';
 import { searchApprovedStudents } from '@/app/dashboard/exam-cards/actions';
-import { fetchStudentCardData, CardActionResponse } from '@/app/student/actions';
+import { fetchStudentCardData, fetchStudentCardDataByExam, StudentExamOption } from '@/app/student/actions';
 import ExamCardPreview from '@/components/student/ExamCardPreview';
 import { StudentExamCardData } from '@/types/student';
 
@@ -17,6 +17,8 @@ export default function ExamCardSearch() {
   const [isLoadingCard, setIsLoadingCard] = useState(false);
   const [cardData, setCardData] = useState<StudentExamCardData | null>(null);
   const [cardError, setCardError] = useState<string | null>(null);
+  const [examOptions, setExamOptions] = useState<StudentExamOption[]>([]);
+  const [selectedExamId, setSelectedExamId] = useState<number | null>(null);
 
   const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -27,6 +29,8 @@ export default function ExamCardSearch() {
     setSelectedStudent(null);
     setCardData(null);
     setCardError(null);
+    setExamOptions([]);
+    setSelectedExamId(null);
 
     const res = await searchApprovedStudents(query.trim());
     if (res.success) {
@@ -37,29 +41,51 @@ export default function ExamCardSearch() {
     setIsSearching(false);
   };
 
-  const handleSelectStudent = async (student: any) => {
-    setSelectedStudent(student);
+  const loadCard = async (nisn: string, examId: number) => {
     setIsLoadingCard(true);
     setCardError(null);
-    setCardData(null);
-
-    const res = await fetchStudentCardData(student.nisn);
-    if (res.success) {
-      // Sort schedules
-      if (res.data.schedules) {
-        res.data.schedules.sort((a, b) => {
+    const detail = await fetchStudentCardDataByExam(nisn, examId);
+    if (detail.success) {
+      if (detail.data.schedules) {
+        detail.data.schedules.sort((a: { exam_date: string; start_time: string }, b: { exam_date: string; start_time: string }) => {
           const dateA = new Date(a.exam_date).getTime();
           const dateB = new Date(b.exam_date).getTime();
           if (dateA !== dateB) return dateA - dateB;
           return a.start_time.localeCompare(b.start_time);
         });
       }
-      setCardData(res.data);
+      setCardData(detail.data);
     } else {
-      setCardError(res.message || 'Gagal memuat kartu ujian.');
+      setCardData(null);
+      setCardError(detail.message || 'Gagal memuat kartu ujian.');
     }
-    
     setIsLoadingCard(false);
+  };
+
+  const handleSelectStudent = async (student: any) => {
+    setSelectedStudent(student);
+    setIsLoadingCard(true);
+    setCardError(null);
+    setCardData(null);
+    setExamOptions([]);
+    setSelectedExamId(null);
+
+    const res = await fetchStudentCardData(student.nisn);
+    if (res.success && res.exams.length > 0) {
+      setExamOptions(res.exams);
+      const initialExamId = res.exams[0].examId;
+      setSelectedExamId(initialExamId);
+      await loadCard(student.nisn, initialExamId);
+    } else {
+      setIsLoadingCard(false);
+      setCardError(res.success ? 'Tidak ada ujian aktif untuk siswa ini.' : (res.message || 'Gagal memuat kartu ujian.'));
+    }
+  };
+
+  const handleExamChange = async (examId: number) => {
+    if (!selectedStudent || examId === selectedExamId) return;
+    setSelectedExamId(examId);
+    await loadCard(selectedStudent.nisn, examId);
   };
 
   return (
@@ -132,6 +158,26 @@ export default function ExamCardSearch() {
               Kembali ke hasil pencarian
             </button>
           </div>
+
+          {examOptions.length > 1 && (
+            <div className="flex flex-wrap items-center gap-2 print:hidden bg-gray-50 p-3 rounded-xl border border-gray-100">
+              <span className="text-xs font-bold text-gray-500 mr-1">Pilih Ujian:</span>
+              {examOptions.map((opt) => (
+                <button
+                  key={opt.examId}
+                  onClick={() => handleExamChange(opt.examId)}
+                  disabled={isLoadingCard}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
+                    selectedExamId === opt.examId
+                      ? 'bg-primary text-white shadow-xs'
+                      : 'bg-white text-gray-700 hover:bg-gray-100 border border-gray-200'
+                  }`}
+                >
+                  {opt.cardTitle} ({opt.examName})
+                </button>
+              ))}
+            </div>
+          )}
 
           {isLoadingCard && (
             <div className="p-12 flex flex-col items-center justify-center bg-white rounded-2xl shadow-sm border border-gray-100">

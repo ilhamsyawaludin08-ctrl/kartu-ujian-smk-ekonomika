@@ -33,7 +33,7 @@ export default function ScheduleFormModal({ isOpen, onClose, scheduleData, exams
       } else {
         setExamId('');
         setClassId('');
-        setRows([{ id: Date.now(), subject: '', exam_date: '', start_time: '', end_time: '', is_active: true }]);
+        setRows([{ id: Date.now(), subject: '', exam_date: '', start_time: '', end_time: '' }]);
       }
       setError(null);
     }
@@ -42,7 +42,7 @@ export default function ScheduleFormModal({ isOpen, onClose, scheduleData, exams
   if (!isOpen) return null;
 
   const addRow = () => {
-    setRows([...rows, { id: Date.now(), subject: '', exam_date: '', start_time: '', end_time: '', is_active: true }]);
+    setRows([...rows, { id: Date.now(), subject: '', exam_date: '', start_time: '', end_time: '' }]);
   };
 
   const removeRow = (id: number) => {
@@ -84,7 +84,6 @@ export default function ScheduleFormModal({ isOpen, onClose, scheduleData, exams
       formData.append('exam_date', rows[0].exam_date);
       formData.append('start_time', rows[0].start_time);
       formData.append('end_time', rows[0].end_time);
-      formData.append('is_active', rows[0].is_active ? 'true' : 'false');
       
       res = await updateSchedule(scheduleData.id, formData);
     } else {
@@ -93,8 +92,7 @@ export default function ScheduleFormModal({ isOpen, onClose, scheduleData, exams
         subject: r.subject,
         exam_date: r.exam_date,
         start_time: r.start_time,
-        end_time: r.end_time,
-        is_active: r.is_active
+        end_time: r.end_time
       }));
       res = await createBulkSchedules(parseInt(examId), parseInt(classId), formattedRows);
     }
@@ -223,7 +221,7 @@ export default function ScheduleFormModal({ isOpen, onClose, scheduleData, exams
                     />
                   </div>
 
-                  <div className="grid grid-cols-2 gap-2 md:col-span-4">
+                  <div className="grid grid-cols-2 gap-2 md:col-span-5">
                     <div>
                       <label className="block md:hidden text-xs font-semibold text-gray-500 mb-1">Jam Mulai</label>
                       <input 
@@ -244,22 +242,6 @@ export default function ScheduleFormModal({ isOpen, onClose, scheduleData, exams
                         className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none text-sm"
                       />
                     </div>
-                  </div>
-
-                  <div className="md:col-span-1 flex items-center h-full md:justify-center pt-2 md:pt-0">
-                    <label className="flex items-center gap-2 cursor-pointer md:mt-0">
-                      <div className="relative">
-                        <input 
-                          type="checkbox" 
-                          checked={row.is_active ?? false}
-                          onChange={(e) => updateRow(row.id, 'is_active', e.target.checked)}
-                          className="peer sr-only"
-                        />
-                        <div className="block bg-gray-200 w-10 h-6 rounded-full peer-checked:bg-[#00c853] transition-colors"></div>
-                        <div className="dot absolute left-1 top-1 bg-white w-4 h-4 rounded-full transition transform peer-checked:translate-x-4"></div>
-                      </div>
-                      <span className="text-xs font-bold text-gray-600 md:hidden">Aktif</span>
-                    </label>
                   </div>
 
                 </div>

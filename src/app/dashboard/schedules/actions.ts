@@ -2,6 +2,7 @@
 
 import { createClient } from '@/lib/supabase/server';
 import { revalidatePath } from 'next/cache';
+import { SupabaseClient } from '@supabase/supabase-js';
 
 export async function getSchedules() {
   const supabase = await createClient();
@@ -51,6 +52,12 @@ export async function getClasses() {
   return { success: true, data };
 }
 
+// Status aktif jadwal selalu mengikuti status aktif ujiannya
+async function getExamActiveStatus(supabase: SupabaseClient, examId: number): Promise<boolean> {
+  const { data } = await supabase.from('exams').select('is_active').eq('id', examId).single();
+  return data?.is_active ?? false;
+}
+
 export async function createSchedule(formData: FormData) {
   const supabase = await createClient();
   
@@ -60,7 +67,7 @@ export async function createSchedule(formData: FormData) {
   const exam_date = formData.get('exam_date') as string;
   const start_time = formData.get('start_time') as string;
   const end_time = formData.get('end_time') as string;
-  const is_active = formData.get('is_active') === 'true';
+  const is_active = await getExamActiveStatus(supabase, parseInt(exam_id));
 
   const { error } = await supabase.from('schedules').insert({
     exam_id: parseInt(exam_id),
@@ -80,6 +87,7 @@ export async function createSchedule(formData: FormData) {
 
 export async function createBulkSchedules(exam_id: number, class_id: number, schedules: any[]) {
   const supabase = await createClient();
+  const is_active = await getExamActiveStatus(supabase, exam_id);
   
   const insertData = schedules.map(s => ({
     exam_id,
@@ -88,7 +96,7 @@ export async function createBulkSchedules(exam_id: number, class_id: number, sch
     exam_date: s.exam_date,
     start_time: s.start_time,
     end_time: s.end_time,
-    is_active: s.is_active
+    is_active
   }));
 
   const { error } = await supabase.from('schedules').insert(insertData);
@@ -108,7 +116,7 @@ export async function updateSchedule(id: number, formData: FormData) {
   const exam_date = formData.get('exam_date') as string;
   const start_time = formData.get('start_time') as string;
   const end_time = formData.get('end_time') as string;
-  const is_active = formData.get('is_active') === 'true';
+  const is_active = await getExamActiveStatus(supabase, parseInt(exam_id));
 
   const { error } = await supabase.from('schedules').update({
     exam_id: parseInt(exam_id),

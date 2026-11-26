@@ -1,18 +1,26 @@
 'use client';
 
 import { useState } from 'react';
-import { fetchStudentCardData, CardActionResponse, BasicStudentData } from './actions';
+import { fetchStudentCardData, fetchStudentCardDataByExam, BasicStudentData, StudentExamOption } from './actions';
 import { StudentExamCardData } from '@/types/student';
 import ExamCardPreview from '@/components/student/ExamCardPreview';
 import PrintGuideModal from '@/components/student/PrintGuideModal';
-import { Loader2, Search, CheckCircle2, AlertTriangle, Printer, UserCircle, Info, HelpCircle } from 'lucide-react';
+import { Loader2, Search, CheckCircle2, AlertTriangle, Printer, UserCircle, Info, HelpCircle, FileText, ArrowLeft } from 'lucide-react';
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
-import Link from 'next/link';
 
 const ExamCardPDFDownloadButton = dynamic(() => import('@/components/student/ExamCardPDF'), { ssr: false });
 
 type UIState = 'SEARCH' | 'VERIFIED' | 'PENDING' | 'PREVIEW';
+
+type ErrorResult = { success: false; error: 'not_found' | 'pending' | 'server_error'; message?: string; student?: BasicStudentData };
+
+// Grid pilihan kartu menyesuaikan jumlah ujian (2–4)
+const OPTION_GRID_COLS: Record<number, string> = {
+  2: 'sm:grid-cols-2',
+  3: 'sm:grid-cols-3',
+  4: 'sm:grid-cols-2',
+};
 
 export default function StudentPortal() {
   const [uiState, setUiState] = useState<UIState>('SEARCH');
@@ -23,6 +31,33 @@ export default function StudentPortal() {
   
   const [studentData, setStudentData] = useState<BasicStudentData | null>(null);
   const [cardData, setCardData] = useState<StudentExamCardData | null>(null);
+  const [examOptions, setExamOptions] = useState<StudentExamOption[]>([]);
+  const [loadingExamId, setLoadingExamId] = useState<number | null>(null);
+
+  const applyCardData = (data: StudentExamCardData) => {
+    setCardData(data);
+    setStudentData({
+      nisn: data.student.nisn,
+      name: data.student.full_name,
+      className: data.classInfo.class_name,
+      major: data.classInfo.major,
+      examNumber: data.examCard.card_number,
+    });
+  };
+
+  const handleErrorResult = (res: ErrorResult) => {
+    if (res.error === 'pending' && res.student) {
+      setStudentData(res.student);
+      setUiState('PENDING');
+    } else if (res.error === 'not_found') {
+      setErrorMsg('NISN tidak ditemukan. Silakan periksa kembali.');
+    } else if (res.error === 'server_error' && res.student) {
+      setStudentData(res.student);
+      setErrorMsg(res.message || 'Terjadi kesalahan sistem.');
+    } else {
+      setErrorMsg(res.message || 'Terjadi kesalahan pada server.');
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -32,40 +67,63 @@ export default function StudentPortal() {
     setErrorMsg(null);
     setStudentData(null);
     setCardData(null);
+    setExamOptions([]);
 
-    const res: CardActionResponse = await fetchStudentCardData(nisn.trim());
+    const res = await fetchStudentCardData(nisn.trim());
 
     if (res.success) {
-      setCardData(res.data);
-      setStudentData({
-        nisn: res.data.student.nisn,
-        name: res.data.student.full_name,
-        className: res.data.classInfo.class_name,
-        major: res.data.classInfo.major,
-        examNumber: res.data.examCard.card_number,
-      });
-      setUiState('VERIFIED');
-    } else {
-      if (res.error === 'pending' && res.student) {
-        setStudentData(res.student);
-        setUiState('PENDING');
-      } else if (res.error === 'not_found') {
-        setErrorMsg('NISN tidak ditemukan. Silakan periksa kembali.');
-      } else if (res.error === 'server_error' && res.student) {
-        setStudentData(res.student);
-        setErrorMsg(res.message || 'Terjadi kesalahan sistem.');
+      setExamOptions(res.exams);
+
+      if (res.exams.length === 1) {
+        // Hanya 1 ujian: langsung ambil kartunya, tanpa halaman pilihan
+        const detail = await fetchStudentCardDataByExam(nisn.trim(), res.exams[0].examId);
+        if (detail.success) {
+          applyCardData(detail.data);
+          setUiState('VERIFIED');
+        } else {
+          handleErrorResult(detail);
+        }
       } else {
-        setErrorMsg(res.message || 'Terjadi kesalahan pada server.');
+        setStudentData(res.student);
+        setUiState('VERIFIED');
       }
+    } else {
+      handleErrorResult(res);
     }
 
     setIsLoading(false);
+  };
+
+  const handleSelectExam = async (examId: number) => {
+    setLoadingExamId(examId);
+    setErrorMsg(null);
+
+    const detail = await fetchStudentCardDataByExam(nisn.trim(), examId);
+
+    if (detail.success) {
+      setCardData(detail.data);
+      setUiState('PREVIEW');
+    } else if (detail.error === 'pending' && detail.student) {
+      setStudentData(detail.student);
+      setUiState('PENDING');
+    } else {
+      setErrorMsg(detail.message || 'Terjadi kesalahan pada server.');
+    }
+
+    setLoadingExamId(null);
+  };
+
+  const handleBackToExamOptions = () => {
+    setCardData(null);
+    setErrorMsg(null);
+    setUiState('VERIFIED');
   };
 
   const handleBackToSearch = () => {
     setUiState('SEARCH');
     setStudentData(null);
     setCardData(null);
+    setExamOptions([]);
     setNisn('');
     setErrorMsg(null);
   };
@@ -73,20 +131,6 @@ export default function StudentPortal() {
   const handlePrint = () => {
     window.print();
   };
-
-  const renderHeader = () => (
-    <header className="bg-transparent print:hidden sticky top-0 z-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <Image src="/logo.png" alt="Logo" width={48} height={48} className="object-contain" />
-          <span className="font-extrabold text-[#5c2b90] text-xl md:text-2xl tracking-wider">SMK EKONOMIKA</span>
-        </div>
-        <div className="flex items-center">
-          <UserCircle className="w-9 h-9 text-[#5c2b90]" strokeWidth={1.5} />
-        </div>
-      </div>
-    </header>
-  );
 
   const renderFooter = () => (
     <footer className="bg-transparent print:hidden mt-auto">
@@ -256,12 +300,64 @@ export default function StudentPortal() {
 
               {renderSummaryBox(true)}
 
-              <button
-                onClick={() => setUiState('PREVIEW')}
-                className="mt-8 px-12 py-3 bg-[#6a1b9a] hover:bg-[#5c2b90] text-white font-bold rounded-xl transition-all shadow-md"
-              >
-                LIHAT KARTU UJIAN
-              </button>
+              {examOptions.length > 1 ? (
+                <div className="w-full max-w-2xl mx-auto mt-8">
+                  <h3 className="text-gray-900 text-lg font-extrabold tracking-wide mb-1">PILIH KARTU UJIAN</h3>
+                  <p className="text-gray-500 text-sm font-medium mb-6">
+                    Anda terdaftar di {examOptions.length} ujian aktif. Pilih kartu ujian yang ingin dilihat.
+                  </p>
+
+                  {errorMsg && (
+                    <div className="mb-6 p-4 rounded-xl flex items-start gap-3 text-sm bg-red-50 text-red-800 border border-red-200 text-left">
+                      <AlertTriangle className="w-5 h-5 flex-shrink-0 mt-0.5" />
+                      <p>{errorMsg}</p>
+                    </div>
+                  )}
+
+                  <div className={`grid grid-cols-1 ${OPTION_GRID_COLS[examOptions.length] || 'sm:grid-cols-2'} gap-4`}>
+                    {examOptions.map((opt) => (
+                      <div
+                        key={opt.examId}
+                        className="flex flex-col text-left bg-white border border-purple-200 rounded-2xl p-5 shadow-sm hover:shadow-md hover:border-[#6a1b9a] transition-all"
+                      >
+                        <div className="w-11 h-11 bg-purple-50 text-[#6a1b9a] rounded-xl flex items-center justify-center mb-4">
+                          <FileText className="w-6 h-6" strokeWidth={2} />
+                        </div>
+                        <div className="flex-1">
+                          <h4 className="text-gray-900 text-sm md:text-base font-extrabold uppercase tracking-wide leading-snug break-words">
+                            {opt.cardTitle}
+                          </h4>
+                          <p className="text-gray-500 text-xs md:text-sm font-medium mt-1.5 leading-relaxed break-words">
+                            {opt.examName}
+                          </p>
+                        </div>
+                        <button
+                          type="button"
+                          onClick={() => handleSelectExam(opt.examId)}
+                          disabled={loadingExamId !== null}
+                          className="mt-5 w-full py-2.5 bg-[#6a1b9a] hover:bg-[#5c2b90] text-white font-bold text-sm rounded-xl transition-all shadow-md flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed cursor-pointer"
+                        >
+                          {loadingExamId === opt.examId ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Lihat Kartu'}
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+
+                  <button
+                    onClick={handleBackToSearch}
+                    className="mt-8 px-12 py-3 bg-white hover:bg-purple-50 text-[#6a1b9a] border border-[#6a1b9a] font-bold rounded-xl transition-all shadow-sm"
+                  >
+                    Kembali Ke Beranda
+                  </button>
+                </div>
+              ) : (
+                <button
+                  onClick={() => setUiState('PREVIEW')}
+                  className="mt-8 px-12 py-3 bg-[#6a1b9a] hover:bg-[#5c2b90] text-white font-bold rounded-xl transition-all shadow-md"
+                >
+                  LIHAT KARTU UJIAN
+                </button>
+              )}
             </div>
           </div>
         )}
@@ -318,12 +414,23 @@ export default function StudentPortal() {
                 <p className="text-gray-500 text-sm font-medium mb-6">
                   Kartu ujian dibuat berdasarkan data siswa dan jadwal ujian yang telah diverifikasi.
                 </p>
-                <button
-                  onClick={handleBackToSearch}
-                  className="px-10 py-3 bg-[#6a1b9a] hover:bg-[#5c2b90] text-white font-bold rounded-xl transition-all shadow-md cursor-pointer"
-                >
-                  Kembali Ke Beranda
-                </button>
+                <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+                  {examOptions.length > 1 && (
+                    <button
+                      onClick={handleBackToExamOptions}
+                      className="flex items-center justify-center gap-2 px-8 py-3 bg-white hover:bg-purple-50 text-[#6a1b9a] border border-[#6a1b9a] font-bold rounded-xl transition-all shadow-sm cursor-pointer"
+                    >
+                      <ArrowLeft className="w-4 h-4" />
+                      Kembali ke pilihan ujian
+                    </button>
+                  )}
+                  <button
+                    onClick={handleBackToSearch}
+                    className="px-10 py-3 bg-[#6a1b9a] hover:bg-[#5c2b90] text-white font-bold rounded-xl transition-all shadow-md cursor-pointer"
+                  >
+                    Kembali Ke Beranda
+                  </button>
+                </div>
               </div>
             </div>
           </div>

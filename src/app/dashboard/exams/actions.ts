@@ -2,6 +2,8 @@
 
 import { createClient } from '@/lib/supabase/server';
 import { revalidatePath } from 'next/cache';
+import { ensureActiveCards } from '@/lib/examCards';
+import { SupabaseClient } from '@supabase/supabase-js';
 
 export async function getExams() {
   const supabase = await createClient();
@@ -18,17 +20,46 @@ export async function getExams() {
   return { success: true, data };
 }
 
-async function deactivateOtherExams(supabase: any, currentExamId?: number) {
-  let examQuery = supabase.from('exams').update({ is_active: false }).neq('is_active', false);
-  let scheduleQuery = supabase.from('schedules').update({ is_active: false }).neq('is_active', false);
-  
-  if (currentExamId) {
-    examQuery = examQuery.neq('id', currentExamId);
-    scheduleQuery = scheduleQuery.neq('exam_id', currentExamId);
-  }
-  
-  await Promise.all([examQuery, scheduleQuery]);
+const MAX_ACTIVE_EXAMS = 4;
+const MAX_ACTIVE_ERROR = `Maksimal ${MAX_ACTIVE_EXAMS} ujian dapat aktif bersamaan. Nonaktifkan salah satu ujian aktif terlebih dahulu.`;
+
+// Cek apakah jumlah ujian aktif (selain ujian ini) sudah mencapai batas maksimal
+async function isActiveLimitReached(supabase: SupabaseClient, excludeExamId?: number): Promise<{ reached: boolean; error?: string }> {
+  let query = supabase.from('exams').select('id', { count: 'exact', head: true }).eq('is_active', true);
+  if (excludeExamId) query = query.neq('id', excludeExamId);
+
+  const { count, error } = await query;
+  if (error) return { reached: false, error: error.message };
+  return { reached: (count || 0) >= MAX_ACTIVE_EXAMS };
 }
+
+// Saat ujian menjadi aktif: siswa yang sudah Approved otomatis dapat kartu ACTIVE untuk ujian ini
+async function activateCardsForApprovedStudents(supabase: SupabaseClient, examId: number): Promise<{ error?: string }> {
+  const { data: exam, error: examError } = await supabase
+    .from('exams')
+    .select('id, name, academic_year')
+    .eq('id', examId)
+    .single();
+  if (examError || !exam) return { error: examError?.message || 'Ujian tidak ditemukan.' };
+
+  const students: { id: number; exam_number: string | null }[] = [];
+  const PAGE_SIZE = 1000;
+  for (let from = 0; ; from += PAGE_SIZE) {
+    const { data, error } = await supabase
+      .from('students')
+      .select('id, exam_number')
+      .eq('approval_status', 'Approved')
+      .order('id', { ascending: true })
+      .range(from, from + PAGE_SIZE - 1);
+    if (error) return { error: error.message };
+    students.push(...(data || []));
+    if (!data || data.length < PAGE_SIZE) break;
+  }
+
+  return ensureActiveCards(supabase, exam, students);
+}
+
+const CARD_ERROR_PREFIX = 'Ujian berhasil disimpan, tetapi gagal membuat kartu untuk siswa yang sudah Approved: ';
 
 export async function createExam(formData: FormData) {
   const supabase = await createClient();
@@ -36,9 +67,9 @@ export async function createExam(formData: FormData) {
   const is_active = formData.get('is_active') === 'true';
 
   if (is_active) {
-    await deactivateOtherExams(supabase);
-    // Reset semua siswa menjadi Pending untuk ujian baru yang diaktifkan
-    await supabase.from('students').update({ approval_status: 'Pending' }).neq('approval_status', 'Pending');
+    const limit = await isActiveLimitReached(supabase);
+    if (limit.error) return { success: false, error: limit.error };
+    if (limit.reached) return { success: false, error: MAX_ACTIVE_ERROR };
   }
 
   // Insert Exam
@@ -92,6 +123,15 @@ export async function createExam(formData: FormData) {
   const { error: settingsError } = await supabase.from('exam_settings').insert(settingsData);
 
   if (settingsError) return { success: false, error: settingsError.message };
+
+  if (is_active) {
+    const cardRes = await activateCardsForApprovedStudents(supabase, exam.id);
+    if (cardRes.error) {
+      revalidatePath('/dashboard/exams');
+      revalidatePath('/dashboard/students');
+      return { success: false, error: CARD_ERROR_PREFIX + cardRes.error };
+    }
+  }
   
   revalidatePath('/dashboard/exams');
   revalidatePath('/dashboard/students');
@@ -103,13 +143,12 @@ export async function updateExam(id: number, formData: FormData) {
   
   const { data: oldExam } = await supabase.from('exams').select('is_active').eq('id', id).single();
   const is_active = formData.get('is_active') === 'true';
+  const becameActive = is_active && !oldExam?.is_active;
 
-  if (is_active) {
-    await deactivateOtherExams(supabase, id);
-    // Jika ujian ini sebelumnya tidak aktif dan sekarang diaktifkan, reset status siswa
-    if (!oldExam?.is_active) {
-      await supabase.from('students').update({ approval_status: 'Pending' }).neq('approval_status', 'Pending');
-    }
+  if (becameActive) {
+    const limit = await isActiveLimitReached(supabase, id);
+    if (limit.error) return { success: false, error: limit.error };
+    if (limit.reached) return { success: false, error: MAX_ACTIVE_ERROR };
   }
 
   // Update Exam
@@ -171,6 +210,15 @@ export async function updateExam(id: number, formData: FormData) {
     const { error: settingsError } = await supabase.from('exam_settings').insert({ exam_id: id, ...settingsData });
     if (settingsError) return { success: false, error: settingsError.message };
   }
+
+  if (becameActive) {
+    const cardRes = await activateCardsForApprovedStudents(supabase, id);
+    if (cardRes.error) {
+      revalidatePath('/dashboard/exams');
+      revalidatePath('/dashboard/students');
+      return { success: false, error: CARD_ERROR_PREFIX + cardRes.error };
+    }
+  }
   
   revalidatePath('/dashboard/exams');
   revalidatePath('/dashboard/students');
@@ -182,10 +230,9 @@ export async function toggleExamStatus(id: number, currentStatus: boolean) {
   const newStatus = !currentStatus;
   
   if (newStatus) {
-    // If we are activating this exam, deactivate others and their schedules
-    await deactivateOtherExams(supabase, id);
-    // Reset semua siswa menjadi Pending untuk ujian yang baru diaktifkan
-    await supabase.from('students').update({ approval_status: 'Pending' }).neq('approval_status', 'Pending');
+    const limit = await isActiveLimitReached(supabase, id);
+    if (limit.error) return { success: false, error: limit.error };
+    if (limit.reached) return { success: false, error: MAX_ACTIVE_ERROR };
   }
 
   const { error } = await supabase.from('exams').update({ is_active: newStatus }).eq('id', id);
@@ -193,6 +240,36 @@ export async function toggleExamStatus(id: number, currentStatus: boolean) {
   
   // Propagasi status ke schedules milik ujian ini
   await supabase.from('schedules').update({ is_active: newStatus }).eq('exam_id', id);
+
+  if (newStatus) {
+    const cardRes = await activateCardsForApprovedStudents(supabase, id);
+    if (cardRes.error) {
+      revalidatePath('/dashboard/exams');
+      revalidatePath('/dashboard/students');
+      return { success: false, error: 'Ujian berhasil diaktifkan, tetapi gagal membuat kartu untuk siswa yang sudah Approved: ' + cardRes.error };
+    }
+  }
+
+  revalidatePath('/dashboard/exams');
+  revalidatePath('/dashboard/students');
+  return { success: true };
+}
+
+// Reset manual oleh TU: semua siswa jadi Pending & semua kartu ujian dinonaktifkan
+export async function resetAllStudentsToPending() {
+  const supabase = await createClient();
+
+  const { error: studentError } = await supabase
+    .from('students')
+    .update({ approval_status: 'Pending' })
+    .neq('approval_status', 'Pending');
+  if (studentError) return { success: false, error: studentError.message };
+
+  const { error: cardError } = await supabase
+    .from('exam_cards')
+    .update({ status: 'INACTIVE' })
+    .neq('status', 'INACTIVE');
+  if (cardError) return { success: false, error: cardError.message };
 
   revalidatePath('/dashboard/exams');
   revalidatePath('/dashboard/students');

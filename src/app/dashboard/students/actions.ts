@@ -2,6 +2,7 @@
 
 import { createClient } from '@/lib/supabase/server';
 import { revalidatePath } from 'next/cache';
+import { ensureActiveCards } from '@/lib/examCards';
 
 export async function getStudents() {
   const supabase = await createClient();
@@ -161,62 +162,25 @@ export async function approveStudent(studentId: number) {
 
   if (updateError) return { success: false, error: updateError.message };
 
-  // 2. Cek ujian aktif
-  const { data: activeExam, error: examError } = await supabase
+  // 2. Cek semua ujian aktif
+  const { data: activeExams, error: examError } = await supabase
     .from('exams')
-    .select('*')
-    .eq('is_active', true)
-    .single();
+    .select('id, name, academic_year')
+    .eq('is_active', true);
 
-  if (examError || !activeExam) {
+  if (examError || !activeExams || activeExams.length === 0) {
     // Jika tidak ada ujian aktif, kita hanya meng-approve siswa, tapi belum bisa membuat kartu.
     revalidatePath('/dashboard/students');
     return { success: true, warning: 'Siswa diapprove, tapi tidak ada ujian aktif sehingga kartu belum dibuat.' };
   }
 
-  // 3. Cek apakah kartu sudah pernah dibuat untuk siswa & ujian ini
-  const { data: existingCard } = await supabase
-    .from('exam_cards')
-    .select('id')
-    .eq('student_id', studentId)
-    .eq('exam_id', activeExam.id)
-    .single();
-
-  if (!existingCard) {
-    let cardNumber = student.exam_number;
-
-    if (!cardNumber) {
-      // Generate card number if not provided by Excel/Admin
-      // Format: EKM-[KODE_UJIAN]-[TAHUN]-[NOMOR_URUT]
-      const examCode = activeExam.name.split(' ')[0].toUpperCase();
-      const tahun = activeExam.academic_year.substring(0, 4);
-
-      // NOMOR URUT: Hitung jumlah kartu yang ada di exam ini
-      const { count } = await supabase
-        .from('exam_cards')
-        .select('id', { count: 'exact', head: true })
-        .eq('exam_id', activeExam.id);
-
-      const urut = (count || 0) + 1;
-      const urutStr = urut.toString().padStart(5, '0');
-      
-      cardNumber = `EKM-${examCode}-${tahun}-${urutStr}`;
-    }
-
-    const { error: insertError } = await supabase.from('exam_cards').insert({
-      student_id: studentId,
-      exam_id: activeExam.id,
-      card_number: cardNumber,
-      status: 'ACTIVE'
-    });
-
-    if (insertError) {
-      console.error('Failed to create exam card:', insertError);
+  // 3. Buat / aktifkan kembali kartu untuk SEMUA ujian aktif (tidak dobel jika sudah ada)
+  for (const exam of activeExams) {
+    const cardRes = await ensureActiveCards(supabase, exam, [{ id: studentId, exam_number: student.exam_number }]);
+    if (cardRes.error) {
+      console.error('Failed to create exam card:', cardRes.error);
       return { success: false, error: 'Siswa diapprove, tapi gagal men-generate nomor kartu.' };
     }
-  } else {
-    // Jika sudah ada kartu, aktifkan kembali
-    await supabase.from('exam_cards').update({ status: 'ACTIVE' }).eq('id', existingCard.id);
   }
 
   revalidatePath('/dashboard/students');

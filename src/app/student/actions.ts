@@ -11,61 +11,171 @@ export interface BasicStudentData {
   examNumber?: string | null;
 }
 
+export interface StudentExamOption {
+  examId: number;
+  cardTitle: string;
+  examName: string;
+  cardNumber: string;
+}
+
+type ErrorResponse = { success: false; error: 'not_found' | 'pending' | 'server_error'; message?: string; student?: BasicStudentData };
+
 export type CardActionResponse = 
   | { success: true; data: StudentExamCardData }
-  | { success: false; error: 'not_found' | 'pending' | 'server_error'; message?: string; student?: BasicStudentData };
+  | ErrorResponse;
 
-export async function fetchStudentCardData(nisn: string): Promise<CardActionResponse> {
+export type ExamListResponse =
+  | { success: true; student: BasicStudentData; exams: StudentExamOption[] }
+  | ErrorResponse;
+
+const MISSING_KEY_MESSAGE = 'Kunci SUPABASE_SERVICE_ROLE_KEY tidak ditemukan di .env.local. Wajib ditambahkan agar sistem bisa membaca data.';
+
+// Ambil data siswa + cek approval (dipakai oleh daftar ujian & detail kartu)
+async function loadApprovedStudent(supabase: ReturnType<typeof createAdminClient>, nisn: string) {
+  const { data: student, error: studentError } = await supabase
+    .from('students')
+    .select('*, classes(class_name, major)')
+    .eq('nisn', nisn)
+    .single();
+
+  if (studentError || !student) {
+    return { error: { success: false, error: 'not_found', message: 'Data siswa dengan NISN tersebut tidak ditemukan.' } as ErrorResponse };
+  }
+
+  const basicStudentData: BasicStudentData = {
+    nisn: student.nisn,
+    name: student.name,
+    className: student.classes?.class_name || '-',
+    major: student.classes?.major || '-',
+    examNumber: null,
+  };
+
+  if (student.approval_status === 'Pending') {
+    return { error: { success: false, error: 'pending', student: basicStudentData } as ErrorResponse };
+  }
+
+  return { student, basicStudentData };
+}
+
+/**
+ * Daftar ujian yang valid untuk siswa:
+ * ujian aktif + kartu ACTIVE milik siswa + kelas siswa punya jadwal aktif di ujian tsb.
+ */
+export async function fetchStudentCardData(nisn: string): Promise<ExamListResponse> {
   try {
     if (!process.env.SUPABASE_SERVICE_ROLE_KEY) {
-      return { success: false, error: 'server_error', message: 'Kunci SUPABASE_SERVICE_ROLE_KEY tidak ditemukan di .env.local. Wajib ditambahkan agar sistem bisa membaca data.' };
+      return { success: false, error: 'server_error', message: MISSING_KEY_MESSAGE };
     }
 
     const supabase = createAdminClient();
 
-    // 1. Ambil data siswa
-    const { data: student, error: studentError } = await supabase
-      .from('students')
-      .select('*, classes(class_name, major)')
-      .eq('nisn', nisn)
-      .single();
+    // 1 & 2. Data siswa + cek approval
+    const loaded = await loadApprovedStudent(supabase, nisn);
+    if (loaded.error) return loaded.error;
+    const { student, basicStudentData } = loaded;
 
-    if (studentError || !student) {
-      return { success: false, error: 'not_found', message: 'Data siswa dengan NISN tersebut tidak ditemukan.' };
-    }
-
-    const basicStudentData: BasicStudentData = {
-      nisn: student.nisn,
-      name: student.name,
-      className: student.classes?.class_name || '-',
-      major: student.classes?.major || '-',
-      examNumber: null,
-    };
-
-    // 2. Cek approval status
-    if (student.approval_status === 'Pending') {
-      return { success: false, error: 'pending', student: basicStudentData };
-    }
-
-    // 3. Dapatkan ujian yang sedang aktif
-    const { data: activeExam, error: examError } = await supabase
+    // 3. Semua ujian yang sedang aktif
+    const { data: activeExams, error: examError } = await supabase
       .from('exams')
-      .select('id')
+      .select('id, name, created_at, exam_settings(card_title)')
       .eq('is_active', true)
-      .single();
+      .order('created_at', { ascending: true });
 
-    if (examError || !activeExam) {
+    if (examError || !activeExams || activeExams.length === 0) {
       return { success: false, error: 'server_error', message: 'Belum ada ujian aktif.', student: basicStudentData };
     }
 
-    // 4. Cek exam_cards untuk ujian aktif tersebut
+    const examIds = activeExams.map((ex) => ex.id);
+
+    // 4. Kartu ACTIVE milik siswa untuk ujian-ujian aktif
+    const { data: cards, error: cardError } = await supabase
+      .from('exam_cards')
+      .select('exam_id, card_number')
+      .eq('student_id', student.id)
+      .eq('status', 'ACTIVE')
+      .in('exam_id', examIds);
+
+    if (cardError || !cards || cards.length === 0) {
+      return { success: false, error: 'server_error', message: 'Kartu ujian belum diterbitkan untuk periode aktif ini.', student: basicStudentData };
+    }
+
+    // 5. Jadwal aktif untuk kelas siswa di ujian-ujian aktif
+    const { data: schedules } = await supabase
+      .from('schedules')
+      .select('exam_id')
+      .eq('class_id', student.class_id)
+      .eq('is_active', true)
+      .in('exam_id', examIds);
+
+    const cardByExam = new Map<number, string>();
+    cards.forEach((c) => {
+      if (!cardByExam.has(c.exam_id)) cardByExam.set(c.exam_id, c.card_number);
+    });
+    const examsWithSchedule = new Set((schedules || []).map((s) => s.exam_id));
+
+    const exams: StudentExamOption[] = activeExams
+      .filter((ex) => cardByExam.has(ex.id) && examsWithSchedule.has(ex.id))
+      .map((ex) => {
+        const settings = Array.isArray(ex.exam_settings) ? ex.exam_settings[0] : ex.exam_settings;
+        return {
+          examId: ex.id,
+          cardTitle: settings?.card_title || 'KARTU PESERTA UJIAN',
+          examName: ex.name,
+          cardNumber: cardByExam.get(ex.id) || '-',
+        };
+      });
+
+    if (exams.length === 0) {
+      return { success: false, error: 'server_error', message: `Jadwal ujian untuk kelas ${student.classes?.class_name || 'ini'} belum tersedia.` };
+    }
+
+    const uniqueNumbers = Array.from(new Set(exams.map((ex) => ex.cardNumber)));
+    basicStudentData.examNumber = uniqueNumbers.join(', ');
+
+    return { success: true, student: basicStudentData, exams };
+
+  } catch (error: unknown) {
+    console.error("Server Action Error:", error);
+    const message = error instanceof Error ? error.message : 'Terjadi kesalahan sistem yang tidak terduga.';
+    return { success: false, error: 'server_error', message };
+  }
+}
+
+/** Data kartu lengkap untuk satu ujian yang dipilih siswa. */
+export async function fetchStudentCardDataByExam(nisn: string, examId: number): Promise<CardActionResponse> {
+  try {
+    if (!process.env.SUPABASE_SERVICE_ROLE_KEY) {
+      return { success: false, error: 'server_error', message: MISSING_KEY_MESSAGE };
+    }
+
+    const supabase = createAdminClient();
+
+    // 1 & 2. Data siswa + cek approval
+    const loaded = await loadApprovedStudent(supabase, nisn);
+    if (loaded.error) return loaded.error;
+    const { student, basicStudentData } = loaded;
+
+    // 3. Pastikan ujian yang dipilih masih aktif
+    const { data: activeExam, error: examError } = await supabase
+      .from('exams')
+      .select('id')
+      .eq('id', examId)
+      .eq('is_active', true)
+      .maybeSingle();
+
+    if (examError || !activeExam) {
+      return { success: false, error: 'server_error', message: 'Ujian yang dipilih sedang tidak aktif.', student: basicStudentData };
+    }
+
+    // 4. Cek exam_cards untuk ujian tersebut
     const { data: examCard, error: cardError } = await supabase
       .from('exam_cards')
       .select('*')
       .eq('student_id', student.id)
       .eq('exam_id', activeExam.id)
       .eq('status', 'ACTIVE')
-      .single();
+      .limit(1)
+      .maybeSingle();
 
     if (cardError || !examCard) {
       return { success: false, error: 'server_error', message: 'Kartu ujian belum diterbitkan untuk periode aktif ini.', student: basicStudentData };
@@ -155,8 +265,9 @@ export async function fetchStudentCardData(nisn: string): Promise<CardActionResp
 
     return { success: true, data };
 
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Server Action Error:", error);
-    return { success: false, error: 'server_error', message: error.message || 'Terjadi kesalahan sistem yang tidak terduga.' };
+    const message = error instanceof Error ? error.message : 'Terjadi kesalahan sistem yang tidak terduga.';
+    return { success: false, error: 'server_error', message };
   }
 }

@@ -171,7 +171,7 @@ export default function ExamFormModal({ isOpen, onClose, examData }: ExamFormMod
                   </div>
                   <div>
                     <span className="text-sm font-bold text-gray-800 block">Jadikan Ujian Aktif</span>
-                    <span className="text-xs text-gray-500 block">Hanya 1 ujian yang bisa aktif bersamaan. Ujian aktif lain akan dinonaktifkan.</span>
+                    <span className="text-xs text-gray-500 block">Maksimal 4 ujian dapat aktif bersamaan.</span>
                   </div>
                 </label>
               </div>

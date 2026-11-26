@@ -179,7 +179,7 @@ export default function ScheduleTable({ schedules: initialSchedules, exams, clas
 
                       <td className="px-6 py-4">
                         <div className="flex justify-center">
-                          {s.is_active ? (
+                          {(s.exams?.is_active ?? s.is_active) ? (
                             <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold bg-[#D1FAE5] text-green-800">
                               <CheckCircle className="w-3.5 h-3.5" />
                               Aktif

@@ -1,9 +1,9 @@
 'use client';
 
 import { useState } from 'react';
-import { Search, Plus, Edit2, Trash2, CalendarDays, CheckCircle, XCircle, Power } from 'lucide-react';
+import { Search, Plus, Edit2, Trash2, CalendarDays, CheckCircle, XCircle, Power, RotateCcw, Loader2 } from 'lucide-react';
 import ExamFormModal from './ExamFormModal';
-import { deleteExam, toggleExamStatus } from '@/app/dashboard/exams/actions';
+import { deleteExam, toggleExamStatus, resetAllStudentsToPending } from '@/app/dashboard/exams/actions';
 
 interface ExamTableProps {
   exams: any[];
@@ -13,6 +13,7 @@ export default function ExamTable({ exams: initialExams }: ExamTableProps) {
   const [search, setSearch] = useState('');
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [editingExam, setEditingExam] = useState<any | null>(null);
+  const [isResetting, setIsResetting] = useState(false);
   
   // Format Tanggal
   const formatDate = (dateString: string) => {
@@ -39,10 +40,22 @@ export default function ExamTable({ exams: initialExams }: ExamTableProps) {
 
   const handleToggleActive = async (id: number, currentStatus: boolean) => {
     if (!currentStatus) {
-      if (!confirm('Mengaktifkan ujian ini akan otomatis menonaktifkan ujian lainnya. Lanjutkan?')) return;
+      if (!confirm('Aktifkan ujian ini?')) return;
     }
     const res = await toggleExamStatus(id, currentStatus);
     if (res.error) alert(res.error);
+  };
+
+  const handleResetAll = async () => {
+    if (!confirm('Semua siswa akan dikembalikan ke status Pending dan semua kartu ujian akan dinonaktifkan.\nTU harus meng-approve ulang siswa. Lanjutkan?')) return;
+    setIsResetting(true);
+    const res = await resetAllStudentsToPending();
+    setIsResetting(false);
+    if (res.success) {
+      alert('Berhasil! Semua siswa telah dikembalikan ke status Pending dan semua kartu ujian dinonaktifkan.');
+    } else {
+      alert(`Gagal mereset siswa: ${res.error || 'Terjadi kesalahan.'}`);
+    }
   };
 
   const openEdit = (examData: any) => {
@@ -65,7 +78,15 @@ export default function ExamTable({ exams: initialExams }: ExamTableProps) {
           <p className="text-sm text-gray-500 mt-1">Kelola data ujian, status aktif, dan pengaturan kartu ujian.</p>
         </div>
         
-        <div className="w-full sm:w-auto">
+        <div className="w-full sm:w-auto flex flex-col sm:flex-row gap-2">
+          <button 
+            onClick={handleResetAll}
+            disabled={isResetting}
+            className="flex items-center justify-center gap-2 px-4 py-2.5 bg-orange-50 hover:bg-orange-100 text-orange-700 border border-orange-300 rounded-xl transition-colors font-semibold text-sm shadow-sm w-full sm:w-auto disabled:opacity-60 disabled:cursor-not-allowed"
+          >
+            {isResetting ? <Loader2 className="w-4 h-4 animate-spin" /> : <RotateCcw className="w-4 h-4" />}
+            Reset Semua Siswa ke Pending
+          </button>
           <button 
             onClick={openAdd}
             className="flex items-center justify-center gap-2 px-4 py-2.5 bg-primary hover:bg-primary-dark text-white rounded-xl transition-colors font-semibold text-sm shadow-sm hover:shadow-md hover:-translate-y-0.5 w-full sm:w-auto"
