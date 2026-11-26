@@ -132,6 +132,7 @@ export async function fetchStudentCardData(nisn: string): Promise<CardActionResp
         show_photo: settingsRes.data?.show_photo ?? true,
         show_room: settingsRes.data?.show_room ?? true,
         show_schedule: settingsRes.data?.show_schedule ?? true,
+        show_password: settingsRes.data?.show_password ?? true,
         allow_download: settingsRes.data?.allow_download ?? true,
         allow_print: settingsRes.data?.allow_print ?? true,
         chairperson_name: settingsRes.data?.chairperson_name || 'Panitia Ujian',

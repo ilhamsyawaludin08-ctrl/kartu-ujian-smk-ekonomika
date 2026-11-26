@@ -37,6 +37,7 @@ export interface StudentExamCardData {
     show_photo: boolean;
     show_room: boolean;
     show_schedule: boolean;
+    show_password: boolean;
     allow_download: boolean;
     allow_print: boolean;
     chairperson_name: string | null;

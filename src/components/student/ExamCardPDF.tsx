@@ -382,14 +382,18 @@ const MyDocument = ({ data }: Props) => {
                 <Text style={styles.boxLabel}>Nomor Ujian</Text>
                 <Text style={styles.boxValue}>{data.examCard.card_number}</Text>
               </View>
-              <View style={styles.box}>
-                <Text style={styles.boxLabel}>Ruang Ujian</Text>
-                <Text style={styles.boxValue}>{data.student.exam_room || '-'}</Text>
-              </View>
-              <View style={styles.box}>
-                <Text style={styles.boxLabel}>Password</Text>
-                <Text style={styles.boxValue}>{data.student.exam_password || '-'}</Text>
-              </View>
+              {data.examSettings.show_room && (
+                <View style={styles.box}>
+                  <Text style={styles.boxLabel}>Ruang Ujian</Text>
+                  <Text style={styles.boxValue}>{data.student.exam_room || '-'}</Text>
+                </View>
+              )}
+              {data.examSettings.show_password && (
+                <View style={styles.box}>
+                  <Text style={styles.boxLabel}>Password</Text>
+                  <Text style={styles.boxValue}>{data.student.exam_password || '-'}</Text>
+                </View>
+              )}
             </View>
 
           {/* Schedule Table */}

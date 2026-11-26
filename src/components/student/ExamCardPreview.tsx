@@ -48,6 +48,8 @@ export default function ExamCardPreview({ data }: Props) {
   const gapClass = isVeryCompact ? 'h-1' : isCompact ? 'h-2' : 'h-3 print:h-1.5';
   const infoTextClass = isVeryCompact ? 'text-xs' : 'text-sm md:text-base';
   const infoPaddingClass = isVeryCompact ? 'py-1' : 'py-1.5 print:py-0.5';
+  const visibleBoxCount = 1 + (data.examSettings.show_room ? 1 : 0) + (data.examSettings.show_password ? 1 : 0);
+  const boxGridColsClass = visibleBoxCount === 3 ? 'grid-cols-3' : visibleBoxCount === 2 ? 'grid-cols-2' : 'grid-cols-1';
 
   return (
     <div className="w-full flex flex-col items-center min-h-screen bg-gray-100 print:bg-white print:min-h-0 print:h-auto print:justify-start">
@@ -97,6 +99,8 @@ export default function ExamCardPreview({ data }: Props) {
             padding-top: 2.5px !important;
             padding-bottom: 2.5px !important;
           }
+          #print-container .grid.grid-cols-1 > div,
+          #print-container .grid.grid-cols-2 > div,
           #print-container .grid.grid-cols-3 > div {
             min-height: 0 !important;
             padding-top: 4px !important;
@@ -204,19 +208,23 @@ export default function ExamCardPreview({ data }: Props) {
           </div>
 
           {/* Section 2: Kotak-kotak (Nomor Ujian, Ruang Ujian, Password) */}
-          <div className="grid grid-cols-3 gap-4 mb-6 print:gap-3 print:mb-2">
+          <div className={`grid ${boxGridColsClass} gap-4 mb-6 print:gap-3 print:mb-2`}>
             <div className="border border-gray-800 rounded-lg p-3 print:py-1.5 print:px-2 text-center flex flex-col justify-center min-h-[80px] print:min-h-0">
               <p className="text-[10px] text-gray-500 uppercase font-semibold mb-1">Nomor Ujian</p>
               <p className="font-bold text-lg text-gray-900">{data.examCard.card_number}</p>
             </div>
-            <div className="border border-gray-800 rounded-lg p-3 print:py-1.5 print:px-2 text-center flex flex-col justify-center min-h-[80px] print:min-h-0">
-              <p className="text-[10px] text-gray-500 uppercase font-semibold mb-1">Ruang Ujian</p>
-              <p className="font-bold text-lg text-gray-900">{data.student.exam_room || '-'}</p>
-            </div>
-            <div className="border border-gray-800 rounded-lg p-3 print:py-1.5 print:px-2 text-center flex flex-col justify-center min-h-[80px] print:min-h-0">
-              <p className="text-[10px] text-gray-500 uppercase font-semibold mb-1">Password</p>
-              <p className="font-bold text-lg text-gray-900">{data.student.exam_password || '-'}</p>
-            </div>
+            {data.examSettings.show_room && (
+              <div className="border border-gray-800 rounded-lg p-3 print:py-1.5 print:px-2 text-center flex flex-col justify-center min-h-[80px] print:min-h-0">
+                <p className="text-[10px] text-gray-500 uppercase font-semibold mb-1">Ruang Ujian</p>
+                <p className="font-bold text-lg text-gray-900">{data.student.exam_room || '-'}</p>
+              </div>
+            )}
+            {data.examSettings.show_password && (
+              <div className="border border-gray-800 rounded-lg p-3 print:py-1.5 print:px-2 text-center flex flex-col justify-center min-h-[80px] print:min-h-0">
+                <p className="text-[10px] text-gray-500 uppercase font-semibold mb-1">Password</p>
+                <p className="font-bold text-lg text-gray-900">{data.student.exam_password || '-'}</p>
+              </div>
+            )}
           </div>
 
           {/* Schedule Table (Keep original purple design) */}

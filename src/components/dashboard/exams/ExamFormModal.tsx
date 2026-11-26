@@ -26,7 +26,7 @@ export default function ExamFormModal({ isOpen, onClose, examData }: ExamFormMod
     const formData = new FormData(e.currentTarget);
     
     // Checkboxes convert
-    const checkboxes = ['is_active', 'show_photo', 'show_room', 'show_schedule', 'allow_print', 'allow_download'];
+    const checkboxes = ['is_active', 'show_photo', 'show_room', 'show_schedule', 'show_password', 'allow_print', 'allow_download'];
     checkboxes.forEach(key => {
       formData.set(key, formData.get(key) === 'on' ? 'true' : 'false');
     });
@@ -240,6 +240,10 @@ export default function ExamFormModal({ isOpen, onClose, examData }: ExamFormMod
                 <label className="flex items-center gap-2 text-sm font-medium text-gray-700 cursor-pointer">
                   <input type="checkbox" name="show_schedule" defaultChecked={settings.show_schedule ?? true} className="w-4 h-4 text-primary rounded focus:ring-primary" />
                   Tampilkan Tabel Jadwal
+                </label>
+                <label className="flex items-center gap-2 text-sm font-medium text-gray-700 cursor-pointer">
+                  <input type="checkbox" name="show_password" defaultChecked={settings.show_password ?? true} className="w-4 h-4 text-primary rounded focus:ring-primary" />
+                  Tampilkan Password
                 </label>
               </div>
 

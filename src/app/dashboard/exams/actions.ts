@@ -84,6 +84,7 @@ export async function createExam(formData: FormData) {
     show_photo: formData.get('show_photo') === 'true',
     show_room: formData.get('show_room') === 'true',
     show_schedule: formData.get('show_schedule') === 'true',
+    show_password: formData.get('show_password') === 'true',
     allow_print: formData.get('allow_print') === 'true',
     allow_download: formData.get('allow_download') === 'true',
   };
@@ -151,6 +152,7 @@ export async function updateExam(id: number, formData: FormData) {
     show_photo: formData.get('show_photo') === 'true',
     show_room: formData.get('show_room') === 'true',
     show_schedule: formData.get('show_schedule') === 'true',
+    show_password: formData.get('show_password') === 'true',
     allow_print: formData.get('allow_print') === 'true',
     allow_download: formData.get('allow_download') === 'true',
   };
